@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/post_parent_layout"
+    >
+
+
+    <RelativeLayout
+        android:id="@+id/post_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#EEEEEE"
+        >
+
+        <ImageView
+            android:id="@+id/post_profile_pic"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            />
+
+        <TextView
+            android:id="@+id/post_publisher"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Publisher"
+            android:textColor="#000"
+            android:textSize="15sp"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/post_profile_pic"
+            />
+
+        <Button
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:textSize="17sp"
+            android:layout_alignParentRight="true"
+            />
+    </RelativeLayout>
+
+
+
+    <LinearLayout
+        android:id="@+id/post_content_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/post_info"
+        android:orientation="vertical"
+        >
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_below="@id/post_content_layout"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:background="#EEEEEE"
+        android:paddingBottom="20dp"
+        >
+        <Button
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:textSize="17sp"
+            android:layout_alignParentRight="true"
+            android:layout_weight="1"
+            />
+        <Button
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:textSize="17sp"
+            android:layout_alignParentRight="true"
+            android:layout_weight="1"
+            />
+        <Button
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:textSize="17sp"
+            android:layout_alignParentRight="true"
+            android:layout_weight="1"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Some text bla bla bla"
+            android:textColor="#000"
+            android:textSize="15sp"
+            android:layout_toRightOf="@id/post_profile_pic"
+            android:layout_weight="50"
+            />
+        <Button
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:textSize="17sp"
+            android:layout_alignParentRight="true"
+            android:layout_weight="1"
+            />
+
+    </LinearLayout>
+</RelativeLayout>
