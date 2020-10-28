@@ -1,6 +1,7 @@
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.Drawable
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,12 +19,17 @@ import com.darktheme.unitime.models.MyViewHolder
 import com.darktheme.unitime.viewModels.PostsViewModel
 import java.util.*
 import com.bumptech.glide.request.target.Target
+import com.darktheme.unitime.models.JsonObjects.PostObj
+import com.darktheme.unitime.views.CommentsFragment
+import com.darktheme.unitime.views.CreatePostFragment
+import com.darktheme.unitime.views.MainPageActivity
+import com.darktheme.unitime.views.PostsFragment
 
 
 /**
  * Created by User on 1/1/2018.
  */
-class PostsAdapter(val context: Context, val views: ArrayList<MyViewHolder>, val postsContent: ArrayList<PostContentObj>, val viewTypes : List<Int>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class PostsAdapter(val context: Context, val views: ArrayList<MyViewHolder>, val viewTypes : List<Int>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
         val postViewType = 1
@@ -56,24 +62,14 @@ class PostsAdapter(val context: Context, val views: ArrayList<MyViewHolder>, val
     private fun bindPostView(holder : PostViewHolder, position: Int) {
         if (holder.loaded) {return}
         val currentPostObj = views.get(position).post!!
-        holder.publisher.text = StringBuilder("Post ID: ").append(currentPostObj.post_id).append(", Publisher: ").append(currentPostObj.publisher).toString()
-
-        if (!currentPostObj.text_content.isNullOrEmpty()) {
-            holder.setTextContent(currentPostObj.text_content)
+        holder.postView.setUp(currentPostObj)
+        holder.postView.contentParent.setOnClickListener {
+            var frag = CommentsFragment()
+            var args = Bundle()
+            args.putString("id", currentPostObj.post_id)
+            frag.arguments = args
+            (context as MainPageActivity).openFragment(frag, CreatePostFragment.TAG)
         }
-        if(currentPostObj.type.equals(PostsViewModel.ImageType)) {
-            holder.setImageContent(currentPostObj.post_id)
-        } else {
-            holder.removeProgressBar()
-            if(currentPostObj.type.equals(PostsViewModel.FileType)) {
-                if (currentPostObj.attachment == null) {
-                    holder.setFileContent("nameless.pdf")
-                } else {
-                    holder.setFileContent(currentPostObj.attachment.name)
-                }
-            }
-        }
-
         holder.loaded = true
     }
 
@@ -99,57 +95,9 @@ class PostsAdapter(val context: Context, val views: ArrayList<MyViewHolder>, val
     }
 
     inner class PostViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val contentParent : LinearLayout = itemView.findViewById(R.id.post_content_layout)
-        val publisher : TextView = itemView.findViewById(R.id.post_publisher)
-        val parentLayout : RelativeLayout = itemView.findViewById(R.id.post_parent_layout)
+        val postView = PostView(context, itemView)
         var loaded : Boolean = false
 
-        fun setTextContent(text : String) {
-            val postText : TextView = TextView(context)
-
-            postText.text = text
-            postText.textSize = 15F
-            postText.setTextColor(Color.BLACK)
-
-            val padding_in_dp = 20 // 6 dps
-            val scale: Float = context.getResources().getDisplayMetrics().density
-            val padding_in_px = (padding_in_dp * scale + 0.5f).toInt()
-            postText.setPadding(padding_in_px,padding_in_px,padding_in_px,padding_in_px)
-            contentParent.addView(postText)
-        }
-
-        fun setFileContent(filename : String) {
-            val fileContent: View = LayoutInflater.from(context).inflate(R.layout.layout_file_content, parentLayout, false)
-
-            val filenameTextView = fileContent.findViewById<TextView>(R.id.file_name)
-            filenameTextView.text = filename
-            filenameTextView.setOnClickListener{
-                // TODO ask for the content from the server and open the file
-            }
-            contentParent.addView(fileContent)
-        }
-
-        fun setImageContent(imageID : String) {
-            val img = ImageView(context)
-            Glide.with(context)
-                .load(StringBuilder(AppInfo.serverUrl).append("/post/content?id=").append(imageID).toString()).listener(object : RequestListener<Drawable> {
-                override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
-                    removeProgressBar()
-                    contentParent.addView(LayoutInflater.from(context).inflate(R.layout.layout_error_loading, contentParent, false))
-                    return false
-                }
-                override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
-                    removeProgressBar()
-                    return false
-                }
-            }).into(img)
-            contentParent.addView(img)
-        }
-
-        fun removeProgressBar() {
-            val progressBar = parentLayout.findViewById<ProgressBar>(R.id.progressBar)
-            contentParent.removeView(progressBar)
-        }
     }
 
     inner class HierarchyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -161,6 +109,79 @@ class PostsAdapter(val context: Context, val views: ArrayList<MyViewHolder>, val
 
     }
 
+}
+
+class PostView(val context: Context, itemView: View) {
+    val contentParent : LinearLayout = itemView.findViewById(R.id.post_content_layout)
+    val publisher : TextView = itemView.findViewById(R.id.post_publisher)
+    val parentLayout : RelativeLayout = itemView.findViewById(R.id.post_parent_layout)
+
+    fun setUp(post : PostObj) {
+        publisher.text = StringBuilder("Post ID: ").append(post.post_id).append(", Publisher: ").append(post.publisher).toString()
+
+        if (!post.text_content.isNullOrEmpty()) {
+            setTextContent(post.text_content)
+        }
+        if(post.type.equals(PostsViewModel.ImageType)) {
+            setImageContent(post.post_id)
+        } else {
+            removeProgressBar()
+            if(post.type.equals(PostsViewModel.FileType)) {
+                if (post.attachment == null) {
+                    setFileContent("nameless.pdf")
+                } else {
+                    setFileContent(post.attachment.name)
+                }
+            }
+        }
+    }
+
+    fun setTextContent(text : String) {
+        val postText : TextView = TextView(context)
+
+        postText.text = text
+        postText.textSize = 15F
+        postText.setTextColor(Color.BLACK)
+
+        val padding_in_dp = 20 // 6 dps
+        val scale: Float = context.getResources().getDisplayMetrics().density
+        val padding_in_px = (padding_in_dp * scale + 0.5f).toInt()
+        postText.setPadding(padding_in_px,padding_in_px,padding_in_px,padding_in_px)
+        contentParent.addView(postText, 0)
+    }
+
+    fun setFileContent(filename : String) {
+        val fileContent: View = LayoutInflater.from(context).inflate(R.layout.layout_file_content, parentLayout, false)
+
+        val filenameTextView = fileContent.findViewById<TextView>(R.id.file_name)
+        filenameTextView.text = filename
+        filenameTextView.setOnClickListener{
+            // TODO ask for the content from the server and open the file
+        }
+        contentParent.addView(fileContent)
+    }
+
+    fun setImageContent(imageID : String) {
+        val img = ImageView(context)
+        Glide.with(context)
+            .load(StringBuilder(AppInfo.serverUrl).append("/post/content?id=").append(imageID).toString()).listener(object : RequestListener<Drawable> {
+                override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
+                    removeProgressBar()
+                    contentParent.addView(LayoutInflater.from(context).inflate(R.layout.layout_error_loading, contentParent, false))
+                    return false
+                }
+                override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
+                    removeProgressBar()
+                    return false
+                }
+            }).into(img)
+        contentParent.addView(img)
+    }
+
+    fun removeProgressBar() {
+        val progressBar = parentLayout.findViewById<ProgressBar>(R.id.progressBar)
+        contentParent.removeView(progressBar)
+    }
 }
 
 class ScrollListener : RecyclerView.OnScrollListener() {

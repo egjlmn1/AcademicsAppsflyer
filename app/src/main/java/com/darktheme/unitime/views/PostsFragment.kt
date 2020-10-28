@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -25,37 +26,40 @@ class PostsFragment : Fragment() {
     var recyclerView: RecyclerView? = null
     var viewsList : ArrayList<MyViewHolder>? = null
     var viewTypesList : ArrayList<Int>? = null
-    var postContentList : ArrayList<PostContentObj>? = null
 
     var viewModel : PostsViewModel? = null
 
+    var containerView: ViewGroup? = null
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        containerView = container
         val root = inflater.inflate(R.layout.fragment_posts, container, false)
         return root
     }
 
     override fun onStart() {
         super.onStart()
+        initRecyclerView()
         handleMVVM()
 
     }
 
     private fun handleMVVM() {
-        initRecyclerView()
-        viewModel = PostsViewModel(requireActivity(), recyclerView!!, viewsList!!, postContentList!!, viewTypesList!!)
+        viewModel = PostsViewModel(requireActivity(), recyclerView!!, viewsList!!, viewTypesList!!)
         viewModel!!.loadIdList()
     }
-
-
 
     private fun initRecyclerView() {
         recyclerView = requireView().findViewById(R.id.posts_recycler_view)
         recyclerView!!.addOnScrollListener(ScrollListener())
         viewsList = ArrayList()
         viewTypesList = ArrayList()
-        postContentList = ArrayList()
-        recyclerView!!.adapter = PostsAdapter(requireActivity(), viewsList!!, postContentList!!, viewTypesList!!)
+        recyclerView!!.adapter = PostsAdapter(requireActivity(), viewsList!!, viewTypesList!!)
         recyclerView!!.layoutManager = LinearLayoutManager(requireActivity())
 
+    }
+
+    companion object {
+        val TAG = "PostsFragmentTAG"
     }
 }

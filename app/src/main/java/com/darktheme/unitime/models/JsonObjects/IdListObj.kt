@@ -8,27 +8,28 @@ import retrofit2.Retrofit
 import retrofit2.http.Body
 import retrofit2.http.POST
 
-class IdListObj(val posts_ids : List<String>) {}
+class SearchResponseListObj(val posts_ids : List<SearchResponse>) {}
+class SearchResponse(val view_type : Int, val content : String) {}
 class SearchObj(val search: String, val flair: String)
 
 interface IdListAPI {
 
     @POST("search")
-    fun getIdListJson(@Body search : SearchObj) : Call<IdListObj>
+    fun getIdListJson(@Body search : SearchObj) : Call<SearchResponseListObj>
 }
 
 class IdListRequest(val retrofit: Retrofit) {
 
     fun get(search : String, flair : String,
-            myOnResponse : (call: Call<IdListObj>?, response: Response<IdListObj>?) -> Unit, myOnFaliure : (call: Call<IdListObj>?, t: Throwable?) -> Unit) {
+            myOnResponse : (call: Call<SearchResponseListObj>?, response: Response<SearchResponseListObj>?) -> Unit, myOnFaliure : (call: Call<SearchResponseListObj>?, t: Throwable?) -> Unit) {
         val api : IdListAPI = retrofit.create(IdListAPI::class.java)
-        val call : Call<IdListObj> = api.getIdListJson(SearchObj(search, flair))
-        call.enqueue(object : Callback<IdListObj> {
-            override fun onFailure(call: Call<IdListObj>?, t: Throwable?) {
+        val call : Call<SearchResponseListObj> = api.getIdListJson(SearchObj(search, flair))
+        call.enqueue(object : Callback<SearchResponseListObj> {
+            override fun onFailure(call: Call<SearchResponseListObj>?, t: Throwable?) {
                 myOnFaliure(call, t)
             }
 
-            override fun onResponse(call: Call<IdListObj>?, response: Response<IdListObj>?) {
+            override fun onResponse(call: Call<SearchResponseListObj>?, response: Response<SearchResponseListObj>?) {
                 myOnResponse(call, response)
             }
 

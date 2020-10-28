@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.darktheme.unitime.views.PostsFragment"
+        android:name="com.darktheme.unitime.views.HomePageFragment"
         android:label="@string/menu_home"
-        tools:layout="@layout/fragment_posts" />
+        tools:layout="@layout/fragment_home_page" />
 
     <fragment
         android:id="@+id/nav_profile"

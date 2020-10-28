@@ -4,6 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/post_parent_layout"
+    android:background="#fff"
+    android:layout_marginTop="5dp"
+    android:layout_marginBottom="5dp"
     >
 
 
@@ -11,13 +14,13 @@
         android:id="@+id/post_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#EEEEEE"
         >
 
         <ImageView
             android:id="@+id/post_profile_pic"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:background="@drawable/ic_baseline_account_circle_24"
             />
 
         <TextView
@@ -36,6 +39,7 @@
             android:layout_height="50dp"
             android:textSize="17sp"
             android:layout_alignParentRight="true"
+            android:background="@drawable/ic_baseline_more_vert_24"
             />
     </RelativeLayout>
 
@@ -62,29 +66,21 @@
         android:layout_below="@id/post_content_layout"
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:background="#EEEEEE"
-        android:paddingBottom="20dp"
+        android:paddingVertical="20dp"
         >
         <Button
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:textSize="17sp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_alignParentRight="true"
-            android:layout_weight="1"
+            android:layout_marginLeft="20dp"
+            android:background="@drawable/ic_baseline_thumb_up_24"
             />
         <Button
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:textSize="17sp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_alignParentRight="true"
-            android:layout_weight="1"
-            />
-        <Button
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:textSize="17sp"
-            android:layout_alignParentRight="true"
-            android:layout_weight="1"
+            android:layout_marginLeft="20dp"
+            android:background="@drawable/ic_baseline_share_24"
             />
         <TextView
             android:layout_width="wrap_content"
@@ -92,15 +88,10 @@
             android:text="Some text bla bla bla"
             android:textColor="#000"
             android:textSize="15sp"
+            android:layout_marginLeft="20dp"
+
             android:layout_toRightOf="@id/post_profile_pic"
-            android:layout_weight="50"
-            />
-        <Button
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:textSize="17sp"
-            android:layout_alignParentRight="true"
-            android:layout_weight="1"
+
             />
 
     </LinearLayout>

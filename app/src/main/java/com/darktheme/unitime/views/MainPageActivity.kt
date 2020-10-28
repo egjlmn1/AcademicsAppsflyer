@@ -27,7 +27,7 @@ class MainPageActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main_page)
 
         setNavigations()
-        //openNewFragment(PostsFragment())
+        openFragment(PostsFragment(), PostsFragment.TAG)
         handleIntent(intent)
 
     }
@@ -103,13 +103,16 @@ class MainPageActivity : AppCompatActivity() {
         }
 
     fun onCreatePostSelect() {
-        println("creating post")
-        val createPostFragment = CreatePostFragment()
-        val transaction =
-            supportFragmentManager.beginTransaction()
-        transaction.add(R.id.fragment_container, createPostFragment, CreatePostFragment.TAG)
-        transaction.addToBackStack(null)
-        transaction.commit()
+        val frag: Fragment? = supportFragmentManager.findFragmentByTag(CreatePostFragment.TAG)
+        if (frag == null) {
+            println("creating post")
+            val createPostFragment = CreatePostFragment()
+            val transaction =
+                supportFragmentManager.beginTransaction()
+            transaction.add(R.id.fragment_container, createPostFragment, CreatePostFragment.TAG)
+            transaction.addToBackStack(null)
+            transaction.commit()
+        }
     }
 
     fun onCreatePostDiselect() {
@@ -124,5 +127,9 @@ class MainPageActivity : AppCompatActivity() {
     fun getCurrentFragment() {
         val frag: Fragment? = supportFragmentManager.findFragmentByTag(CreatePostFragment.TAG)
         println(frag)
+    }
+
+    fun openFragment(frag: Fragment, tag: String) {
+        supportFragmentManager.beginTransaction().add(R.id.fragment_container, frag, tag).addToBackStack(null).commit()
     }
 }
