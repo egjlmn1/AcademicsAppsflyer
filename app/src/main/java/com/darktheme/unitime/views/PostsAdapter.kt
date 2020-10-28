@@ -1,21 +1,23 @@
 import android.content.Context
 import android.graphics.Color
+import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.RelativeLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
 import com.darktheme.unitime.AppInfo
 import com.darktheme.unitime.R
 import com.darktheme.unitime.models.JsonObjects.PostContentObj
 import com.darktheme.unitime.models.MyViewHolder
 import com.darktheme.unitime.viewModels.PostsViewModel
 import java.util.*
+import com.bumptech.glide.request.target.Target
 
 
 /**
@@ -59,14 +61,17 @@ class PostsAdapter(val context: Context, val views: ArrayList<MyViewHolder>, val
         if (!currentPostObj.text_content.isNullOrEmpty()) {
             holder.setTextContent(currentPostObj.text_content)
         }
-        if(currentPostObj.type.equals(PostsViewModel.FileType)) {
-            if (currentPostObj.attachment == null) {
-                holder.setFileContent("nameless.pdf")
-            } else {
-                holder.setFileContent(currentPostObj.attachment.name)
-            }
-        } else if(currentPostObj.type.equals(PostsViewModel.ImageType)) {
+        if(currentPostObj.type.equals(PostsViewModel.ImageType)) {
             holder.setImageContent(currentPostObj.post_id)
+        } else {
+            holder.removeProgressBar()
+            if(currentPostObj.type.equals(PostsViewModel.FileType)) {
+                if (currentPostObj.attachment == null) {
+                    holder.setFileContent("nameless.pdf")
+                } else {
+                    holder.setFileContent(currentPostObj.attachment.name)
+                }
+            }
         }
 
         holder.loaded = true
@@ -127,9 +132,23 @@ class PostsAdapter(val context: Context, val views: ArrayList<MyViewHolder>, val
         fun setImageContent(imageID : String) {
             val img = ImageView(context)
             Glide.with(context)
-                .load(StringBuilder(AppInfo.serverUrl).append("/post/content?id=").append(imageID).toString())
-                .into(img);
+                .load(StringBuilder(AppInfo.serverUrl).append("/post/content?id=").append(imageID).toString()).listener(object : RequestListener<Drawable> {
+                override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
+                    removeProgressBar()
+                    contentParent.addView(LayoutInflater.from(context).inflate(R.layout.layout_error_loading, contentParent, false))
+                    return false
+                }
+                override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
+                    removeProgressBar()
+                    return false
+                }
+            }).into(img)
             contentParent.addView(img)
+        }
+
+        fun removeProgressBar() {
+            val progressBar = parentLayout.findViewById<ProgressBar>(R.id.progressBar)
+            contentParent.removeView(progressBar)
         }
     }
 

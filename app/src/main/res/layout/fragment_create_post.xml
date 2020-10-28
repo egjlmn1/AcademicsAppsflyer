@@ -9,6 +9,7 @@
     android:layout_height="100dp"
     tools:context=".views.PostsFragment"
     android:layout_alignParentBottom="true"
+    android:background="#f00"
     >
 
     <TextView
