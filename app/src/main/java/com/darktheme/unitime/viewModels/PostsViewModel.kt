@@ -1,17 +1,34 @@
 package com.darktheme.unitime.viewModels
 
 import android.app.Activity
-import android.content.Context
-import android.service.voice.VoiceInteractionSession
+import android.view.Gravity
 import androidx.databinding.BaseObservable
-import androidx.recyclerview.widget.RecyclerView
-import com.darktheme.unitime.models.JsonObjects.*
-import com.darktheme.unitime.models.MyViewHolder
-import com.darktheme.unitime.models.RetrofitClient
+import androidx.drawerlayout.widget.DrawerLayout
+import com.darktheme.unitime.R
+import com.darktheme.unitime.models.Retrofit.JsonObjects.*
+import com.darktheme.unitime.models.Retrofit.PostLoader
+import com.darktheme.unitime.models.Room.AppDataBase
+import com.darktheme.unitime.models.Room.Suggestion
+import com.darktheme.unitime.views.Activities.MainPageActivity
+import com.mancj.materialsearchbar.MaterialSearchBar
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.launch
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Response
+import java.io.File
 
-class PostsViewModel(val activity: Activity, val recyclerView: RecyclerView, val posts : MutableList<MyViewHolder>, val viewTypes : ArrayList<Int>) : BaseObservable() {
+abstract class PostsViewModel(val activity: Activity, posts: MutableList<PostObj>, refreshRV: (Int) -> Unit, addFolder: (String) -> Unit, onError: (String) -> Unit) : BaseObservable(),  MaterialSearchBar.OnSearchActionListener {
+
+    private val postLoader: PostLoader =
+        PostLoader(
+            activity,
+            posts,
+            refreshRV,
+            addFolder,
+            onError
+        )
 
     companion object {
         val TextType = "text"
@@ -19,81 +36,55 @@ class PostsViewModel(val activity: Activity, val recyclerView: RecyclerView, val
         val FileType = "file"
     }
 
-    var pos : Int = 0
-    var searchResult : List<SearchResponse>? = null
+    var inHierarchy = true
 
-    fun loadIdList() {
-        IdListRequest(RetrofitClient.getInstance()!!).get("search", "flair", idResponse, idFailure)
+    fun onProfileClick() {
+        val drawer = activity.findViewById<DrawerLayout>(R.id.drawer_layout)
+        drawer!!.openDrawer(Gravity.LEFT)
+
     }
 
-    fun loadFirstTen() {
-        pos = posts.size
-        println("start pos = " + pos)
-        for (result in searchResult!!.subList(0, Math.min(10, searchResult!!.size))) {
-            if (result.view_type == PostsAdapter.postViewType) {
-                var id = result.content
-                println("ID = " + id)
-                PostRequest(RetrofitClient.getInstance()!!).get(id, getPostResponse(pos), postFailure)
-                pos += 1
+    fun loadSuggestions(searchBar: MaterialSearchBar) {
+        CoroutineScope(IO).launch {
+            val suggestions = AppDataBase.getInstance(activity).suggestionDao().getSuggestionList()
+            println("suggestions: ")
+            for (sug in suggestions) {
+                println(sug.suggestion)
             }
+            //searchBar.setLastSuggestions(suggestions)
         }
     }
 
-    private fun refreshRV(position : Int) {
-        recyclerView.adapter!!.notifyItemInserted(position)
-
-        recyclerView.adapter!!.notifyItemRangeChanged(position, (posts.size - 1) - position)
-
-        //recyclerView.smoothScrollToPosition(posts.size)
+    fun saveSuggestions(suggestions: List<String>) {
+        CoroutineScope(IO).launch {
+            val db = AppDataBase.getInstance(activity).suggestionDao()
+            for (sug in suggestions) {
+                db.insertSuggestions(Suggestion(sug))
+                println("suggestions saving: " + sug)
+            }
+            println("suggestions saved")
+        }
     }
 
-    fun startSearch() {
-        activity.onSearchRequested()
-
+    override fun onButtonClicked(buttonCode: Int) {
+        println("search button clicked")
     }
 
-    private fun insertView(view : MyViewHolder, position: Int) {
-        if (posts.size < position) {
-            println("inserting " + view.post!!.post_id + " at " + posts.size)
-            posts.add(view)
-            viewTypes.add(view.viewType)
-            refreshRV(posts.size-1)
+    override fun onSearchStateChanged(enabled: Boolean) {
+        println("search state changed")
+    }
+
+    override fun onSearchConfirmed(text: CharSequence?) {
+        println("search confirmed: " + text)
+    }
+
+    fun changeView() {
+        if (inHierarchy) {
+            (activity as MainPageActivity).navController!!.navigate(R.id.action_nav_hierarchy_to_nav_best_fit)
         } else {
-            println("inserting " + view.post!!.post_id + " at " + position)
-            posts.add(position, view)
-            viewTypes.add(position, view.viewType)
-            refreshRV(position)
+            (activity as MainPageActivity).navController!!.navigate(R.id.action_nav_best_fit_to_nav_hierarchy)
         }
     }
 
-    val idResponse : (call: Call<SearchResponseListObj>?, response: Response<SearchResponseListObj>?) -> Unit = { call: Call<SearchResponseListObj>?, response: Response<SearchResponseListObj>? ->
-        println("ON IDLIST RESPONSE!!!")
-        //println("Response: " + response!!.message())
-
-        if (response!!.body() != null) {
-            searchResult = response.body()!!.posts_ids.toList()
-            loadFirstTen()
-        }
-    }
-
-    val idFailure : (call: Call<SearchResponseListObj>?, t: Throwable?) -> Unit = { call: Call<SearchResponseListObj>?, t: Throwable? ->
-        println("ON IDLIST FAILURE!!!")
-        println("Response: " + t!!.message)
-    }
-
-    fun getPostResponse(postPosition : Int): (Call<PostObj>?, Response<PostObj>?) -> Unit {
-        return { call: Call<PostObj>?, response: Response<PostObj>? ->
-            println("ON POST RESPONSE!!!")
-            //println("Response: " + response!!.message())
-            val p : PostObj = response!!.body()!!
-
-            insertView(MyViewHolder(p), postPosition)
-        }
-    }
-
-    val postFailure : (call: Call<PostObj>?, t: Throwable?) -> Unit = { call: Call<PostObj>?, t: Throwable? ->
-        println("ON POST FAILURE!!!")
-        println("Response: " + t!!.message)
-    }
-
+    abstract fun loadPosts()
 }

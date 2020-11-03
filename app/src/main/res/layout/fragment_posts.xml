@@ -1,28 +1,121 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/post_container"
-
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    tools:context=".views.PostsFragment"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     >
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="posts fragment"/>
+    <data>
+        <variable
+            name="viewModel"
+            type="com.darktheme.unitime.viewModels.PostsViewModel" />
+    </data>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/posts_recycler_view"
-        tools:viewBindingIgnore="true"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        >
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPost"
+            >
+
+            <Button
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginHorizontal="10dp"
+                android:background="@drawable/ic_baseline_account_circle_24"
+                android:backgroundTint="@color/colorNormalText"
+                style="?android:attr/borderlessButtonStyle"
+
+                android:onClick="@{() -> viewModel.onProfileClick()}"
+                />
+
+            <com.mancj.materialsearchbar.MaterialSearchBar
+                android:id="@+id/searchBar"
+                style="@style/MaterialSearchBarLight"
+                app:mt_speechMode="false"
+                android:paddingRight="5dp"
+                android:paddingVertical="5dp"
+                app:mt_hint="search"
+                app:mt_maxSuggestionsCount="5"
+                app:mt_roundedSearchBarEnabled="true"
+                app:mt_searchBarColor="@color/colorSearchBar"
+                app:mt_hintColor="@color/colorHintText"
+                app:mt_textColor="@color/colorNormalText"
+                app:mt_navIconTint="@color/colorNormalText"
+                app:mt_backIconTint="@color/colorNormalText"
+                app:mt_searchIconTint="@color/colorNormalText"
+                app:mt_clearIconTint="@color/colorNormalText"
+                app:mt_placeholder="search for whatever you want"
+                app:mt_placeholderColor="@color/colorHintText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+        </androidx.appcompat.widget.Toolbar>
+
+        <androidx.core.widget.NestedScrollView
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".views.Fragments.HierarchyFragment"
+            android:background="@color/colorBackground">
+
+            <LinearLayout
+                android:id="@+id/posts_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorBackground">
+
+                    <Button
+                        android:id="@+id/bestfit_hierarchy_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:backgroundTint="@color/colorPost"
+                        style="?android:attr/borderlessButtonStyle"
+                        android:text=""
+                        android:paddingHorizontal="20dp"
+                        android:textColor="@color/colorNormalText"
+                        android:onClick="@{()->viewModel.changeView()}"
+                        />
+
+                    <TextView
+                        android:id="@+id/change_to"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/bestfit_hierarchy_btn"
+                        android:text=""
+                        android:textSize="10sp"
+                        android:paddingLeft="15dp"
+                        />
+
+                    <Spinner
+                        android:id="@+id/best_new_spinner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        />
+
+                </RelativeLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/posts_recycler_view"
+                    tools:viewBindingIgnore="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    />
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+    </LinearLayout>
 
 
-    </androidx.recyclerview.widget.RecyclerView>
-
-</RelativeLayout>
+</layout>

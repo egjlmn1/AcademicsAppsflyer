@@ -4,12 +4,12 @@
     <color name="colorPrimaryDark">#f7a918</color>
     <color name="colorAccent">#ff5a00</color>
 
-    <!--colors for modern ui-->
-    <color name="whiteTextColor">#000</color>
-    <color name="blackTextColor">#fff</color>
-    <color name="primaryTextColor">#ff5a00</color>
-    <color name="loginBkColor">#0f0f0f</color>
-
-    <!--colros for card-->
-    <color name="whiteCardColor">#000</color>
+    <color name="colorBackground">#000</color>
+    <color name="colorPost">#222</color>
+    <color name="colorNormalText">#fff</color>
+    <color name="colorHintText">#aaa</color>
+    <color name="colorLinkText">#2af</color>
+    <color name="colorSearchBar">#555</color>
+    <color name="colorSelectedNavbar">#eee</color>
+    <color name="colorUnselectedNavbar">#aaa</color>
 </resources>

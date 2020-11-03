@@ -1,80 +1,114 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.drawerlayout.widget.DrawerLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+<layout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/drawer_layout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:openDrawer="end"
-    >
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <RelativeLayout
-        android:id="@+id/main_page"
+    <data>
+        <variable
+            name="viewModel"
+            type="com.darktheme.unitime.viewModels.MainPageViewModel" />
+    </data>
+
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".views.MainPageActivity"
-        android:background="#eee">
+        android:fitsSystemWindows="true"
+        tools:openDrawer="end"
+        >
 
         <RelativeLayout
-            android:id="@+id/fragment_container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/bottom_navigation"
-            android:layout_below="@+id/app_layout"
-            >
-
-
-        </RelativeLayout>
-
-        <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/app_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:theme="@style/AppTheme.AppBarOverlay">
+            >
 
+            <!--
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="?attr/colorPrimary"
                 app:popupTheme="@style/AppTheme.PopupOverlay"
-                >
+                />
+            -->
 
-            </androidx.appcompat.widget.Toolbar>
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/fragment_container"
+                android:name="androidx.navigation.fragment.NavHostFragment"
+                app:navGraph="@navigation/main_navigation"
+                app:defaultNavHost="true"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/bottom_navigation"
+                />
 
-        </com.google.android.material.appbar.AppBarLayout>
+            <com.google.android.material.bottomnavigation.BottomNavigationView
+                android:id="@+id/bottom_navigation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:menu="@menu/bottom_navigation_menu"
+                android:layout_alignParentBottom="true"
+                android:background="@color/colorPost"
+                app:itemTextColor="@color/bottom_nav_color"
+                app:itemIconTint="@color/bottom_nav_color"
+                />
 
-        <include layout="@layout/content_main"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:layout_below="@id/app_layout"
-            android:layout_above="@id/bottom_navigation"
-            />
+        </RelativeLayout>
 
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/bottom_navigation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:menu="@menu/bottom_navigation_menu"
-            android:layout_alignParentBottom="true"
-            android:background="#FFFFFF"
-            />
+        <com.google.android.material.navigation.NavigationView
+            android:id="@+id/nav_view"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:fitsSystemWindows="true"
+            app:headerLayout="@layout/nav_header_main"
+            android:background="@color/colorPost"
+            app:menu="@menu/activity_main_drawer" >
 
-    </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:orientation="horizontal"
+                android:layout_marginBottom="20dp"
+                android:padding="16dp">
+
+                <Button
+                    android:id="@+id/bestfit_hierarchy_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:backgroundTint="@color/colorPost"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:padding="10dp"
+                    android:text="Settings"
+                    android:drawableLeft="@drawable/ic_baseline_settings_24"
+                    android:drawableTint="@color/colorNormalText"
+                    android:paddingHorizontal="20dp"
+                    android:textColor="@color/colorNormalText"
+                    />
+
+                <Button
+                    android:id="@+id/nav_darkmode"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginStart="20dp"
+                    android:gravity="center"
+                    android:background="@drawable/ic_baseline_brightness_3_24"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:backgroundTint="@color/colorNormalText"
+                    android:onClick="@{()->viewModel.onDarkModeClick()}"
+                    />
+            </RelativeLayout>
+
+        </com.google.android.material.navigation.NavigationView>
 
 
-    <com.google.android.material.navigation.NavigationView
-        android:id="@+id/nav_view"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:fitsSystemWindows="true"
-        app:headerLayout="@layout/nav_header_main"
-        app:menu="@menu/activity_main_drawer" >
+    </androidx.drawerlayout.widget.DrawerLayout>
 
-    </com.google.android.material.navigation.NavigationView>
+</layout>
 
-
-</androidx.drawerlayout.widget.DrawerLayout>

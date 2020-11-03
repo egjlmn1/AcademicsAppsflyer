@@ -3,10 +3,10 @@ package com.darktheme.unitime.viewModels
 import android.content.Context
 import android.content.Intent
 import androidx.databinding.BaseObservable
-import com.darktheme.unitime.models.JsonObjects.RegisterObj
-import com.darktheme.unitime.models.JsonObjects.RegisterRequest
-import com.darktheme.unitime.models.RetrofitClient
-import com.darktheme.unitime.views.MainPageActivity
+import com.darktheme.unitime.models.Retrofit.JsonObjects.RegisterObj
+import com.darktheme.unitime.models.Retrofit.JsonObjects.RegisterRequest
+import com.darktheme.unitime.models.Retrofit.RetrofitClient
+import com.darktheme.unitime.views.Activities.MainPageActivity
 import retrofit2.Call
 import retrofit2.Response
 

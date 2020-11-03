@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/post_parent_layout"
-    android:background="#fff"
+    android:background="@color/colorPost"
     android:layout_marginTop="5dp"
     android:layout_marginBottom="5dp"
     >
@@ -28,7 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Publisher"
-            android:textColor="#000"
+            android:textColor="@color/colorNormalText"
             android:textSize="15sp"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@id/post_profile_pic"
@@ -52,6 +52,8 @@
         android:layout_below="@id/post_info"
         android:orientation="vertical"
         >
+
+
 
         <ProgressBar
             android:id="@+id/progressBar"
@@ -86,7 +88,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Some text bla bla bla"
-            android:textColor="#000"
+            android:textColor="@color/colorNormalText"
             android:textSize="15sp"
             android:layout_marginLeft="20dp"
 

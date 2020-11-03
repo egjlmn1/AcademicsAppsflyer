@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_navigation"
+    app:startDestination="@+id/nav_hierarchy">
+
+    <fragment
+        android:id="@+id/nav_hierarchy"
+        android:name="com.darktheme.unitime.views.Fragments.HierarchyFragment"
+        android:label="Hierarchy"
+        tools:layout="@layout/fragment_posts" >
+        <action
+            android:id="@+id/action_nav_posts_to_nav_my_profile"
+            app:destination="@id/nav_my_profile"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out" />
+        <action
+            android:id="@+id/action_nav_posts_to_nav_full_post"
+            app:destination="@id/nav_comments"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"/>
+        <action
+            android:id="@+id/action_to_nav_create_post"
+            app:destination="@id/nav_create_post"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"/>
+        <action
+            android:id="@+id/action_nav_hierarchy_to_nav_search_result"
+            app:destination="@id/nav_search_result"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"/>
+        <action
+            android:id="@+id/action_nav_hierarchy_to_nav_best_fit"
+            app:destination="@id/nav_best_fit" />
+        <action
+            android:id="@+id/action_to_home"
+            app:destination="@id/nav_best_fit" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_search_result"
+        android:name="com.darktheme.unitime.views.Fragments.SearchResultFragment"
+        android:label="SearchResult"
+        tools:layout="@layout/fragment_posts">
+        <action
+            android:id="@+id/action_to_home"
+            app:destination="@id/nav_best_fit" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_best_fit"
+        android:name="com.darktheme.unitime.views.Fragments.BestFitFragment"
+        android:label="BestFit"
+        tools:layout="@layout/fragment_posts">
+        <action
+            android:id="@+id/action_nav_posts_to_nav_my_profile"
+            app:destination="@id/nav_my_profile"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"/>
+        <action
+            android:id="@+id/action_nav_posts_to_nav_full_post"
+            app:destination="@id/nav_comments"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"/>
+        <action
+            android:id="@+id/action_to_nav_create_post"
+            app:destination="@id/nav_create_post"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"/>
+        <action
+            android:id="@+id/action_nav_hierarchy_to_nav_search_result"
+            app:destination="@id/nav_search_result"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"/>
+        <action
+            android:id="@+id/action_nav_best_fit_to_nav_hierarchy"
+            app:destination="@id/nav_hierarchy"
+            />
+        <action
+            android:id="@+id/action_to_home"
+            app:destination="@id/nav_best_fit" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_my_profile"
+        android:name="com.darktheme.unitime.views.Fragments.ProfileFragment"
+        android:label="My Profile"
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_to_nav_create_post"
+            app:destination="@id/nav_create_post" />
+        <action
+            android:id="@+id/action_to_home"
+            app:destination="@id/nav_best_fit" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_comments"
+        android:name="com.darktheme.unitime.views.Fragments.CommentsFragment"
+        android:label="My Profile"
+        tools:layout="@layout/fragment_comments">
+
+        <argument
+            android:name="id"
+            app:argType="string"
+            android:defaultValue="" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_create_post"
+        android:name="com.darktheme.unitime.views.Fragments.CreatePostFragment"
+        android:label="My Profile"
+        tools:layout="@layout/fragment_create_post" />
+
+    <activity
+        android:id="@+id/main_page"
+        android:name="com.darktheme.unitime.views.Activities.MainPageActivity"
+        android:label="My Profile"
+        tools:layout="@layout/fragment_create_post" />
+
+</navigation>

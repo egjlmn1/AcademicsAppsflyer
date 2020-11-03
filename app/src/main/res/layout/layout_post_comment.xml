@@ -7,7 +7,8 @@
     android:layout_height="wrap_content"
     android:layout_marginTop="5dp"
     android:layout_marginBottom="5dp"
-    android:paddingVertical="10dp">
+    android:paddingVertical="10dp"
+    android:background="@color/colorPost">
 
     <ImageView
         android:id="@+id/comment_profile_pic"
@@ -25,6 +26,7 @@
         android:textSize="15sp"
         android:layout_toRightOf="@+id/comment_profile_pic"
         android:layout_marginLeft="10dp"
+        android:textColor="@color/colorNormalText"
         />
     <TextView
         android:id="@+id/comment_date"
@@ -34,6 +36,7 @@
         android:textSize="10sp"
         android:layout_below="@+id/comment_publisher"
         android:layout_marginLeft="55dp"
+        android:textColor="@color/colorHintText"
         />
     <TextView
         android:id="@+id/comment_content"
@@ -43,6 +46,7 @@
         android:textSize="20sp"
         android:layout_below="@+id/comment_profile_pic"
         android:layout_marginLeft="20dp"
+        android:textColor="@color/colorNormalText"
         />
 
 
