@@ -4,10 +4,12 @@ import android.content.Context
 import androidx.room.*
 
 
-@Database(exportSchema = false, version = 7, entities = [Suggestion::class])
+@Database(exportSchema = false, version = 9, entities = [Suggestion::class, FavoriteList::class, Profile::class])
 abstract class AppDataBase : RoomDatabase() {
 
     abstract fun suggestionDao() : SuggestionDao
+    abstract fun profileDao() : ProfileDao
+    abstract fun favoritesDao() : FavoritesDao
 
     companion object {
         private val DB_NAME = "db_name"

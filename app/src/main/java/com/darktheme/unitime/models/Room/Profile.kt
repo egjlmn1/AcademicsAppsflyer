@@ -5,18 +5,22 @@ import androidx.room.*
 @Dao
 abstract class ProfileDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract fun insertSuggestions(vararg profile : Profile)
+    abstract fun insertProfile(vararg profile : Profile)
 
-    @Delete
-    abstract fun deleteSuggestions(vararg profile: Profile)
+    @Query("DELETE FROM ProfileTable WHERE email = :email")
+    abstract fun deleteProfile(email: String)
 
-    @Query("SELECT * FROM SuggestionTable LIMIT 1")
-    abstract fun getSuggestionList() : Profile
+    @Query("SELECT * FROM ProfileTable")
+    abstract fun getProfilesList() : List<Profile>
+
+    @Query("SELECT * FROM ProfileTable WHERE email = :email")
+    abstract fun getProfile(email: String) : Profile?
 }
 
 @Entity(tableName = "ProfileTable")
-class Profile {
+class Profile{
     @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "user_id")
     var id : Int = 0
     @ColumnInfo(name = "email")
     var email : String = ""
@@ -24,7 +28,6 @@ class Profile {
     var password : String = ""
     @ColumnInfo(name = "name")
     var name : String = ""
-
     constructor(id : Int, email : String, password : String, name : String) {
         this.id = id
         this.email = email
@@ -36,7 +39,8 @@ class Profile {
     constructor(email : String, password : String, name : String) {
         this.email = email
         this.password = password
-        this.name = name    }
+        this.name = name
+    }
 
     @Ignore
     override fun toString() : String {

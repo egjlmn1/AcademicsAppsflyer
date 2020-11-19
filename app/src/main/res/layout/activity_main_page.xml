@@ -17,6 +17,7 @@
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
         tools:openDrawer="end"
+        android:background="@color/colorBackground"
         >
 
         <RelativeLayout
@@ -24,16 +25,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             >
-
-            <!--
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary"
-                app:popupTheme="@style/AppTheme.PopupOverlay"
-                />
-            -->
 
             <androidx.fragment.app.FragmentContainerView
                 android:id="@+id/fragment_container"
@@ -66,6 +57,8 @@
             android:fitsSystemWindows="true"
             app:headerLayout="@layout/nav_header_main"
             android:background="@color/colorPost"
+            app:itemTextColor="@color/colorNormalText"
+            app:itemIconTint="@color/colorNormalText"
             app:menu="@menu/activity_main_drawer" >
 
             <RelativeLayout
@@ -73,23 +66,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:orientation="horizontal"
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="30dp"
                 android:padding="16dp">
 
-                <Button
-                    android:id="@+id/bestfit_hierarchy_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:backgroundTint="@color/colorPost"
-                    style="?android:attr/borderlessButtonStyle"
-                    android:padding="10dp"
-                    android:text="Settings"
-                    android:drawableLeft="@drawable/ic_baseline_settings_24"
-                    android:drawableTint="@color/colorNormalText"
-                    android:paddingHorizontal="20dp"
-                    android:textColor="@color/colorNormalText"
-                    />
 
                 <Button
                     android:id="@+id/nav_darkmode"

@@ -54,7 +54,7 @@
             android:layout_centerHorizontal="true"
             android:textColor="#aaa"
             android:background="@android:color/transparent"
-            android:layout_marginBottom="40dp"
+            android:layout_marginBottom="60dp"
             android:fontFamily="@font/tommy_bold"
             />
 

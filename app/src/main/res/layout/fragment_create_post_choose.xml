@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+
+    <data>
+        <import type="android.view.View"/>
+        <variable
+            name="viewModel"
+            type="com.darktheme.unitime.viewModels.CreatePostFragmentViewModel" />
+    </data>
+
+    <RelativeLayout
+
+
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".views.Fragments.CreatePostFragment"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorBackground"
+        >
+
+
+        <RelativeLayout
+            android:id="@+id/spinner_layout"
+            android:layout_width="400dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="30dp"
+            android:layout_above="@+id/flair_layout"
+            >
+
+            <LinearLayout
+                android:id="@+id/faculty_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="20dp"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Faculty"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/tommy_regular"
+                    android:textColor="@color/colorNormalText"
+                    />
+                <Spinner
+                    android:id="@+id/faculty_spinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/department_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Department"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/tommy_regular"
+                    android:textColor="@color/colorNormalText"
+                    />
+                <Spinner
+                    android:id="@+id/department_spinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/course_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="20dp"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Course"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/tommy_regular"
+                    android:textColor="@color/colorNormalText"
+                    />
+                <Spinner
+                    android:id="@+id/course_spinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    />
+            </LinearLayout>
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/flair_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="30dp"
+            android:layout_centerHorizontal="true">
+
+            <TextView
+                android:id="@+id/flair_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorNormalText"
+                android:layout_centerHorizontal="true"
+                android:fontFamily="@font/tommy_bold"
+                android:text="Choose Flair"/>
+
+            <LinearLayout
+                android:id="@+id/question_post"
+                android:layout_below="@+id/flair_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="5dp"
+                android:orientation="vertical">
+                <CheckBox
+                    android:id="@+id/question_checkbox"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center"
+                    android:enabled="@{viewModel.isQuestionEnabled()}"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Question"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/tommy_regular"
+                    android:textColor="@color/colorNormalText"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/suggestion_post"
+                android:layout_below="@+id/flair_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/question_post"
+                android:layout_marginHorizontal="5dp"
+                android:orientation="vertical">
+                <CheckBox
+                    android:id="@+id/suggestion_checkbox"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:enabled="@{viewModel.isSuggestionEnabled}"
+                    android:layout_gravity="center"
+                    android:layout_marginHorizontal="5dp"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Suggestion"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/tommy_regular"
+                    android:textColor="@color/colorNormalText"/>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/test_post"
+                android:layout_below="@+id/flair_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/suggestion_post"
+                android:layout_marginHorizontal="5dp"
+                android:orientation="vertical">
+                <CheckBox
+                    android:id="@+id/test_checkbox"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:enabled="@{viewModel.isTestEnabled}"
+                    android:layout_gravity="center"
+                    android:layout_marginHorizontal="5dp"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Test"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/tommy_regular"
+                    android:textColor="@color/colorNormalText"/>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/summary_post"
+                android:layout_below="@+id/flair_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/test_post"
+                android:layout_marginHorizontal="5dp"
+                android:orientation="vertical">
+                <CheckBox
+                    android:id="@+id/summary_checkbox"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:enabled="@{viewModel.isSummaryEnabled}"
+                    android:layout_gravity="center"
+                    android:layout_marginHorizontal="5dp"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Summary"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/tommy_regular"
+                    android:textColor="@color/colorNormalText"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/meme_post"
+                android:layout_below="@+id/flair_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/summary_post"
+                android:layout_marginHorizontal="5dp"
+                android:orientation="vertical">
+                <CheckBox
+                    android:id="@+id/meme_checkbox"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:enabled="@{viewModel.isMemeEnabled}"
+                    android:layout_gravity="center"
+                    android:layout_marginHorizontal="5dp"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Meme"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/tommy_regular"
+                    android:textColor="@color/colorNormalText"/>
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/create"
+            android:text="Create Post"
+            android:visibility="@{viewModel.isCreatePostEnabled ? View.VISIBLE : View.GONE}"
+            android:textColor="@color/colorNormalText"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/flair_layout"
+            android:background="@android:color/transparent"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_marginTop="30dp"
+            android:fontFamily="@font/tommy_bold"
+            android:textSize="20sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </RelativeLayout>
+
+</layout>

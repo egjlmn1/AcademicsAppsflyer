@@ -16,13 +16,14 @@ import com.darktheme.unitime.models.Retrofit.JsonObjects.PostObj
 import com.darktheme.unitime.viewModels.PostsViewModel
 import com.darktheme.unitime.views.Activities.MainPageActivity
 import com.darktheme.unitime.views.CustomViews.PostsLayout
+import com.darktheme.unitime.views.CustomViews.ProfileLayout
 import com.mancj.materialsearchbar.MaterialSearchBar
 
 
-class SearchResultFragment : Fragment() {
-    var posts : PostsLayout? = null
-    var containerView: ViewGroup? = null
-    var viewModel : PostsViewModel? = null
+class SearchResultFragment : MainPostsFragment() {
+
+    var myActivity: MainPageActivity? = null
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         containerView = container
@@ -30,23 +31,30 @@ class SearchResultFragment : Fragment() {
             inflater, R.layout.fragment_posts, container, false
         )
         val view: View = binding.getRoot()
-        val activity = requireActivity() as MainPageActivity
-        activity.showNavBar()
-        //posts = PostsLayout(view)
-        viewModel = posts!!.createViewModel(requireActivity())
+        myActivity = requireActivity() as MainPageActivity
+        myActivity!!.showNavBar()
+
+        posts = PostsLayout(view, myActivity!!)
+        viewModel = posts!!.createViewModel(requireActivity() as MainPageActivity) as PostsViewModel
         binding.viewModel = viewModel
         return view
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        posts!!.initRecyclerView(requireActivity())
-        posts!!.initSearchBar()
-        posts!!.initPosts()
+    override fun loadPosts() {
+        if ((myActivity!!.searchText == null) || (myActivity!!.searchFlair == null)) {
+            //TODO show error message
+            return
+        }
+        viewModel!!.searchPosts(myActivity!!.searchText!!, myActivity!!.searchFlair!!)
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        posts!!.onDestroy()
+    override fun initLayout() {
+        // do something
+        //called once
+    }
+
+    override fun setLayout() {
+        // do something
+        //called every time
     }
 }

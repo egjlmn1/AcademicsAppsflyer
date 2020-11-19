@@ -26,8 +26,7 @@
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:layout_marginHorizontal="10dp"
-                android:background="@drawable/ic_baseline_account_circle_24"
-                android:backgroundTint="@color/colorNormalText"
+                android:background="@drawable/academics_grayscale"
                 style="?android:attr/borderlessButtonStyle"
 
                 android:onClick="@{() -> viewModel.onProfileClick()}"
@@ -40,7 +39,7 @@
                 android:paddingRight="5dp"
                 android:paddingVertical="5dp"
                 app:mt_hint="search"
-                app:mt_maxSuggestionsCount="5"
+                app:mt_maxSuggestionsCount="0"
                 app:mt_roundedSearchBarEnabled="true"
                 app:mt_searchBarColor="@color/colorSearchBar"
                 app:mt_hintColor="@color/colorHintText"
@@ -60,60 +59,54 @@
 
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context=".views.Fragments.HierarchyFragment"
+
             android:background="@color/colorBackground">
 
-            <LinearLayout
-                android:id="@+id/posts_container"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/colorBackground">
-
-                    <Button
-                        android:id="@+id/bestfit_hierarchy_btn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:backgroundTint="@color/colorPost"
-                        style="?android:attr/borderlessButtonStyle"
-                        android:text=""
-                        android:paddingHorizontal="20dp"
-                        android:textColor="@color/colorNormalText"
-                        android:onClick="@{()->viewModel.changeView()}"
-                        />
-
-                    <TextView
-                        android:id="@+id/change_to"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/bestfit_hierarchy_btn"
-                        android:text=""
-                        android:textSize="10sp"
-                        android:paddingLeft="15dp"
-                        />
-
-                    <Spinner
-                        android:id="@+id/best_new_spinner"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        />
-
-                </RelativeLayout>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/posts_recycler_view"
-                    tools:viewBindingIgnore="true"
+                <LinearLayout
+                    android:id="@+id/posts_container"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    />
-            </LinearLayout>
+                    android:orientation="vertical">
 
+                    <RelativeLayout
+                        android:id="@+id/extra_bar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorBackground">
+
+
+
+                        <Spinner
+                            android:id="@+id/flair_spinner"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginEnd="20dp"
+                            android:dropDownWidth="150dp"
+                            android:spinnerMode="dropdown"
+                            android:dropDownVerticalOffset="40dp"
+                            android:dropDownHorizontalOffset="30dp"
+                            android:popupBackground="@color/colorPost"
+                            />
+
+                    </RelativeLayout>
+
+
+                    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+
+                        android:id="@+id/swipe_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/posts_recycler_view"
+                        tools:viewBindingIgnore="true"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        />
+                    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+                </LinearLayout>
         </androidx.core.widget.NestedScrollView>
     </LinearLayout>
 

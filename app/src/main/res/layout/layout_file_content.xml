@@ -4,23 +4,37 @@
     android:layout_height="match_parent"
     android:padding="20dp">
 
+    <TextView
+        android:id="@+id/course_name"
+        android:text="Course: Machine Learning"
+        android:textColor="@color/colorNormalText"
+        android:textSize="20sp"
+        android:fontFamily="@font/tommy_regular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/data"
+        android:layout_below="@id/course_name"
+        android:text="Bar Ilan, Gal Chechik, 2014"
+        android:textColor="@color/colorNormalText"
+        android:textSize="20sp"
+        android:fontFamily="@font/tommy_regular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
     <TextView
         android:id="@+id/file_name"
+        android:layout_below="@id/data"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="file name.pdf"
+        android:fontFamily="@font/tommy_regular"
         android:textColor="@color/colorLinkText"
+        android:drawableRight="@drawable/ic_baseline_picture_as_pdf_24"
+        android:drawableTint="#f00"
+        android:drawablePadding="10dp"
         android:textSize="20sp"
         />
 
-    <ImageView
-        android:id="@+id/pdf_icon"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:background="@drawable/ic_baseline_picture_as_pdf_24"
-        android:layout_toRightOf="@id/file_name"
-        android:layout_marginLeft="10dp"
-        android:backgroundTint="#f00"
-        />
 </RelativeLayout>

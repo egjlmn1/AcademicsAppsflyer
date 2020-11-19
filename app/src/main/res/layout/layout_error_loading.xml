@@ -8,11 +8,11 @@
 
     <ImageView
         android:id="@+id/error_image"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:layout_marginTop="50dp"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/ic_baseline_error_24"
+        android:background="@drawable/academics_error_dark"
         />
     <TextView
         android:id="@+id/error_text"
@@ -21,6 +21,7 @@
         android:text="error loading file"
         android:textColor="@color/colorHintText"
         android:layout_below="@+id/error_image"
+        android:fontFamily="@font/tommy_regular"
         android:layout_centerHorizontal="true"
         />
 

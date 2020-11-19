@@ -14,7 +14,7 @@
         android:id="@+id/comment_profile_pic"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:background="@drawable/ic_baseline_account_circle_24"
+        android:background="@drawable/academics_grayscale"
         android:layout_marginLeft="10dp"
         />
 

@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.databinding.BaseObservable
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.darktheme.unitime.OnFileClickListener
@@ -15,36 +16,23 @@ import com.darktheme.unitime.R
 import com.darktheme.unitime.models.Retrofit.JsonObjects.PostObj
 import com.darktheme.unitime.viewModels.PostsViewModel
 import com.darktheme.unitime.views.Activities.MainPageActivity
-import com.mancj.materialsearchbar.MaterialSearchBar
-import java.security.AccessController.getContext
 
-abstract class PostsLayout(val view: View) {
+open class PostsLayout(val view: View, val activity: MainPageActivity) {
     var recyclerView: RecyclerView? = null
-    var searchBar: MaterialSearchBar? = null
     var posts : ArrayList<PostObj> = ArrayList()
 
-    var viewModel : PostsViewModel? = null
 
-
-    fun initSearchBar() {
-        searchBar = view.findViewById<MaterialSearchBar>(R.id.searchBar)
-        searchBar!!.setOnSearchActionListener(viewModel)
-
-        viewModel!!.loadSuggestions(searchBar!!)
+    open fun createViewModel(activity : MainPageActivity): BaseObservable {
+        return PostsViewModel(activity, posts, refreshRV, addFolder, onError)
     }
 
-    fun initPosts() {
-        viewModel!!.loadPosts()
-    }
-
-    abstract fun createViewModel(activity : Activity): PostsViewModel?
-
-    val addFolder = {folderName: String ->
+    val addFolder = {folderPath: String ->
         val container = view.findViewById<LinearLayout>(R.id.posts_container)
         val inflater = view.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
-        val addedFolder = inflater.inflate(R.layout.layout_posts_hierarchy, null, false);
-        container.addView(addedFolder, container.childCount - 2)
+        val addedFolder = inflater.inflate(R.layout.layout_single_folder, null, false);
+        FolderView(addedFolder, folderPath, activity)
+        container.addView(addedFolder, container.childCount - 1) // -1 cuz before the recycler view
     }
 
     val onError = {errorMsg: String ->
@@ -53,34 +41,26 @@ abstract class PostsLayout(val view: View) {
 
         val errorLayout = inflater.inflate(R.layout.layout_error_loading, null, false);
         errorLayout.findViewById<TextView>(R.id.error_text).text = errorMsg
-        container.addView(errorLayout, container.childCount - 2)
-    }
-
-    fun initRecyclerView(activity: Activity) {
-        recyclerView = view.findViewById(R.id.posts_recycler_view)
-        //recyclerView!!.addOnScrollListener(ScrollListener())
-        recyclerView!!.adapter = PostsAdapter(activity, posts, OnPostClickListener((activity as MainPageActivity).navController!!), OnFileClickListener(view.context))
-        recyclerView!!.layoutManager = LinearLayoutManager(activity)
-
-    }
-
-    fun onDestroy() {
-        viewModel!!.saveSuggestions(searchBar!!.getLastSuggestions() as List<String>);
+        container.addView(errorLayout, container.childCount - 1) // -1 cuz before the recycler view
     }
 
     val refreshRV = {position : Int ->
         recyclerView!!.adapter!!.notifyItemInserted(position)
 
         recyclerView!!.adapter!!.notifyItemRangeChanged(position, (posts.size - 1) - position)
-
-        //recyclerView.smoothScrollToPosition(posts.size)
     }
 
-    abstract fun initLayout()
-    fun initAll(activity: Activity) {
-        initLayout()
-        initRecyclerView(activity)
-        initSearchBar()
-        initPosts()
+
+    fun initRecyclerView(activity: Activity) {
+        recyclerView = view.findViewById(R.id.posts_recycler_view)
+        //recyclerView!!.addOnScrollListener(ScrollListener())
+        recyclerView!!.adapter = PostsAdapter(activity, posts, OnPostClickListener((activity as MainPageActivity).navController!!), OnFileClickListener(view.context))
+        recyclerView!!.layoutManager = LinearLayoutManager(activity)
+    }
+
+    fun refreshRecyclerView() {
+        val size = posts.size
+        posts.clear()
+        recyclerView!!.adapter!!.notifyItemRangeRemoved(0, (size - 1))
     }
 }

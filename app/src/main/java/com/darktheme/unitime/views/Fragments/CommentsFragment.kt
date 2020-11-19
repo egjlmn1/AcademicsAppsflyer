@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,6 +19,7 @@ import com.darktheme.unitime.models.Retrofit.JsonObjects.CommentObj
 import com.darktheme.unitime.models.Retrofit.JsonObjects.PostObj
 import com.darktheme.unitime.models.Retrofit.JsonObjects.PostRequest
 import com.darktheme.unitime.models.Retrofit.RetrofitClient
+import com.darktheme.unitime.viewModels.PostsViewModel
 import com.darktheme.unitime.views.Activities.MainPageActivity
 import retrofit2.Call
 import retrofit2.Response
@@ -49,7 +51,19 @@ class CommentsFragment : Fragment() {
             println("ON POST RESPONSE!!!")
             //println("Response: " + response!!.message())
             val p : PostObj = response!!.body()!!
-            PostView(requireContext(), requireView()).setUp(p, OnFileClickListener(requireContext()))
+            val postView = PostView(requireContext(), requireView())
+            postView.postInfo.setOnClickListener{
+                val bundle = bundleOf("userid" to p.user_email)
+                (requireActivity() as MainPageActivity).navController!!.navigate(R.id.action_nav_comments_to_nav_image, bundle)
+            }
+            postView.setUp(p, OnFileClickListener(requireContext()))
+            if (p.type == PostsViewModel.ImageType) {
+                postView.postImage!!.setOnClickListener{
+                    val bundle = bundleOf("id" to p.post_id )
+                    (requireActivity() as MainPageActivity).navController!!.navigate(R.id.action_nav_comments_to_nav_image, bundle)
+                }
+            }
+
         }
     }
 

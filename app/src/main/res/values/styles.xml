@@ -1,14 +1,20 @@
 <resources>
-    <!-- Base application theme. -->
+
+    <style name="StartUpTheme" parent="Theme.AppCompat">
+        <item name="android:windowBackground">#111</item>
+    </style>
+
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowTranslucentNavigation">true</item>
-        <item name="colorPrimary">@color/white</item>
-        <item name="colorPrimaryDark">@color/white</item>
+        <item name="colorPrimary">@android:color/transparent</item>
+        <item name="colorPrimaryDark">@android:color/transparent</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColorHint">#222</item>
-        <item name="android:navigationBarColor">@color/white</item>
-        <item name="android:statusBarColor">@color/white</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowBackground">#111</item>
+        <item name="android:dropDownSelector">@color/colorNormalText</item>
     </style>
 
     <style name="StartTheme" parent="Theme.AppCompat.Light.NoActionBar">
@@ -18,11 +24,18 @@
         <item name="colorPrimaryDark">@android:color/transparent</item>
         <item name="colorAccent">#09f</item>
         <item name="android:textColorHint">#222</item>
+        <item name="android:windowBackground">#111</item>
     </style>
 
     <style name="error_appearance" parent="@android:style/TextAppearance">
         <item name="android:textColor">#c00</item>
         <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="ThemeAlertDialog" parent="@android:style/Theme.Dialog">
+        <item name="android:textColor">#00FF00</item>
+        <item name="android:typeface">monospace</item>
+        <item name="android:textSize">10sp</item>
     </style>
 
 </resources>

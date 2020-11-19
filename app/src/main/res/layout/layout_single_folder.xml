@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    android:id="@+id/directory_parent_layout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:layout_marginVertical="3dp"
+    android:background="@color/colorPost">
+
+    <TextView
+        android:id="@+id/directory_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="name of something"
+        android:drawableLeft="@drawable/ic_baseline_folder_24"
+        android:drawableTint="@color/colorNormalText"
+        android:drawablePadding="10dp"
+        android:layout_centerVertical="true"
+        android:paddingLeft="40dp"
+        android:textSize="20sp"
+        android:textColor="@color/colorNormalText"
+        />
+
+    <ImageView
+        android:id="@+id/colored_star"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginVertical="5dp"
+        android:background="@drawable/ic_baseline_star_24"
+        android:layout_alignParentEnd="true"
+        android:backgroundTint="@color/colorBackground"/>
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginVertical="5dp"
+        android:background="@drawable/ic_baseline_star_border_24"
+        android:layout_alignParentEnd="true"
+        android:backgroundTint="@color/colorNormalText"/>
+
+
+</RelativeLayout>
+

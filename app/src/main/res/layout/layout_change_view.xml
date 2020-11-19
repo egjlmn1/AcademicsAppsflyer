@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    >
+    <Button
+        android:id="@+id/bestfit_hierarchy_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/colorPost"
+        style="?android:attr/borderlessButtonStyle"
+        android:text=""
+        android:paddingHorizontal="20dp"
+        android:textColor="@color/colorNormalText"
+        />
+
+    <TextView
+        android:id="@+id/change_to"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="10sp"
+        android:paddingLeft="15dp"
+        android:textColor="@color/colorNormalText"
+        />
+</LinearLayout>
+

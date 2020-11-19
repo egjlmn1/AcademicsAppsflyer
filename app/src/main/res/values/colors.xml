@@ -14,4 +14,11 @@
     <color name="colorSelectedNavbar">#333</color>
     <color name="colorUnselectedNavbar">#aaa</color>
 
+    <color name="colorProfileStart">#e44</color>
+    <color name="colorProfileEnd">#f77</color>
+
+    <color name="colorButtonEnabled">#fff</color>
+    <color name="colorButtonDisabled">@android:color/transparent</color>
+
+
 </resources>

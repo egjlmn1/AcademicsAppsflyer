@@ -4,7 +4,7 @@
     <color name="colorPrimaryDark">#f7a918</color>
     <color name="colorAccent">#ff5a00</color>
 
-    <color name="colorBackground">#000</color>
+    <color name="colorBackground">#050505</color>
     <color name="colorPost">#222</color>
     <color name="colorNormalText">#fff</color>
     <color name="colorHintText">#aaa</color>
@@ -12,4 +12,7 @@
     <color name="colorSearchBar">#555</color>
     <color name="colorSelectedNavbar">#eee</color>
     <color name="colorUnselectedNavbar">#aaa</color>
+
+    <color name="colorButtonEnabled">#333</color>
+    <color name="colorButtonDisabled">@android:color/transparent</color>
 </resources>

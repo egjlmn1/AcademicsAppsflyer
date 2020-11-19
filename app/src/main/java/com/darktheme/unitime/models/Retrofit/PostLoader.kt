@@ -2,6 +2,7 @@ package com.darktheme.unitime.models.Retrofit
 
 import android.app.Activity
 import com.darktheme.unitime.models.Retrofit.JsonObjects.*
+import com.darktheme.unitime.models.Room.Profile
 import retrofit2.Call
 import retrofit2.Response
 
@@ -15,10 +16,28 @@ class PostLoader(val activity: Activity, val posts: MutableList<PostObj>, val re
     var pos : Int = 0
     var searchResult : List<SearchResponse>? = null
 
-    fun loadIdList(value: String) {
+    fun searchIdList(searchText: String, flair: FlairObj) {
         IdListRequest(
             RetrofitClient.getInstance()!!
-        ).get("search", "new_posts", idResponse, idFailure)
+        ).search(searchText, flair, idResponse, idFailure)
+    }
+
+    fun foldersIdList(folder: String?) {
+        IdListRequest(
+            RetrofitClient.getInstance()!!
+        ).folders(folder, idResponse, idFailure)
+    }
+
+    fun bestfitIdList(email: String, flair: FlairObj) {
+        IdListRequest(
+            RetrofitClient.getInstance()!!
+        ).bestfit(email, flair, idResponse, idFailure)
+    }
+
+    fun myIdList(email: String) {
+        IdListRequest(
+            RetrofitClient.getInstance()!!
+        ).myPosts(email, idResponse, idFailure)
     }
 
     fun loadPosts() {
@@ -26,8 +45,7 @@ class PostLoader(val activity: Activity, val posts: MutableList<PostObj>, val re
         //println("start pos = " + pos)
         for (result in searchResult!!) {//.subList(0, Math.min(10, searchResult!!.size))) {
             if (result.view_type == postViewType) {
-                var id = result.content
-                println("ID = " + id)
+                val id = result.content
                 PostRequest(
                     RetrofitClient.getInstance()!!
                 ).get(id, getPostResponse(pos), postFailure)
@@ -38,45 +56,39 @@ class PostLoader(val activity: Activity, val posts: MutableList<PostObj>, val re
         }
     }
 
-    fun startSearch() {
-        activity.onSearchRequested()
-
-    }
-
     private fun insertPost(post : PostObj, position: Int) {
         if (posts.size < position) {
-            //println("inserting " + view.post!!.post_id + " at " + posts.size)
             posts.add(post)
             refreshRV(posts.size-1)
         } else {
-            //println("inserting " + view.post!!.post_id + " at " + position)
             posts.add(position, post)
             refreshRV(position)
         }
     }
 
     val idResponse : (call: Call<SearchResponseListObj>?, response: Response<SearchResponseListObj>?) -> Unit = { call: Call<SearchResponseListObj>?, response: Response<SearchResponseListObj>? ->
-        //println("ON IDLIST RESPONSE!!!")
-        //println("Response: " + response!!.message())
-
-        if (response!!.body() != null) {
-            searchResult = response.body()!!.posts_ids.toList()
-            loadPosts()
+        if (response!!.code() != 200) {
+            onError("Academics is under maintenance, come back later")
+        } else {
+            if (response.body() != null) {
+                searchResult = response.body()!!.posts_ids.toList()
+                loadPosts()
+            }
         }
     }
 
     val idFailure : (call: Call<SearchResponseListObj>?, t: Throwable?) -> Unit = { call: Call<SearchResponseListObj>?, t: Throwable? ->
-        //println("ON IDLIST FAILURE!!!")
-        //println("Response: " + t!!.message)
         onError("Academics is under maintenance, come back later")
     }
 
     fun getPostResponse(postPosition : Int): (Call<PostObj>?, Response<PostObj>?) -> Unit {
         return { call: Call<PostObj>?, response: Response<PostObj>? ->
-            //println("ON POST RESPONSE!!!")
-            //println("Response: " + response!!.message())
-            val p : PostObj = response!!.body()!!
-            insertPost(p, postPosition)
+            println("Response for post: " + postPosition)
+            val code = response!!.code()
+            if (code == 200) {
+                val p : PostObj = response.body()!!
+                insertPost(p, postPosition)
+            }
         }
     }
 

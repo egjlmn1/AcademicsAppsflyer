@@ -24,22 +24,4 @@
             app:lottie_rawRes="@raw/progress"/>
     </RelativeLayout>
 
-
-
-
-    <Button
-        android:id="@+id/continue_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Continue"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="30dp"
-        android:textSize="15sp"
-        android:textColor="#fff"
-        android:paddingHorizontal="50dp"
-        android:fontFamily="@font/tommy_extrabold"
-        android:background="@drawable/button_shape"
-        />
-
 </RelativeLayout>

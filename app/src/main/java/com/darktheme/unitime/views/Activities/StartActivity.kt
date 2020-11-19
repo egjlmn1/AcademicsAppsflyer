@@ -1,22 +1,25 @@
 package com.darktheme.unitime.views.Activities
 
-import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.preference.PreferenceManager
-import android.widget.LinearLayout
-import android.widget.TextView
-import androidx.cardview.widget.CardView
-import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.darktheme.unitime.R
-import com.darktheme.unitime.databinding.ActivityStartBinding
-import com.darktheme.unitime.viewModels.LoginViewModel
-import com.darktheme.unitime.viewModels.RegisterViewModel
+import com.darktheme.unitime.models.Retrofit.JsonObjects.LoginRequest
+import com.darktheme.unitime.models.Retrofit.RetrofitClient
+import com.darktheme.unitime.models.Room.Profile
+import com.darktheme.unitime.views.Login
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.textfield.TextInputEditText
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import retrofit2.Call
+import retrofit2.Response
 import java.lang.Exception
 
 
@@ -28,6 +31,24 @@ class StartActivity : AppCompatActivity() {
     var password1  = ""
     var password2  = ""
     var name = ""
+
+
+    fun loginRequest(email: String, password: String, loginResponse: (call: Call<Profile>?, response: Response<Profile>?) -> Unit, loginFailure: (Call<Profile>?, Throwable?)->Unit) {
+        println("login1")
+        LoginRequest(
+            RetrofitClient.getInstance()!!
+        ).post(email.toLowerCase(), password, loginResponse, loginFailure)
+    }
+
+    fun loginProfile(profile: Profile, action: Int) {
+        val contex = this
+        CoroutineScope(IO).launch {
+            Login().login(contex, profile)
+            withContext(Main) {
+                navController!!.navigate(action)
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
