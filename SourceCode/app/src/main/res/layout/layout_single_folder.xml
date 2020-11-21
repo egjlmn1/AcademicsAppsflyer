@@ -18,6 +18,8 @@
         android:drawableTint="@color/colorNormalText"
         android:drawablePadding="10dp"
         android:layout_centerVertical="true"
+        android:layout_toStartOf="@+id/colored_star"
+        android:layout_alignParentStart="true"
         android:paddingLeft="40dp"
         android:textSize="20sp"
         android:textColor="@color/colorNormalText"
