@@ -182,7 +182,6 @@ class PostView(val activity: MainPageActivity, itemView: View) {
         val filenameTextView = fileContent.findViewById<TextView>(R.id.file_name)
         filenameTextView.text = filename
         filenameTextView.setOnClickListener{
-            // TODO open the file
             fileListener.onItemClicked(post!!.post_id + " " + post!!.attachment!!.name)
         }
     }
