@@ -16,13 +16,10 @@ Getting Started
 To enter Academics you first need to register to the app.
 The registration proccess requires an email a password and a display name that will be shown to other users.
 It is recommended to use your full name as a display name.
-![](screenshots/open_screen.png)
-
-Screenshots
------------
-
-![Plant details](screenshots/phone_plant_detail.png "Details for a specific plant")
-![My Garden](screenshots/phone_my_garden.png "Plants that have been added to your garden")
+![](screenshots/start.png)
+![](screenshots/enter_email.png)
+![](screenshots/enter_password.png)
+![](screenshots/enter_name.png)
 
 Libraries Used
 --------------
