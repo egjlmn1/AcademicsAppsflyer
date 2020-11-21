@@ -8,7 +8,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.darktheme.unitime.viewModels.ProfileViewModel" />
+            type="com.darktheme.academics.viewModels.ProfileViewModel" />
     </data>
 
     <RelativeLayout

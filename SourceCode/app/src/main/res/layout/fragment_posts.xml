@@ -8,7 +8,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.darktheme.unitime.viewModels.PostsViewModel" />
+            type="com.darktheme.academics.viewModels.PostsViewModel" />
     </data>
 
     <LinearLayout

@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/nav_start"
-        android:name="com.darktheme.unitime.views.Fragments.Start.StartFragment"
+        android:name="com.darktheme.academics.views.Fragments.Start.StartFragment"
         android:label="Start"
         tools:layout="@layout/fragment_start" >
 
@@ -25,7 +25,7 @@
     </fragment>
     <fragment
         android:id="@+id/email"
-        android:name="com.darktheme.unitime.views.Fragments.Start.EmailFragment"
+        android:name="com.darktheme.academics.views.Fragments.Start.EmailFragment"
         android:label="Email"
         tools:layout="@layout/fragment_email" >
 
@@ -46,7 +46,7 @@
     </fragment>
     <fragment
         android:id="@+id/login"
-        android:name="com.darktheme.unitime.views.Fragments.Start.LoginFragment"
+        android:name="com.darktheme.academics.views.Fragments.Start.LoginFragment"
         android:label="Email"
         tools:layout="@layout/fragment_login">
         <action
@@ -59,7 +59,7 @@
     </fragment>
     <fragment
         android:id="@+id/password"
-        android:name="com.darktheme.unitime.views.Fragments.Start.PasswordFragment"
+        android:name="com.darktheme.academics.views.Fragments.Start.PasswordFragment"
         android:label="Password"
         tools:layout="@layout/fragment_password" >
         <action
@@ -70,7 +70,7 @@
     </fragment>
     <fragment
         android:id="@+id/name"
-        android:name="com.darktheme.unitime.views.Fragments.Start.NameFragment"
+        android:name="com.darktheme.academics.views.Fragments.Start.NameFragment"
         android:label="Name"
         tools:layout="@layout/fragment_name" >
         <action
@@ -81,7 +81,7 @@
     </fragment>
     <fragment
         android:id="@+id/finish_register"
-        android:name="com.darktheme.unitime.views.Fragments.Start.FinishRegisterFragment"
+        android:name="com.darktheme.academics.views.Fragments.Start.FinishRegisterFragment"
         android:label="Name"
         tools:layout="@layout/fragment_finish_register" >
         <action
@@ -100,7 +100,7 @@
     </fragment>
     <fragment
         android:id="@+id/build_profile"
-        android:name="com.darktheme.unitime.views.Fragments.Start.BuildProfileFragment"
+        android:name="com.darktheme.academics.views.Fragments.Start.BuildProfileFragment"
         android:label="Name"
         tools:layout="@layout/fragment_build_profile">
 
@@ -114,7 +114,7 @@
     </fragment>
     <activity
         android:id="@+id/mainPageActivity"
-        android:name="com.darktheme.unitime.views.Activities.MainPageActivity"
+        android:name="com.darktheme.academics.views.Activities.MainPageActivity"
         android:label="MainPageActivity" />
 
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.darktheme.unitime">
+    package="com.darktheme.academics">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
@@ -23,7 +23,7 @@
                 android:resource="@xml/provider_paths" />
         </provider>
         <activity
-            android:name=".views.Activities.CheckerActivity"
+            android:name="com.darktheme.academics.views.Activities.CheckerActivity"
             android:theme="@style/StartUpTheme"
             >
             <intent-filter>
@@ -32,10 +32,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".views.Activities.MainPageActivity"
+            android:name="com.darktheme.academics.views.Activities.MainPageActivity"
             android:theme="@style/AppTheme" />
         <activity
-            android:name=".views.Activities.StartActivity"
+            android:name="com.darktheme.academics.views.Activities.StartActivity"
             android:theme="@style/StartTheme" />
     </application>
 

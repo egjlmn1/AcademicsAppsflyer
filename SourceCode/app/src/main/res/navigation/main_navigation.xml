@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/nav_main_posts"
-        android:name="com.darktheme.unitime.views.Fragments.MainPostsFragment"
+        android:name="com.darktheme.academics.views.Fragments.MainPostsFragment"
         tools:layout="@layout/fragment_posts">
         <action
             android:id="@+id/action_to_nav_my_profile"
@@ -41,7 +41,7 @@
 
     <fragment
         android:id="@+id/nav_search_result"
-        android:name="com.darktheme.unitime.views.Fragments.SearchResultFragment"
+        android:name="com.darktheme.academics.views.Fragments.SearchResultFragment"
         tools:layout="@layout/fragment_posts">
         <action
             android:id="@+id/action_to_home"
@@ -75,7 +75,7 @@
 
     <fragment
         android:id="@+id/nav_my_profile"
-        android:name="com.darktheme.unitime.views.Fragments.ProfileFragment"
+        android:name="com.darktheme.academics.views.Fragments.ProfileFragment"
         tools:layout="@layout/fragment_profile" >
         <action
             android:id="@+id/action_to_nav_favorites"
@@ -93,7 +93,7 @@
 
     <fragment
         android:id="@+id/nav_comments"
-        android:name="com.darktheme.unitime.views.Fragments.CommentsFragment"
+        android:name="com.darktheme.academics.views.Fragments.CommentsFragment"
         tools:layout="@layout/fragment_comments">
 
         <argument
@@ -117,7 +117,7 @@
 
     <fragment
         android:id="@+id/nav_image"
-        android:name="com.darktheme.unitime.views.Fragments.FullImageFragment"
+        android:name="com.darktheme.academics.views.Fragments.FullImageFragment"
         tools:layout="@layout/fragment_full_image">
 
         <argument
@@ -137,7 +137,7 @@
     </fragment>
     <fragment
         android:id="@+id/nav_favorites"
-        android:name="com.darktheme.unitime.views.Fragments.FavoritesFragment"
+        android:name="com.darktheme.academics.views.Fragments.FavoritesFragment"
         tools:layout="@layout/fragment_favorites" >
         <action
             android:id="@+id/action_to_nav_my_profile"
@@ -157,7 +157,7 @@
 
     <fragment
         android:id="@+id/nav_create_post_choose"
-        android:name="com.darktheme.unitime.views.Fragments.CreatePostChooseFragment"
+        android:name="com.darktheme.academics.views.Fragments.CreatePostChooseFragment"
         tools:layout="@layout/fragment_create_post_choose" >
         <action
             android:id="@+id/action_to_nav_my_profile"
@@ -184,7 +184,7 @@
     </fragment>
     <fragment
         android:id="@+id/nav_create_post_image"
-        android:name="com.darktheme.unitime.views.Fragments.CreatePostImageFragment"
+        android:name="com.darktheme.academics.views.Fragments.CreatePostImageFragment"
         tools:layout="@layout/fragment_create_post_image">
         <action
             android:id="@+id/action_to_nav_my_profile"
@@ -199,7 +199,7 @@
     </fragment>
     <fragment
         android:id="@+id/nav_create_post_file"
-        android:name="com.darktheme.unitime.views.Fragments.CreatePostFileFragment"
+        android:name="com.darktheme.academics.views.Fragments.CreatePostFileFragment"
         tools:layout="@layout/fragment_create_post_file">
         <action
             android:id="@+id/action_to_nav_my_profile"

@@ -8,7 +8,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.darktheme.unitime.viewModels.FavoritesViewModel" />
+            type="com.darktheme.academics.viewModels.FavoritesViewModel" />
     </data>
 
     <LinearLayout

@@ -8,7 +8,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.darktheme.unitime.viewModels.MainPageViewModel" />
+            type="com.darktheme.academics.viewModels.MainPageViewModel" />
     </data>
 
     <androidx.drawerlayout.widget.DrawerLayout
