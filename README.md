@@ -1,54 +1,22 @@
-Android Sunflower
+Academics
 =================
 
-A gardening app illustrating Android development best practices with Android Jetpack.
-
-Android Sunflower is currently under heavy development.
-Note that some changes (such as database schema modifications) are not backwards
-compatible and may cause the app to crash. In this
-case, please uninstall and re-install the app.
+Academics is a social app for students all around the world.
 
 Introduction
 ------------
 
-Android Jetpack is a set of components, tools and guidance to make great Android apps. They bring
-together the existing Support Library and Architecture Components and arrange them into four
-categories:
-
-![Android Jetpack](screenshots/jetpack_donut.png "Android Jetpack Components")
-
-Android Sunflower demonstrates utilizing these components to create a simple gardening app.
-Read the
-[Introducing Android Sunflower](https://medium.com/androiddevelopers/introducing-android-sunflower-e421b43fe0c2)
-article for a walkthrough of the app.
+In Academics, students can ask questions, share suggestion, socialize with one another and find help.
+The idea behind Academics is that during the COVID-19 time, students have hard time studying in online lectures.
+So Academics helps students gather good and reliable material to study from (Like course summaries or, if needed, tests from previous years and different institutions),
+and connects between students who need help and those who can provide the help.
 
 Getting Started
 ---------------
-This project uses the Gradle build system. To build this project, use the
-`gradlew build` command or use "Import Project" in Android Studio.
+To enter Academics you first need to register to the app.
+The registration proccess requires an email a password and a display name that will be shown to other users.
+It is recommended to use your full name as a display name.
 
-There are two Gradle tasks for testing the project:
-* `connectedAndroidTest` - for running Espresso on a connected device
-* `test` - for running unit tests
-
-For more resources on learning Android development, visit the
-[Developer Guides](https://developer.android.com/guide/) at
-[developer.android.com](https://developer.android.com).
-
-### Unsplash API key
-
-Sunflower uses the [Unsplash API](https://unsplash.com/developers) to load pictures on the gallery
-screen. To use the API, you will need to obtain a free developer API key. See the
-[Unsplash API Documentation](https://unsplash.com/documentation) for instructions.
-
-Once you have the key, add this line to the `gradle.properties` file, either in your user home
-directory (usually `~/.gradle/gradle.properties` on Linux and Mac) or in the project's root folder:
-
-```
-unsplash_access_key=<your Unsplash access key>
-```
-
-The app is still usable without an API key, though you won't be able to navigate to the gallery screen.
 
 Screenshots
 -----------
