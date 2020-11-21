@@ -16,7 +16,7 @@ Getting Started
 To enter Academics you first need to register to the app.
 The registration proccess requires an email a password and a display name that will be shown to other users.
 It is recommended to use your full name as a display name.
-<img src="screenshots/start.png" width="50%">
+<img src="screenshots/start.png" width="20%"> <img src="screenshots/enter_email.png" width="20%"> <img src="screenshots/enter_password.png" width="20%"> <img src="screenshots/enter_name.png" width="20%">
  
 Libraries Used
 --------------
