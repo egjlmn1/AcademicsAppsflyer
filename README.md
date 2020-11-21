@@ -19,6 +19,11 @@ It is recommended to use your full name as a display name.
 
 
 <img src="screenshots/start.png" width="20%"> <img src="screenshots/enter_email.png" width="20%"> <img src="screenshots/enter_password.png" width="20%"> <img src="screenshots/enter_name.png" width="20%">
+
+After you register, academics will keep you logged in, but if you want to login to your account from a different device just press login and enter your info as shown below:
+
+<img src="screenshots/login.png" width="20%">
+
  
 Libraries Used
 --------------
