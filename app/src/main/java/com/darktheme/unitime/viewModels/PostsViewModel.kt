@@ -1,6 +1,5 @@
 package com.darktheme.unitime.viewModels
 
-import android.app.Activity
 import android.preference.PreferenceManager
 import android.view.Gravity
 import androidx.databinding.BaseObservable
@@ -8,9 +7,6 @@ import androidx.drawerlayout.widget.DrawerLayout
 import com.darktheme.unitime.R
 import com.darktheme.unitime.models.Retrofit.JsonObjects.*
 import com.darktheme.unitime.models.Retrofit.PostLoader
-import com.darktheme.unitime.models.Room.AppDataBase
-import com.darktheme.unitime.models.Room.Profile
-import com.darktheme.unitime.models.Room.Suggestion
 import com.darktheme.unitime.views.Activities.MainPageActivity
 import com.mancj.materialsearchbar.MaterialSearchBar
 import kotlinx.coroutines.CoroutineScope
@@ -18,10 +14,6 @@ import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import okhttp3.ResponseBody
-import retrofit2.Call
-import retrofit2.Response
-import java.io.File
 
 class PostsViewModel(val activity: MainPageActivity, posts: MutableList<PostObj>, refreshRV: (Int) -> Unit, addFolder: (String) -> Unit, onError: (String) -> Unit) : BaseObservable(),  MaterialSearchBar.OnSearchActionListener {
 
@@ -45,27 +37,27 @@ class PostsViewModel(val activity: MainPageActivity, posts: MutableList<PostObj>
         drawer!!.openDrawer(Gravity.LEFT)
     }
 
-    fun loadSuggestions(searchBar: MaterialSearchBar) {
-        CoroutineScope(IO).launch {
-            val suggestions = AppDataBase.getInstance(activity).suggestionDao().getSuggestionList()
-            println("suggestions: ")
-            for (sug in suggestions) {
-                println(sug.suggestion)
-            }
-            //searchBar.setLastSuggestions(suggestions)
-        }
-    }
+//    fun loadSuggestions(searchBar: MaterialSearchBar) {
+//        CoroutineScope(IO).launch {
+//            val suggestions = AppDataBase.getInstance(activity).suggestionDao().getSuggestionList()
+//            println("suggestions: ")
+//            for (sug in suggestions) {
+//                println(sug.suggestion)
+//            }
+//            //searchBar.setLastSuggestions(suggestions)
+//        }
+//    }
 
-    fun saveSuggestions(suggestions: List<String>) {
-        CoroutineScope(IO).launch {
-            val db = AppDataBase.getInstance(activity).suggestionDao()
-            for (sug in suggestions) {
-                db.insertSuggestions(Suggestion(sug))
-                println("suggestions saving: " + sug)
-            }
-            println("suggestions saved")
-        }
-    }
+//    fun saveSuggestions(suggestions: List<String>) {
+//        CoroutineScope(IO).launch {
+//            val db = AppDataBase.getInstance(activity).suggestionDao()
+//            for (sug in suggestions) {
+//                db.insertSuggestions(Suggestion(sug))
+//                println("suggestions saving: " + sug)
+//            }
+//            println("suggestions saved")
+//        }
+//    }
 
     override fun onButtonClicked(buttonCode: Int) {
         println("search button clicked")
@@ -95,7 +87,7 @@ class PostsViewModel(val activity: MainPageActivity, posts: MutableList<PostObj>
         activity.searchFlair = flair
     }
 
-    fun loadPosts(bestFit: Boolean) {
+    fun loadPosts(bestFit: Boolean, path: String, onResult: () -> Unit) {
 
         if (bestFit) {
             CoroutineScope(IO).launch {
@@ -103,15 +95,19 @@ class PostsViewModel(val activity: MainPageActivity, posts: MutableList<PostObj>
                     loadFlair()
                 }
                 withContext(Main) {
-                    postLoader.bestfitIdList("email", activity.searchFlair!!)
+                    postLoader.bestfitIdList("email", activity.searchFlair!!, onResult)
                 }
             }
         } else {
-            postLoader.foldersIdList(null)
+            postLoader.foldersIdList(path, onResult)
         }
     }
 
-    fun searchPosts(search: String, flair: FlairObj) {
-        postLoader.searchIdList(search, flair)
+    fun loadFolder(path: String) {
+        postLoader.foldersIdList(path){}
+    }
+
+    fun searchPosts(search: String, flair: FlairObj, onResult: () -> Unit) {
+        postLoader.searchIdList(search, flair, onResult)
     }
 }

@@ -1,12 +1,13 @@
 package com.darktheme.unitime.models.Retrofit.JsonObjects
 
-import com.darktheme.unitime.models.Room.Profile
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Query
 
 class SearchResponseListObj(val posts_ids: List<SearchResponse>) {}
 class SearchResponse(val view_type: Int, val content: String) {}
@@ -17,12 +18,12 @@ interface IdListAPI {
 
     @POST("search")
     fun searchIdListJson(@Body search :SearchObj) : Call<SearchResponseListObj>
-    @POST("folders")
-    fun foldersIdListJson(@Body currentFolder :String?) : Call<SearchResponseListObj>
-    @POST("bestfit")
-    fun bestfitIdListJson(@Body email :SearchObj) : Call<SearchResponseListObj>
-    @POST("myposts")
-    fun myPostsIdListJson(@Body email :String) : Call<SearchResponseListObj>
+    @GET("Hierarchy")
+    fun  foldersIdListJson(@Query("path") path : String) : Call<SearchResponseListObj>
+    //@POST("bestfit")
+    //fun bestfitIdListJson(@Body email :SearchObj) : Call<SearchResponseListObj>
+    @GET("search")
+    fun myPostsIdListJson(@Query("email") email: String) : Call<SearchResponseListObj>
 }
 
 class IdListRequest(val retrofit: Retrofit) {
@@ -43,7 +44,7 @@ class IdListRequest(val retrofit: Retrofit) {
         })
     }
 
-    fun folders(folder : String?,
+    fun folders(folder : String,
                myOnResponse : (call: Call<SearchResponseListObj>?, response: Response<SearchResponseListObj>?) -> Unit, myOnFaliure : (call: Call<SearchResponseListObj>?, t: Throwable?) -> Unit) {
         val api : IdListAPI = retrofit.create(IdListAPI::class.java)
         val call : Call<SearchResponseListObj> = api.foldersIdListJson(folder)
@@ -62,7 +63,7 @@ class IdListRequest(val retrofit: Retrofit) {
     fun bestfit(email: String, flair: FlairObj,
                myOnResponse : (call: Call<SearchResponseListObj>?, response: Response<SearchResponseListObj>?) -> Unit, myOnFaliure : (call: Call<SearchResponseListObj>?, t: Throwable?) -> Unit) {
         val api : IdListAPI = retrofit.create(IdListAPI::class.java)
-        val call : Call<SearchResponseListObj> = api.bestfitIdListJson(SearchObj(email, flair))
+        val call : Call<SearchResponseListObj> = api.searchIdListJson(SearchObj("", flair))
         call.enqueue(object : Callback<SearchResponseListObj> {
             override fun onFailure(call: Call<SearchResponseListObj>?, t: Throwable?) {
                 myOnFaliure(call, t)

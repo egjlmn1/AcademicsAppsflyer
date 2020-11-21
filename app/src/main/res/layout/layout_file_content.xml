@@ -1,31 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
+    android:id="@+id/file_contnent"
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="20dp">
 
-    <TextView
-        android:id="@+id/course_name"
-        android:text="Course: Machine Learning"
-        android:textColor="@color/colorNormalText"
-        android:textSize="20sp"
-        android:fontFamily="@font/tommy_regular"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
-    <TextView
-        android:id="@+id/data"
-        android:layout_below="@id/course_name"
-        android:text="Bar Ilan, Gal Chechik, 2014"
-        android:textColor="@color/colorNormalText"
-        android:textSize="20sp"
-        android:fontFamily="@font/tommy_regular"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
 
     <TextView
         android:id="@+id/file_name"
-        android:layout_below="@id/data"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="file name.pdf"

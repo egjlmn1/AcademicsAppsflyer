@@ -10,16 +10,16 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Query
 
-class CreatePostObj(val userId: String, val flair: String, val textData: String, val attachment: AttachmentObj) {}
+class CreatePostObj(val metadata: PostObj, val attachment: String?) {}
 interface CreatePostAPI {
 
-    @POST("createpost")
+    @POST("post")
     fun postPostJson(@Body post: CreatePostObj) : Call<ResponseBody>
 }
 
 class CreatePostRequest(val retrofit: Retrofit) {
 
-    fun get(post : CreatePostObj,
+    fun post(post : CreatePostObj,
         myOnResponse : (call: Call<ResponseBody>?, response: Response<ResponseBody>?) -> Unit, myOnFaliure : (call: Call<ResponseBody>?, t: Throwable?) -> Unit) {
         val api : CreatePostAPI = retrofit.create(CreatePostAPI::class.java)
         val call : Call<ResponseBody> = api.postPostJson(post)

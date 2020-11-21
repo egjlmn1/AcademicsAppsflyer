@@ -8,8 +8,10 @@ import android.preference.PreferenceManager
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import com.darktheme.unitime.R
 import com.darktheme.unitime.models.Room.AppDataBase
+import com.darktheme.unitime.models.Room.FavoriteList
 import com.darktheme.unitime.views.Activities.MainPageActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -31,18 +33,44 @@ class FolderView(val view: View, val path: String, val activity: MainPageActivit
 
     fun setOnFavoriteClick() {
         star.setOnClickListener {
+            if (activity.email == null) {
+                Toast.makeText(activity,"Try again later", Toast.LENGTH_SHORT).show();
+                return@setOnClickListener
+            }
             favorite = !favorite
             setStarColor()
-            //TODO save to db
+            CoroutineScope(IO).launch {
+                val db = AppDataBase.getInstance(activity)
+                val favorites = db.favoritesDao().getFoldersList(activity.email!!)
+                if (favorites != null) {
+                    var newFolders: List<String>? = null
+                    if (favorite) {
+                        newFolders = favorites.folders!!.toMutableList()
+                        newFolders.add(path)
+                    } else {
+                        newFolders = favorites.folders!!.toMutableList()
+                        newFolders.remove(path)
+                    }
+                    favorites.folders = newFolders
+                    db.favoritesDao().updateFolders(favorites)
+                }
+
+            }
         }
     }
 
     fun isFavorite(path: String) {
         CoroutineScope(IO).launch {
             val db = AppDataBase.getInstance(activity)
-            val favorites = db.favoritesDao().getFoldersList(activity.email!!)
-            if (favorites != null) {
-                favorite = favorites.contains(path) //GET FROM DB
+            if (activity.email != null) {
+                val favorites = db.favoritesDao().getFoldersList(activity.email!!)
+                if (favorites != null) {
+                    favorite = favorites.folders!!.contains(path) //GET FROM DB
+                } else {
+                    favorite = false
+                    val newFav = FavoriteList(activity.email!!, ArrayList<String>())
+                    db.favoritesDao().insertFavorite(newFav)
+                }
                 withContext(Dispatchers.Main) {
                     setStarColor()
                 }

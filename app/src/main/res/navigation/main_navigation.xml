@@ -82,6 +82,13 @@
             app:destination="@id/nav_favorites"
             app:enterAnim="@anim/fade_in"
             app:exitAnim="@anim/fade_out"/>
+        <action
+            android:id="@+id/action_to_nav_comments"
+            app:destination="@id/nav_comments"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"/>
+        <argument android:name="name" />
+        <argument android:name="email" />
     </fragment>
 
     <fragment
@@ -103,6 +110,9 @@
             app:destination="@id/nav_favorites"
             app:enterAnim="@anim/fade_in"
             app:exitAnim="@anim/fade_out"/>
+        <action
+            android:id="@+id/action_to_nav_my_profile"
+            app:destination="@id/nav_my_profile" />
     </fragment>
 
     <fragment
@@ -134,6 +144,15 @@
             app:destination="@id/nav_my_profile"
             app:enterAnim="@anim/fade_in"
             app:exitAnim="@anim/fade_out"/>
+        <action
+            android:id="@+id/action_to_nav_favorites"
+            app:destination="@id/nav_favorites" />
+        <action
+            android:id="@+id/action_to_nav_main_posts"
+            app:destination="@id/nav_main_posts" />
+        <action
+            android:id="@+id/action_to_home"
+            app:destination="@id/nav_main_posts" />
     </fragment>
 
     <fragment
@@ -173,6 +192,10 @@
             app:enterAnim="@anim/fade_in"
             app:exitAnim="@anim/fade_out"/>
         <argument android:name="flair" />
+        <argument android:name="path" />
+        <action
+            android:id="@+id/action_to_home"
+            app:destination="@id/nav_main_posts" />
     </fragment>
     <fragment
         android:id="@+id/nav_create_post_file"
@@ -184,6 +207,10 @@
             app:enterAnim="@anim/fade_in"
             app:exitAnim="@anim/fade_out"/>
         <argument android:name="flair" />
+        <argument android:name="path" />
+        <action
+            android:id="@+id/action_to_home"
+            app:destination="@id/nav_main_posts" />
     </fragment>
 
 </navigation>

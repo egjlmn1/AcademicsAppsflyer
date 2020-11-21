@@ -5,20 +5,20 @@ import androidx.room.*
 @Dao
 abstract class ProfileDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract fun insertProfile(vararg profile : Profile)
+    abstract fun insertProfile(vararg profile : ProfileDB)
 
     @Query("DELETE FROM ProfileTable WHERE email = :email")
     abstract fun deleteProfile(email: String)
 
     @Query("SELECT * FROM ProfileTable")
-    abstract fun getProfilesList() : List<Profile>
+    abstract fun getProfilesList() : List<ProfileDB>
 
     @Query("SELECT * FROM ProfileTable WHERE email = :email")
-    abstract fun getProfile(email: String) : Profile?
+    abstract fun getProfile(email: String) : ProfileDB?
 }
 
 @Entity(tableName = "ProfileTable")
-class Profile{
+class ProfileDB{
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "user_id")
     var id : Int = 0

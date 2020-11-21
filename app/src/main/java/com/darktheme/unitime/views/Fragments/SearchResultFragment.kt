@@ -3,8 +3,13 @@ package com.darktheme.unitime.views.Fragments
 import PostsAdapter
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.TextureView
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.RelativeLayout
+import android.widget.TextView
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -41,20 +46,24 @@ class SearchResultFragment : MainPostsFragment() {
     }
 
     override fun loadPosts() {
-        if ((myActivity!!.searchText == null) || (myActivity!!.searchFlair == null)) {
-            //TODO show error message
-            return
-        }
-        viewModel!!.searchPosts(myActivity!!.searchText!!, myActivity!!.searchFlair!!)
+        swipeContainer!!.setRefreshing(true);
+        viewModel!!.searchPosts(myActivity!!.searchText, myActivity!!.searchFlair){ swipeContainer!!.setRefreshing(false);}
     }
 
     override fun initLayout() {
         // do something
-        //called once
+        val view = LayoutInflater.from(context).inflate(R.layout.layout_show_search, null, false)
+
+        requireView().findViewById<RelativeLayout>(R.id.extra_container).addView(view, 0)
     }
 
     override fun setLayout() {
         // do something
         //called every time
+        requireView().findViewById<TextView>(R.id.search_show).text = "Showing search result for: \"" + myActivity!!.searchText + "\""
+        val layout =  requireView().findViewById<LinearLayout>(R.id.posts_container)
+        if (layout.childCount > 2) {
+            layout.removeViewAt(1)
+        }
     }
 }

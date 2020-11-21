@@ -8,9 +8,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.darktheme.unitime.R
-import com.darktheme.unitime.models.Room.Profile
+import com.darktheme.unitime.models.Retrofit.JsonObjects.ProfileRetrofit
 import com.darktheme.unitime.views.Activities.StartActivity
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -53,8 +54,7 @@ class LoginFragment : Fragment() {
                 valid = false
             }
             if (valid) {
-                // TODO add progress bar with text "logging in"
-                // TODO send login request to server
+                Toast.makeText(requireContext(),"Logging in...", Toast.LENGTH_SHORT).show();
                 continueButton!!.isEnabled = false
                 (requireActivity() as StartActivity).loginRequest(editText1!!.text.toString(), editText2!!.text.toString(), loginResponse, onLoginFailure)
             }
@@ -63,20 +63,21 @@ class LoginFragment : Fragment() {
         return root
     }
 
-    val loginResponse : (call: Call<Profile>?, response: Response<Profile>?) -> Unit = { call: Call<Profile>?, response: Response<Profile>? ->
+    val loginResponse : (call: Call<ProfileRetrofit>?, response: Response<ProfileRetrofit>?) -> Unit = { call: Call<ProfileRetrofit>?, response: Response<ProfileRetrofit>? ->
         continueButton!!.isEnabled = true
         val code = response!!.code()
         println("login2: " + code)
         if (code == 200) {
             (requireActivity() as StartActivity).loginProfile(response.body()!!, R.id.action_to_mainPageActivity)
             (requireActivity() as StartActivity).finish()
+        } else {
+            Toast.makeText(requireContext(),"Incorrect email or password", Toast.LENGTH_SHORT).show();
         }
 
     }
 
-    val onLoginFailure : (call: Call<Profile>?, t: Throwable?) -> Unit = { call: Call<Profile>?, t: Throwable? ->
-        //TODO display failed to login message
-        // server returns, email does not exists or password incorrect
+    val onLoginFailure : (call: Call<ProfileRetrofit>?, t: Throwable?) -> Unit = { call: Call<ProfileRetrofit>?, t: Throwable? ->
+        Toast.makeText(requireContext(),"An error occurred", Toast.LENGTH_SHORT).show();
         continueButton!!.isEnabled = true
         println(t!!.message)
     }

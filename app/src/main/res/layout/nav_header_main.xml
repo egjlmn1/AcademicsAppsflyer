@@ -19,7 +19,7 @@
         android:layout_centerHorizontal="true"
         android:layout_alignParentTop="true"
         android:layout_marginTop="20dp"
-        android:background="@drawable/academics_grayscale"
+        android:background="@drawable/academics_profile"
         />
 
     <TextView
@@ -32,59 +32,6 @@
         android:fontFamily="@font/tommy_bold"
         android:textColor="@color/colorNormalText"
         android:textSize="20sp"/>
-
-    <RelativeLayout
-        android:id="@+id/profile_credits"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/profile_name"
-        android:layout_marginHorizontal="10dp"
-        android:layout_alignParentStart="true">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="500"
-            android:layout_alignParentTop="true"
-            android:fontFamily="@font/tommy_bold"
-            android:textColor="@color/colorNormalText"
-            android:textSize="20sp"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Credits"
-            android:layout_alignParentBottom="true"
-            android:fontFamily="@font/tommy_bold"
-            android:textColor="@color/colorNormalText"
-            android:textSize="10sp"/>
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/profile_age"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/profile_name"
-        android:layout_marginHorizontal="10dp"
-        android:layout_alignParentEnd="true">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="1y 4m"
-            android:textColor="@color/colorNormalText"
-            android:fontFamily="@font/tommy_bold"
-            android:textSize="20sp"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Account age"
-            android:layout_alignParentBottom="true"
-            android:textColor="@color/colorNormalText"
-            android:fontFamily="@font/tommy_bold"
-            android:textSize="10sp"/>
-    </RelativeLayout>
-
-
 
 
 

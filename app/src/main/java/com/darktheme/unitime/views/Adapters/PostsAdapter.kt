@@ -3,7 +3,10 @@ import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.*
+import androidx.core.os.bundleOf
+import androidx.core.view.children
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -16,14 +19,19 @@ import com.darktheme.unitime.OnItemClickListener
 import com.darktheme.unitime.R
 import com.darktheme.unitime.models.Retrofit.JsonObjects.PostObj
 import com.darktheme.unitime.viewModels.PostsViewModel
+import com.darktheme.unitime.views.Activities.MainPageActivity
 import com.google.gson.Gson
+import java.time.LocalDateTime
+import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
 import java.util.*
 
 
 /**
  * Created by User on 1/1/2018.
  */
-class PostsAdapter(val context: Context, val posts: ArrayList<PostObj>, val postListener: OnItemClickListener, val fileListener: OnItemClickListener) : RecyclerView.Adapter<PostsAdapter.PostViewHolder>() {
+class PostsAdapter(val activity: MainPageActivity, val posts: ArrayList<PostObj>, val postListener: OnItemClickListener, val fileListener: OnItemClickListener) : RecyclerView.Adapter<PostsAdapter.PostViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
         return PostViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.layout_single_post, parent, false))
@@ -31,10 +39,9 @@ class PostsAdapter(val context: Context, val posts: ArrayList<PostObj>, val post
 
 
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
-        if (holder.loaded) {return}
+        //if (holder.loaded) {return}
         val currentPostObj = posts.get(position)
         holder.bind(currentPostObj, postListener)
-        holder.loaded = true
     }
 
 
@@ -61,8 +68,7 @@ class PostsAdapter(val context: Context, val posts: ArrayList<PostObj>, val post
     }
 
     inner class PostViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val postView = PostView(context, itemView)
-        var loaded : Boolean = false
+        val postView = PostView(activity, itemView)
 
         fun bind(post : PostObj, clickListener: OnItemClickListener) {
             postView.setUp(post, fileListener)
@@ -74,68 +80,141 @@ class PostsAdapter(val context: Context, val posts: ArrayList<PostObj>, val post
     }
 }
 
-class PostView(val context: Context, itemView: View) {
-    val contentParent : LinearLayout = itemView.findViewById(R.id.post_content_layout)
-    val publisher : TextView = itemView.findViewById(R.id.post_publisher)
-    val parentLayout : RelativeLayout = itemView.findViewById(R.id.post_parent_layout)
+class PostView(val activity: MainPageActivity, itemView: View) {
+    val contentParent : LinearLayout? = itemView.findViewById(R.id.post_content_layout)
+    val publisher : TextView? = itemView.findViewById(R.id.post_publisher)
+    val date : TextView? = itemView.findViewById(R.id.post_time)
+    val parentLayout : RelativeLayout? = itemView.findViewById(R.id.post_parent_layout)
     var post: PostObj? = null
     var postImage: ImageView? = null
-    val postInfo: RelativeLayout = itemView.findViewById(R.id.post_info)
+    val postInfo: RelativeLayout? = itemView.findViewById(R.id.post_info)
 
     fun setUp(p : PostObj, fileListener: OnItemClickListener) {
         post = p
-        publisher.text = StringBuilder("Post ID: ").append(post!!.post_id).append(", Publisher: ").append(post!!.publisher).toString()
-
+        if ((contentParent == null) || (publisher == null) || (parentLayout == null) || (postInfo == null) || (date == null)) {
+            return
+        }
+        val profPic = parentLayout.findViewById<ImageView>(R.id.post_profile_pic)
+        profPic?.let {
+            profPic.setOnClickListener {
+                val bundle = bundleOf("name" to p.publisher, "email" to p.publisher_email)
+                activity.navController!!.navigate(R.id.action_to_nav_my_profile, bundle)
+            }
+        }
+        publisher.text = post!!.publisher
+        publisher.let {
+            publisher.setOnClickListener {
+                val bundle = bundleOf("name" to p.publisher, "email" to p.publisher_email)
+                activity.navController!!.navigate(R.id.action_to_nav_my_profile, bundle)
+            }
+        }
+        setDate(p.date)
         if (!post!!.text_content.isNullOrEmpty()) {
             setTextContent(post!!.text_content!!)
+        } else {
+            val postText = contentParent.findViewById<TextView>(R.id.post_text)
+            postText.text = ""
+            postText.visibility = View.GONE
         }
         if(post!!.type.equals(PostsViewModel.ImageType)) {
             setImageContent(post!!.post_id)
         } else {
-            removeProgressBar()
-            if(post!!.type.equals(PostsViewModel.FileType)) {
-                if (post!!.attachment == null) {
-                    setFileContent("nameless.pdf", fileListener)
-                } else {
-                    setFileContent(post!!.attachment!!.name, fileListener)
+            val parent = contentParent.findViewById<LinearLayout>(R.id.content_container)
+            parent?.let {
+                parent.removeAllViews()
+            }
+        }
+        if(post!!.type.equals(PostsViewModel.FileType)) {
+            if (post!!.attachment == null) {
+                setFileContent("nameless.pdf", fileListener)
+            } else {
+                setFileContent(post!!.attachment!!.name, fileListener)
+            }
+        } else {
+            val parent = contentParent.findViewById<LinearLayout>(R.id.content_container)
+            parent?.let {
+                val fileContent = parent.findViewById<View>(R.id.file_contnent)
+                fileContent?.let {
+                    parent.removeView(fileContent)
                 }
             }
         }
     }
 
     fun setTextContent(text : String) {
-        val postText : TextView = TextView(context)
-        postText.setTextColor(context.getResources().getColor(R.color.colorNormalText))
+        val postText = contentParent!!.findViewById<TextView>(R.id.post_text)
+        postText.visibility = View.VISIBLE
         postText.text = text
-        postText.textSize = 15F
-        //postText.setTextColor(Color.BLACK)
+    }
 
-        val padding_in_dp = 20 // 6 dps
-        val scale: Float = context.getResources().getDisplayMetrics().density
-        val padding_in_px = (padding_in_dp * scale + 0.5f).toInt()
-        postText.setPadding(padding_in_px,padding_in_px,padding_in_px,padding_in_px)
-        contentParent.addView(postText, 0)
+    fun setDate(dateString: String) {
+        val formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss");
+        val dt = LocalDateTime.parse(dateString, formatter);
+        println("DATE TIME: " + dt.toString())
+        val now = LocalDateTime.now(ZoneOffset.UTC)
+        println("DATE TIME NOW: " + dt.toString())
+        val years = dt.until(now, ChronoUnit.YEARS).toInt();
+        if (years > 0) {
+            date!!.text = StringBuilder().append(years).append(" years ago").toString()
+        } else {
+            val months = dt.until(now, ChronoUnit.MONTHS).toInt();
+            if (months > 0) {
+                date!!.text = StringBuilder().append(months).append(" months ago").toString()
+            } else {
+                val days = dt.until(now, ChronoUnit.DAYS).toInt();
+                if (days > 0) {
+                    date!!.text = StringBuilder().append(days).append(" days ago").toString()
+                } else {
+                    val hours = dt.until(now, ChronoUnit.HOURS).toInt();
+                    if (hours > 0) {
+                        print("hours: " + hours)
+                        date!!.text = StringBuilder().append(hours).append(" hours ago").toString()
+                    } else {
+                        val minutes = dt.until(now, ChronoUnit.MINUTES).toInt();
+                        if (minutes > 0) {
+                            date!!.text = StringBuilder().append(minutes).append(" minutes ago").toString()
+                        } else {
+                            date!!.text = "now"
+
+                        }
+                    }
+                }
+            }
+        }
     }
 
     fun setFileContent(filename : String, fileListener: OnItemClickListener) {
-        val fileContent: View = LayoutInflater.from(context).inflate(R.layout.layout_file_content, parentLayout, false)
+        val parent = contentParent!!.findViewById<LinearLayout>(R.id.content_container)
+        if (parent == null) {
+            return
+        }
+        var fileContent = parent.findViewById<View>(R.id.file_contnent)
+        if (fileContent == null) {
+            fileContent = LayoutInflater.from(activity).inflate(R.layout.layout_file_content, contentParent, false)
+            parent.addView(fileContent)
+        }
 
         val filenameTextView = fileContent.findViewById<TextView>(R.id.file_name)
         filenameTextView.text = filename
         filenameTextView.setOnClickListener{
-            // TODO ask for the content from the server and open the file
+            // TODO open the file
             fileListener.onItemClicked(post!!.post_id + " " + post!!.attachment!!.name)
         }
-        contentParent.addView(fileContent)
     }
 
     fun setImageContent(imageID : String) {
-        postImage = ImageView(context)
-        Glide.with(context)
+        val currentContent = contentParent!!.findViewById<LinearLayout>(R.id.content_container)
+        if (isProgressBarRemoved()) {
+            currentContent.removeAllViews()
+            createProgressBar()
+        }
+        postImage = ImageView(activity)
+
+        Glide.with(activity)
             .load(StringBuilder(AppInfo.serverUrl).append("/post/content?id=").append(imageID).toString()).listener(object : RequestListener<Drawable> {
                 override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
                     removeProgressBar()
-                    contentParent.addView(LayoutInflater.from(context).inflate(R.layout.layout_error_loading, contentParent, false))
+                    currentContent.addView(LayoutInflater.from(activity).inflate(R.layout.layout_error_loading, contentParent, false))
                     return false
                 }
                 override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
@@ -143,23 +222,31 @@ class PostView(val context: Context, itemView: View) {
                     return false
                 }
             }).into(postImage!!)
-        contentParent.addView(postImage)
+        currentContent.addView(postImage)
     }
 
     fun removeProgressBar() {
-        val progressBar = parentLayout.findViewById<ProgressBar>(R.id.progressBar)
-        contentParent.removeView(progressBar)
-    }
-}
-
-class ScrollListener : RecyclerView.OnScrollListener() {
-
-    override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-        //println("scrolled")
-        val pos : Int = (recyclerView.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
-        //println("load 10 more from position: " + pos)
-        // check if loaded before loading
-        // loading = get the post json obj + post content(if not file)
+        println("child count: " + contentParent!!.childCount)
+        val parenet = contentParent.findViewById<LinearLayout>(R.id.content_container)
+        println("parent: " + parenet)
+        val progressBar = parenet.findViewById<ProgressBar>(R.id.progressBar)
+        println("progress bar: " + progressBar)
+        parenet.removeView(progressBar)
     }
 
+    fun isProgressBarRemoved(): Boolean {
+        val parent = contentParent!!.findViewById<LinearLayout>(R.id.content_container)
+        parent?.let {
+            val progressBar = parent.findViewById<ProgressBar>(R.id.progressBar)
+            return (progressBar == null)
+        }
+        return true
+    }
+
+    fun createProgressBar() {
+        val progressBar = ProgressBar(activity)
+        contentParent!!.findViewById<LinearLayout>(R.id.content_container)?.let {
+            contentParent.findViewById<LinearLayout>(R.id.content_container)?.addView(progressBar)
+        }
+    }
 }

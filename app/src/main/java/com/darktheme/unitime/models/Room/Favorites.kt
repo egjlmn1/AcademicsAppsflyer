@@ -18,8 +18,8 @@ interface FavoritesDao {
     @Update
     abstract fun updateFolders(vararg folders: FavoriteList)
 
-    @Query("SELECT folders FROM FavoriteTable WHERE email = :email LIMIT 1")
-    abstract fun getFoldersList(email: String) : List<String>?
+    @Query("SELECT * FROM FavoriteTable WHERE email = :email LIMIT 1")
+    abstract fun getFoldersList(email: String) :FavoriteList?
 }
 
 @Entity(tableName = "FavoriteTable")

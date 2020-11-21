@@ -8,8 +8,8 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.darktheme.unitime.R
 import com.darktheme.unitime.models.Retrofit.JsonObjects.LoginRequest
+import com.darktheme.unitime.models.Retrofit.JsonObjects.ProfileRetrofit
 import com.darktheme.unitime.models.Retrofit.RetrofitClient
-import com.darktheme.unitime.models.Room.Profile
 import com.darktheme.unitime.views.Login
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.textfield.TextInputEditText
@@ -33,17 +33,18 @@ class StartActivity : AppCompatActivity() {
     var name = ""
 
 
-    fun loginRequest(email: String, password: String, loginResponse: (call: Call<Profile>?, response: Response<Profile>?) -> Unit, loginFailure: (Call<Profile>?, Throwable?)->Unit) {
+    fun loginRequest(email: String, password: String, loginResponse: (call: Call<ProfileRetrofit>?, response: Response<ProfileRetrofit>?) -> Unit, loginFailure: (Call<ProfileRetrofit>?, Throwable?)->Unit) {
         println("login1")
         LoginRequest(
             RetrofitClient.getInstance()!!
         ).post(email.toLowerCase(), password, loginResponse, loginFailure)
     }
 
-    fun loginProfile(profile: Profile, action: Int) {
+    fun loginProfile(profile: ProfileRetrofit, action: Int) {
         val contex = this
         CoroutineScope(IO).launch {
-            Login().login(contex, profile)
+            println("id: " + profile.user_id)
+            Login().login(contex, profile.toDBProfile())
             withContext(Main) {
                 navController!!.navigate(action)
             }

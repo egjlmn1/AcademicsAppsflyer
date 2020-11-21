@@ -30,7 +30,6 @@ class MySpinnerAdapter(context: Context, objects: List<SpinnerCheckBox>) :
             PreferenceManager.getDefaultSharedPreferences(mContext).edit().putBoolean(listState[position].data, b).apply()
             listState[position].selected = b
         }
-        //println(listState.toString())
         return listItem
     }
 

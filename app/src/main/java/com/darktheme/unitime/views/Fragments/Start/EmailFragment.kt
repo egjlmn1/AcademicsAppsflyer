@@ -44,7 +44,7 @@ class EmailFragment : Fragment() {
         editText!!.setText(activity.email)
         editText!!.addTextChangedListener(textWatcher)
         continueButton!!.setOnClickListener {
-            if (valid) {
+            if (valid || editText!!.text.isValidEmail()) {
                 activity.navController!!.navigate(R.id.action_email_to_password)
             } else {
                 editTextLayout!!.setError("Enter a valid email address")

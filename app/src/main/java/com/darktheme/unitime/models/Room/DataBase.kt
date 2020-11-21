@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.room.*
 
 
-@Database(exportSchema = false, version = 9, entities = [Suggestion::class, FavoriteList::class, Profile::class])
+@Database(exportSchema = false, version = 11, entities = [Suggestion::class, FavoriteList::class, ProfileDB::class])
 abstract class AppDataBase : RoomDatabase() {
 
     abstract fun suggestionDao() : SuggestionDao

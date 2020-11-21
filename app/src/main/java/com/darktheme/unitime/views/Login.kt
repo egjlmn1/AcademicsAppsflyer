@@ -5,23 +5,23 @@ import android.preference.PreferenceManager
 import androidx.appcompat.app.AppCompatActivity
 import com.darktheme.unitime.R
 import com.darktheme.unitime.models.Room.AppDataBase
-import com.darktheme.unitime.models.Room.Profile
+import com.darktheme.unitime.models.Room.ProfileDB
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import okhttp3.internal.wait
+
 
 class Login {
 
-    suspend fun login(context: Context, profile: Profile) {
+    suspend fun login(context: Context, profile: ProfileDB) {
         val prefs = PreferenceManager.getDefaultSharedPreferences(context)
         prefs.edit().putBoolean(context.getString(R.string.logged_in), true).apply()
         prefs.edit().putString(context.getString(R.string.current_email), profile.email).apply()
+        prefs.edit().putString(context.getString(R.string.current_id), profile.id.toString()).apply()
         addProfile(context, profile)
     }
 
-    suspend fun addProfile(context: Context, profile: Profile) {
+    suspend fun addProfile(context: Context, profile: ProfileDB) {
         val db = AppDataBase.getInstance(context)
         val p = db.profileDao().getProfile(profile.email)
         if (p == null) {
@@ -35,6 +35,7 @@ class Login {
         prefs.edit().putBoolean(context.getString(R.string.logged_in), false).apply()
         val email = prefs.getString(context.getString(R.string.current_email), "")
         prefs.edit().putString(context.getString(R.string.current_email), null).apply()
+        prefs.edit().putString(context.getString(R.string.current_id), null).apply()
         removeProfile(context, email!!)
     }
 

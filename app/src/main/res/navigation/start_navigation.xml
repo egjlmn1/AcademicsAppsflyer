@@ -94,6 +94,9 @@
             app:destination="@id/email"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_finish_register_to_mainPageActivity"
+            app:destination="@id/mainPageActivity" />
     </fragment>
     <fragment
         android:id="@+id/build_profile"

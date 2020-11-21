@@ -1,6 +1,7 @@
 package com.darktheme.unitime.models.Retrofit
 
 import android.R
+import android.app.Activity
 import android.app.ProgressDialog
 import android.content.ActivityNotFoundException
 import android.content.Context
@@ -20,7 +21,7 @@ import java.net.HttpURLConnection
 import java.net.URL
 
 
-class DownloadTask(private val context: Context, downloadUrl: String, filename: String) {
+class DownloadTask(private val activity: Activity, downloadUrl: String, filename: String) {
     private var downloadUrl = ""
     private var downloadFileName = ""
     private var progressDialog: ProgressDialog? = null
@@ -31,18 +32,19 @@ class DownloadTask(private val context: Context, downloadUrl: String, filename: 
         var outputFile: File? = null
         override fun onPreExecute() {
             super.onPreExecute()
-            progressDialog = ProgressDialog(context)
+            progressDialog = ProgressDialog(activity)
             progressDialog!!.setMessage("Downloading...")
-            progressDialog!!.setCancelable(false)
+            progressDialog!!.setCancelable(true)
             progressDialog!!.show()
         }
 
         override fun onPostExecute(result: Void?) {
+            super.onPostExecute(result)
             try {
                 if (outputFile != null) {
                     progressDialog!!.dismiss()
                     val ctw =
-                        ContextThemeWrapper(context, R.style.TextAppearance_Theme)
+                        ContextThemeWrapper(activity, R.style.TextAppearance_Theme)
                     val alertDialogBuilder: AlertDialog.Builder = AlertDialog.Builder(ctw)
                     alertDialogBuilder.setTitle("Document  ")
                     alertDialogBuilder.setMessage("Document Downloaded Successfully ")
@@ -62,13 +64,14 @@ class DownloadTask(private val context: Context, downloadUrl: String, filename: 
                             pdfIntent.setDataAndType(path, "application/pdf")
                             pdfIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
                             try {
-                                context.startActivity(pdfIntent)
+                                activity.startActivity(pdfIntent)
                             } catch (e: ActivityNotFoundException) {
                                 Toast.makeText(
-                                    context,
+                                    activity,
                                     "No Application available to view PDF",
                                     Toast.LENGTH_SHORT
                                 ).show()
+                                println("cant open pdf")
                             }
                         })
                     alertDialogBuilder.show()
@@ -92,8 +95,6 @@ class DownloadTask(private val context: Context, downloadUrl: String, filename: 
 
         override fun doInBackground(vararg p0: Void?): Void? {
             try {
-                println("downloading from " + downloadUrl)
-                println("filename: " + downloadFileName)
                 val url = URL(downloadUrl) //Create Download URl
                 val c =
                     url.openConnection() as HttpURLConnection //Open Url Connection
@@ -108,23 +109,8 @@ class DownloadTask(private val context: Context, downloadUrl: String, filename: 
                     )
                 }
 
-
-                //Get File if SD card is present
-                if (CheckForSDCard().isSDCardPresent) {
-                    apkStorage = File(
-                        Environment.getExternalStorageDirectory()
-                            .toString() + "/" + "CodePlayon"
-                    )
-                } else Toast.makeText(context, "Oops!! There is no SD Card.", Toast.LENGTH_SHORT)
-                    .show()
-
-                //If File is not present create directory
-                if (!apkStorage!!.exists()) {
-                    apkStorage!!.mkdir()
-                    Log.e(TAG, "Directory Created.")
-                }
                 outputFile =
-                    File(apkStorage, downloadFileName) //Create Output file in Main File
+                    File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), downloadFileName) //Create Output file in Main File
 
                 //Create New File if not present
                 if (!outputFile!!.exists()) {
@@ -143,8 +129,10 @@ class DownloadTask(private val context: Context, downloadUrl: String, filename: 
                 //Close all connection after doing task
                 fos.close()
                 `is`.close()
+                activity.runOnUiThread(Runnable {
+                    Toast.makeText(activity,"Download completed", Toast.LENGTH_SHORT).show();
+                })
             } catch (e: Exception) {
-
                 //Read exception if something went wrong
                 e.printStackTrace()
                 outputFile = null
@@ -152,6 +140,9 @@ class DownloadTask(private val context: Context, downloadUrl: String, filename: 
                     TAG,
                     "Download Error Exception " + e.message
                 )
+                activity.runOnUiThread(Runnable {
+                    Toast.makeText(activity,"Failed to download", Toast.LENGTH_SHORT).show();
+                })
             }
             return null
         }
