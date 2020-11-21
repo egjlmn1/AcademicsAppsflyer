@@ -27,11 +27,6 @@ class Suggestion {
     }
 
     @Ignore
-    constructor(suggestion : String) {
-        this.suggestion = suggestion
-    }
-
-    @Ignore
     override fun toString() : String {
         return suggestion
     }

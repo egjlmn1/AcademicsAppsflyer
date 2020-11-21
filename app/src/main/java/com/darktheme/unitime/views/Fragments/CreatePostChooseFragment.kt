@@ -37,12 +37,12 @@ class CreatePostChooseFragment : Fragment() {
 
     fun setButton(view: View) {
         view.findViewById<Button>(R.id.create).setOnClickListener {
-            // TODO get flair
+            val path = viewModel!!.getPath()
             if (viewModel!!.type == CreatePostFragmentViewModel.IMAGE) {
-                val bundle = bundleOf("flair" to "question or suggestion or meme")
+                val bundle = bundleOf("flair" to viewModel!!.flair, "path" to path)
                 (requireActivity() as MainPageActivity).navController!!.navigate(R.id.action_nav_create_post_choose_to_nav_create_post_image, bundle)
             } else if (viewModel!!.type == CreatePostFragmentViewModel.FILE) {
-                val bundle = bundleOf("flair" to "image or file")
+                val bundle = bundleOf("flair" to viewModel!!.flair, "path" to path)
                 (requireActivity() as MainPageActivity).navController!!.navigate(R.id.action_nav_create_post_choose_to_nav_create_post_file, bundle)
             }
         }
@@ -75,17 +75,44 @@ class CreatePostChooseFragment : Fragment() {
         departmentSpinner = requireView().findViewById<Spinner>(R.id.department_spinner)
         courseSpinner = requireView().findViewById<Spinner>(R.id.course_spinner)
 
-        facultySpinner!!.adapter = viewModel!!.setFaculty()
-        departmentSpinner!!.adapter = viewModel!!.setDepartment()
-        courseSpinner!!.adapter = viewModel!!.setCourse()
+        val path = (requireActivity() as MainPageActivity).currentPath
+        var fac = ""
+        var dep = ""
+        var cou = ""
+        if (path.isNotEmpty()) {
+            val splitedPath = path.split('/')
+            if (splitedPath.size == 1) {
+                fac = path
+            } else if (splitedPath.size == 2) {
+                fac = splitedPath[0]
+                dep = splitedPath[1]
+            } else if (splitedPath.size == 3) {
+                fac = splitedPath[0]
+                dep = splitedPath[1]
+                cou = splitedPath[2]
+            }
+        }
 
+        println("fac: " + fac + " dep: " + dep + " cou: " + cou)
+        viewModel!!.setFaculty(fac, facultySpinner!!)
+        facultySpinner!!.setTag("after init")
+        viewModel!!.setDepartment(dep, departmentSpinner!!)
+        departmentSpinner!!.setTag("after init")
+        viewModel!!.setCourse(cou, courseSpinner!!)
+        courseSpinner!!.setTag("after init")
         setSpinnerListeners()
+
     }
 
     private fun setSpinnerListeners() {
         facultySpinner!!.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parentView: AdapterView<*>?, selectedItemView: View?, position: Int, id: Long) {
-                viewModel!!.facultySelected(position)
+                if (facultySpinner!!.getTag().equals("init")) {
+                    facultySpinner!!.setTag("after init")
+                }
+                else {
+                    viewModel!!.facultySelected(position)
+                }
             }
             override fun onNothingSelected(parentView: AdapterView<*>?) {
 
@@ -93,8 +120,12 @@ class CreatePostChooseFragment : Fragment() {
         })
         departmentSpinner!!.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parentView: AdapterView<*>?, selectedItemView: View?, position: Int, id: Long) {
-                viewModel!!.departmentSelected(position)
-
+                if (departmentSpinner!!.getTag().equals("init")) {
+                    departmentSpinner!!.setTag("after init")
+                }
+                else {
+                    viewModel!!.departmentSelected(position)
+                }
             }
             override fun onNothingSelected(parentView: AdapterView<*>?) {
 
@@ -102,8 +133,12 @@ class CreatePostChooseFragment : Fragment() {
         })
         courseSpinner!!.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parentView: AdapterView<*>?, selectedItemView: View?, position: Int, id: Long) {
-                viewModel!!.courseSelected(position)
-
+                if (courseSpinner!!.getTag().equals("init")) {
+                    courseSpinner!!.setTag("after init")
+                }
+                else {
+                    viewModel!!.courseSelected(position)
+                }
             }
             override fun onNothingSelected(parentView: AdapterView<*>?) {
 

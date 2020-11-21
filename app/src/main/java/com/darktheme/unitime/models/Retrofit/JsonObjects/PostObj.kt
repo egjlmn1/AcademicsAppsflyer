@@ -7,7 +7,7 @@ import retrofit2.Retrofit
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-class PostObj(val post_id : String, val type : String, val sub_type : String, val date : String, val flair : String?, val publisher : String, val user_email: String, val text_content : String?, val attachment : AttachmentObj?) {}
+class PostObj(val post_id : String, val type : String, val flair : String,  val path : String?, val date : String?, val publisher : String, val publisher_email: String, val text_content : String?, val attachment : AttachmentObj?) {}
 class AttachmentObj(val name : String, val type : String)
 interface PostAPI {
 

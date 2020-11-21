@@ -16,10 +16,9 @@ class MySpinnerAdapter(context: Context, objects: List<SpinnerCheckBox>) :
     private val mContext: Context
     private val listState: ArrayList<SpinnerCheckBox>
     private val myAdapter: MySpinnerAdapter
-    private var isFromView = false
 
     override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup?): View? {
-        val listItem = LayoutInflater.from(mContext).inflate(R.layout.spinner_item,parent,false);
+        val listItem = LayoutInflater.from(mContext).inflate(R.layout.spinner_item,parent,false)
         val text = listItem!!.findViewById<TextView>(R.id.text)
         text.text = listState[position].title
         text.setTextColor(mContext.getColor(R.color.colorNormalText))
@@ -30,7 +29,6 @@ class MySpinnerAdapter(context: Context, objects: List<SpinnerCheckBox>) :
             PreferenceManager.getDefaultSharedPreferences(mContext).edit().putBoolean(listState[position].data, b).apply()
             listState[position].selected = b
         }
-        //println(listState.toString())
         return listItem
     }
 

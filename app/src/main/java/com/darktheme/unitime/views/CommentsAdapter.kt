@@ -1,19 +1,24 @@
+
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.darktheme.unitime.R
-import java.util.*
-import com.darktheme.unitime.OnItemClickListener
-import com.darktheme.unitime.models.Retrofit.JsonObjects.CommentObj
+import com.darktheme.unitime.models.Retrofit.JsonObjects.GetCommentObj
+import java.time.LocalDateTime
+import java.time.ZoneOffset
+import java.time.temporal.ChronoUnit
 
 
 /**
  * Created by User on 1/1/2018.
  */
-class CommentsAdapter(val context: Context, val comments: ArrayList<CommentObj>, val commentListener: OnItemClickListener) : RecyclerView.Adapter<CommentsAdapter.CommentViewHolder>() {
+class CommentsAdapter(
+    val context: Context,
+    val comments: List<GetCommentObj>
+) : RecyclerView.Adapter<CommentsAdapter.CommentViewHolder>() {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommentViewHolder {
@@ -22,9 +27,40 @@ class CommentsAdapter(val context: Context, val comments: ArrayList<CommentObj>,
 
 
     override fun onBindViewHolder(holder: CommentViewHolder, position: Int) {
-       holder.content.text = comments[position].content
-       holder.publisher.text = comments[position].publisher
-       holder.date.text = comments[position].date
+        holder.content.text = comments[position].content
+        holder.publisher.text = comments[position].publisher
+
+        val dt = LocalDateTime.parse(comments[position].date.subSequence(0, comments[position].date.length-1))
+        val now = LocalDateTime.now(ZoneOffset.UTC)
+
+        val years = dt.until(now, ChronoUnit.YEARS).toInt()
+        if (years > 0) {
+            holder.date.text = StringBuilder().append(years).append(" years ago").toString()
+        } else {
+            val months = dt.until(now, ChronoUnit.MONTHS).toInt()
+            if (months > 0) {
+                holder.date.text = StringBuilder().append(months).append(" months ago").toString()
+            } else {
+                val days = dt.until(now, ChronoUnit.DAYS).toInt()
+                if (days > 0) {
+                    holder.date.text = StringBuilder().append(days).append(" days ago").toString()
+                } else {
+                    val hours = dt.until(now, ChronoUnit.HOURS).toInt()
+                    if (hours > 0) {
+                        print("hours: " + hours)
+                        holder.date.text = StringBuilder().append(hours).append(" hours ago").toString()
+                    } else {
+                        val minutes = dt.until(now, ChronoUnit.MINUTES).toInt()
+                        if (minutes > 0) {
+                            holder.date.text = StringBuilder().append(minutes).append(" minutes ago").toString()
+                        } else {
+                            holder.date.text = "now"
+
+                        }
+                    }
+                }
+            }
+        }
     }
 
 

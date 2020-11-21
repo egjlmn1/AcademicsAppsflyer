@@ -43,10 +43,10 @@
 
             <ImageView
                 android:id="@+id/profile_pic"
-                android:layout_height="80dp"
-                android:layout_width="80dp"
-                android:background="@drawable/academics_grayscale"
-                />
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_margin="10dp"
+                android:background="@drawable/academics_profile" />
 
             <TextView
                 android:id="@+id/profile_name"
@@ -56,6 +56,7 @@
                 android:textSize="25sp"
                 android:layout_centerVertical="true"
                 android:textColor="@color/colorNormalText"
+                android:fontFamily="@font/tommy_bold"
                 android:layout_toRightOf="@id/profile_pic"/>
 
         </RelativeLayout>
@@ -63,24 +64,10 @@
         <RelativeLayout
             android:id="@+id/extra_info"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="30dp"
             android:layout_below="@+id/profile_show"
             >
-            <TextView
-                android:id="@+id/credits_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="credits: 500"
-                android:layout_marginLeft="30dp"
-                android:textColor="@color/colorNormalText"/>
-            <TextView
-                android:id="@+id/age_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="age: 3y 2m"
-                android:layout_toRightOf="@+id/credits_text"
-                android:layout_marginLeft="30dp"
-                android:textColor="@color/colorNormalText"/>
+
         </RelativeLayout>
 
 

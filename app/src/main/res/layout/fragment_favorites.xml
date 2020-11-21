@@ -27,9 +27,11 @@
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:layout_marginHorizontal="10dp"
-                android:background="@drawable/academics_grayscale"
+                android:background="@drawable/ic_back_vector"
+                android:backgroundTint="@color/colorNormalText"
+                android:rotation="180"
                 style="?android:attr/borderlessButtonStyle"
-                android:onClick="@{()->viewModel.onProfileClick()}"
+                android:onClick="@{()->viewModel.onBackClick()}"
                 />
 
             <com.mancj.materialsearchbar.MaterialSearchBar

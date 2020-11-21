@@ -16,7 +16,7 @@ class FullImageFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val root = inflater.inflate(R.layout.fragment_full_image, container, false)
         val photoView = root.findViewById(R.id.full_image) as PhotoView
-        val id = arguments?.get("id")
+        val id = arguments?.getString("id")
         Glide.with(this).load(StringBuilder(AppInfo.serverUrl).append("/post/content?id=").append(id).toString()).into(photoView)
         return root
     }

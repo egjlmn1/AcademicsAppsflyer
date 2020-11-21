@@ -42,7 +42,7 @@ class PasswordFragment : Fragment() {
 
         continueButton = root.findViewById<Button>(R.id.continue_btn)
         root.findViewById<Button>(R.id.continue_btn).setOnClickListener {
-            if (valid) {
+            if (valid || checkValid()) {
                 activity.navController!!.navigate(R.id.action_password_to_name)
             } else {
                 if (!editText1!!.text.isValidPassword()) {
@@ -52,14 +52,17 @@ class PasswordFragment : Fragment() {
                 }
                 if (!equals(editText1!!.text.toString(), editText2!!.text.toString())) {
                     editTextLayout2!!.setError("Enter the same password")
-                } else {
-                    editTextLayout2!!.setError("")
                 }
             }
         }
 
         return root
     }
+
+    fun checkValid(): Boolean {
+        return (editText1!!.text.isValidPassword()) && (editText2!!.text.isValidPassword()) && (editText1!!.text!!.equals(editText2!!.text))
+    }
+
     fun CharSequence?.isValidPassword() = !isNullOrEmpty() && (this!!.length <= 20) && (this.length >= 6)
 
     private fun equals(txt1: String, txt2: String): Boolean {

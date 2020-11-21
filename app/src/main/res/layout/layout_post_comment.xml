@@ -14,7 +14,7 @@
         android:id="@+id/comment_profile_pic"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:background="@drawable/academics_grayscale"
+        android:background="@drawable/academics_profile"
         android:layout_marginLeft="10dp"
         />
 
@@ -28,16 +28,19 @@
         android:layout_marginLeft="10dp"
         android:textColor="@color/colorNormalText"
         />
+
     <TextView
         android:id="@+id/comment_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="date"
+        android:text="3h ago"
         android:textSize="10sp"
-        android:layout_below="@+id/comment_publisher"
-        android:layout_marginLeft="55dp"
+        android:layout_toRightOf="@+id/comment_profile_pic"
+        android:layout_below="@id/comment_publisher"
+        android:layout_marginLeft="10dp"
         android:textColor="@color/colorHintText"
         />
+
     <TextView
         android:id="@+id/comment_content"
         android:layout_width="wrap_content"

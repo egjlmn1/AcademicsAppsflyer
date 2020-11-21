@@ -1,6 +1,5 @@
 package com.darktheme.unitime.views.Fragments
 
-import android.app.Activity
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.view.LayoutInflater
@@ -27,18 +26,16 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 
-//TODO replace the postFragment with 3 new fragments: best fit fragment, search fragment, hierarchy fragment and have all three of them include this layout
-open class MainPostsFragment : Fragment() {
+open class MainPostsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener {
 
     var posts : PostsLayout? = null
     var containerView: ViewGroup? = null
     var viewModel : PostsViewModel? = null
 
     var searchBar: MaterialSearchBar? = null
-
+    var swipeContainer: SwipeRefreshLayout? = null
 
     var bestFit: Boolean = false
-    var positionInFolders: String? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         containerView = container
@@ -56,6 +53,7 @@ open class MainPostsFragment : Fragment() {
         return view
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initAll()
@@ -68,24 +66,25 @@ open class MainPostsFragment : Fragment() {
         posts!!.initRecyclerView(requireActivity())
         initRefresh()
         initSearchBar()
-        loadPosts()
     }
 
     open fun loadPosts() {
-        viewModel!!.loadPosts(bestFit)
+        swipeContainer!!.setRefreshing(true)
+        viewModel!!.loadPosts(bestFit, (requireActivity() as MainPageActivity).currentPath){ swipeContainer!!.setRefreshing(false);}
     }
 
     fun initRefresh() {
-        val swipeContainer = requireView().findViewById<SwipeRefreshLayout>(R.id.swipe_container)
-        swipeContainer.setOnRefreshListener {
-            refreshAll()
-            swipeContainer.setRefreshing(false);
-        }
+        swipeContainer = requireView().findViewById<SwipeRefreshLayout>(R.id.swipe_container)
+        swipeContainer!!.setOnRefreshListener(this)
 
-        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
-            android.R.color.holo_green_light,
-            android.R.color.holo_orange_light,
-            android.R.color.holo_red_light);
+        swipeContainer!!.setColorSchemeResources(R.color.colorPrimary,
+            android.R.color.holo_green_dark,
+            android.R.color.holo_orange_dark,
+            android.R.color.holo_blue_dark)
+        swipeContainer!!.post {
+            swipeContainer!!.setRefreshing(true)
+            loadPosts()
+        }
     }
 
     fun initSearchBar() {
@@ -96,14 +95,25 @@ open class MainPostsFragment : Fragment() {
 
     open fun initLayout() {
         val view = LayoutInflater.from(context).inflate(R.layout.layout_change_view, null, false)
-        requireView().findViewById<RelativeLayout>(R.id.extra_bar).addView(view, 0)
+        requireView().findViewById<RelativeLayout>(R.id.extra_container).addView(view, 0)
     }
 
     open fun setLayout() {
         requireView().findViewById<Button>(R.id.bestfit_hierarchy_btn).setOnClickListener {
             changeLayoutView()
         }
+        val layout =  requireView().findViewById<LinearLayout>(R.id.posts_container)
+        if (layout.childCount > 2) {
+            layout.removeViewAt(1)
+        }
         resetBackPress(requireActivity())
+        val path = (requireActivity() as MainPageActivity).currentPath
+        if (path.isNotEmpty()) {
+            val splited = path.split("/")
+            requireView().findViewById<TextView>(R.id.folder).text = splited[splited.lastIndex]
+        } else {
+            requireView().findViewById<TextView>(R.id.folder).text = ""
+        }
         if (bestFit) {
             requireView().findViewById<Button>(R.id.bestfit_hierarchy_btn).text = "Best Fit View"
             requireView().findViewById<TextView>(R.id.change_to).text = "change to folders view"
@@ -140,7 +150,18 @@ open class MainPostsFragment : Fragment() {
         val callback: OnBackPressedCallback =
         object : OnBackPressedCallback(true /* enabled by default */) {
             override fun handleOnBackPressed() {
-                activity.finish()
+                if ((activity as MainPageActivity).currentPath.isNotEmpty()) {
+                    val splitedPath = activity.currentPath.split('/')
+                    if (splitedPath.size == 1) {
+                        activity.currentPath = ""
+                    } else {
+                        val newPath = splitedPath.subList(0, splitedPath.size-1).joinToString(separator = "/")
+                        activity.currentPath = newPath
+                    }
+                    refreshAll()
+                } else {
+                    activity.finish()
+                }
             }
         }
         activity.onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
@@ -153,8 +174,7 @@ open class MainPostsFragment : Fragment() {
         refreshAll()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        viewModel!!.saveSuggestions(searchBar!!.getLastSuggestions() as List<String>);
+    override fun onRefresh() {
+        refreshAll()
     }
 }

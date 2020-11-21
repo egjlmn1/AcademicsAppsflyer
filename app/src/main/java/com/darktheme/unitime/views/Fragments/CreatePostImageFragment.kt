@@ -11,12 +11,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.darktheme.unitime.R
 import com.darktheme.unitime.models.Retrofit.JsonObjects.AttachmentObj
 import com.darktheme.unitime.models.Retrofit.JsonObjects.CreatePostObj
+import com.darktheme.unitime.models.Retrofit.JsonObjects.CreatePostRequest
+import com.darktheme.unitime.models.Retrofit.JsonObjects.PostObj
+import com.darktheme.unitime.models.Retrofit.RetrofitClient
 import com.darktheme.unitime.views.Activities.MainPageActivity
+import okhttp3.ResponseBody
+import retrofit2.Call
+import retrofit2.Response
 import java.io.ByteArrayOutputStream
 import java.io.InputStream
 
@@ -24,7 +32,8 @@ import java.io.InputStream
 class CreatePostImageFragment : Fragment() {
 
     val LOAD_IMAGE = 100
-    var fileBase64: String? = null
+    var imageBase64: String? = null
+    var path: String? = null
     var flair: String? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -32,8 +41,12 @@ class CreatePostImageFragment : Fragment() {
         val activity = requireActivity() as MainPageActivity
         activity.hideNavBar()
         flair = requireArguments().getString("flair")
+        path = requireArguments().getString("path")
         view.findViewById<Button>(R.id.upload).setOnClickListener {
             chooseImage()
+        }
+        view.findViewById<Button>(R.id.create_post_btn).setOnClickListener {
+            createPost()
         }
         return view
     }
@@ -58,7 +71,7 @@ class CreatePostImageFragment : Fragment() {
     fun loadImage(data: Uri) {
         println("image loading")
         requireView().findViewById<ImageView>(R.id.image).setImageURI(data)
-        fileBase64 = convertToBase64(data)
+        imageBase64 = convertToBase64(data)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -72,13 +85,48 @@ class CreatePostImageFragment : Fragment() {
     }
 
     fun createPost() {
-        if (fileBase64 != null) {
-            CreatePostObj((requireActivity() as MainPageActivity).email!!, flair!!, getText(), AttachmentObj("PNG", fileBase64!!))
-            // TODO send it to the server
+        if ((requireActivity() as MainPageActivity).user_id == null ||
+            (requireActivity() as MainPageActivity).email == null) {
+            Toast.makeText(requireContext(),"Error occurred", Toast.LENGTH_SHORT).show()
+            return
+        }
+        if (imageBase64 != null) {
+            val createdPost = CreatePostObj(
+                PostObj("", "image", flair!!, path!!, null, (requireActivity() as MainPageActivity).user_id!!.toString(), (requireActivity() as MainPageActivity).email!!, getText(), AttachmentObj("", "png")),
+                imageBase64
+            )
+
+            println("Posting post image")
+            CreatePostRequest(RetrofitClient.getInstance()!!).post(createdPost, onResponse, onFailure)
+            requireView().findViewById<Button>(R.id.create_post_btn).isEnabled = false
+            (requireActivity() as MainPageActivity).navController!!.navigate(R.id.action_to_home)
+        } else if (getText().isNotEmpty()) {
+            val createdPost = CreatePostObj(
+                PostObj("", "text", flair!!, path!!, null, (requireActivity() as MainPageActivity).user_id!!.toString(), (requireActivity() as MainPageActivity).email!!, getText(), null),
+                null
+            )
+            println("Posting post image")
+            CreatePostRequest(RetrofitClient.getInstance()!!).post(createdPost, onResponse, onFailure)
+            requireView().findViewById<Button>(R.id.create_post_btn).isEnabled = false
+            (requireActivity() as MainPageActivity).navController!!.navigate(R.id.action_to_home)
+        } else {
+            Toast.makeText(requireContext(), "At least one field needs to be filled", Toast.LENGTH_SHORT).show()
         }
     }
 
     fun getText() : String {
-        return ""
+        return requireView().findViewById<EditText>(R.id.text_post).text.toString().trim()
+    }
+
+    val onFailure = { _: Call<ResponseBody>?, t: Throwable? ->
+        println(t!!.message)
+        Toast.makeText(requireContext(), "Failed, try again later", Toast.LENGTH_SHORT).show()
+    }
+
+    val onResponse =  { _: Call<ResponseBody>?, response: Response<ResponseBody>? ->
+        if (response!!.code() != 200) {
+            println(response.code())
+            Toast.makeText(requireContext(), "Failed, try again later", Toast.LENGTH_SHORT).show()
+        }
     }
 }

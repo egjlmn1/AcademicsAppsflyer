@@ -7,16 +7,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import com.darktheme.unitime.R
-import com.darktheme.unitime.databinding.FragmentPostsBinding
 import com.darktheme.unitime.databinding.FragmentProfileBinding
 import com.darktheme.unitime.models.Room.AppDataBase
-import com.darktheme.unitime.viewModels.PostsViewModel
 import com.darktheme.unitime.viewModels.ProfileViewModel
 import com.darktheme.unitime.views.Activities.MainPageActivity
-import com.darktheme.unitime.views.CustomViews.PostsLayout
 import com.darktheme.unitime.views.CustomViews.ProfileLayout
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -50,23 +45,28 @@ class ProfileFragment : Fragment() {
     fun initAll() {
         initProfileData()
         posts!!.initRecyclerView(requireActivity())
-        viewModel!!.loadPosts()
+        viewModel!!.loadPosts(arguments?.getString("email")!!)
     }
 
     fun initProfileData() {
         val profileName = requireView().findViewById<TextView>(R.id.profile_name)
-        CoroutineScope(Dispatchers.IO).launch {
-            val db = AppDataBase.getInstance(requireContext())
-            val email = (requireActivity() as MainPageActivity).email
-            if (email != null) {
-                val profile = db.profileDao().getProfile(email)
-                if (profile != null) {
-                    withContext(Dispatchers.Main) {
-                        profileName.text = profile.name
+        val name = arguments?.getString("name")
+        if (name.isNullOrEmpty()) {
+            // my profile
+            CoroutineScope(Dispatchers.IO).launch {
+                val db = AppDataBase.getInstance(requireContext())
+                    val email = arguments?.getString("email")
+                    if (email != null) {
+                        val profile = db.profileDao().getProfile(email)
+                        if (profile != null) {
+                            withContext(Dispatchers.Main) {
+                                profileName.text = profile.name
+                            }
+                        }
                     }
-                }
             }
-
+        } else {
+            profileName.text = name
         }
     }
 }

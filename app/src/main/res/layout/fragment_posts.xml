@@ -26,7 +26,7 @@
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:layout_marginHorizontal="10dp"
-                android:background="@drawable/academics_grayscale"
+                android:background="@drawable/academics_profile"
                 style="?android:attr/borderlessButtonStyle"
 
                 android:onClick="@{() -> viewModel.onProfileClick()}"
@@ -55,60 +55,70 @@
                 />
         </androidx.appcompat.widget.Toolbar>
 
-        <androidx.core.widget.NestedScrollView
-
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="match_parent">
+            <androidx.core.widget.NestedScrollView
 
-            android:background="@color/colorBackground">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+
+                android:background="@color/colorBackground">
 
 
-                <LinearLayout
-                    android:id="@+id/posts_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
-
-                    <RelativeLayout
-                        android:id="@+id/extra_bar"
+                    <LinearLayout
+                        android:id="@+id/posts_container"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@color/colorBackground">
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
 
-
-
-                        <Spinner
-                            android:id="@+id/flair_spinner"
-                            android:layout_width="100dp"
+                        <RelativeLayout
+                            android:id="@+id/extra_bar"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:layout_marginEnd="20dp"
-                            android:dropDownWidth="150dp"
-                            android:spinnerMode="dropdown"
-                            android:dropDownVerticalOffset="40dp"
-                            android:dropDownHorizontalOffset="30dp"
-                            android:popupBackground="@color/colorPost"
-                            />
+                            android:background="@color/colorBackground"
+                            android:layout_marginBottom="10dp">
 
-                    </RelativeLayout>
+                            <RelativeLayout
+                                android:id="@+id/extra_container"
+                                android:layout_alignParentStart="true"
+                                android:layout_toStartOf="@+id/flair_spinner"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+
+                            </RelativeLayout>
+
+                            <Spinner
+                                android:id="@+id/flair_spinner"
+                                android:layout_width="100dp"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginEnd="20dp"
+                                android:dropDownWidth="150dp"
+                                android:backgroundTint="@color/colorNormalText"
+                                android:spinnerMode="dropdown"
+                                android:dropDownVerticalOffset="40dp"
+                                android:dropDownHorizontalOffset="30dp"
+                                android:popupBackground="@color/colorPost"
+                                />
+
+                        </RelativeLayout>
 
 
-                    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 
-                        android:id="@+id/swipe_container"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-                    <androidx.recyclerview.widget.RecyclerView
+                        <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/posts_recycler_view"
                         tools:viewBindingIgnore="true"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         />
-                    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
                 </LinearLayout>
         </androidx.core.widget.NestedScrollView>
-    </LinearLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+</LinearLayout>
 
 
 </layout>

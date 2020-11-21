@@ -14,45 +14,51 @@
 
     <EditText
         android:id="@+id/text_post"
-        android:layout_margin="20dp"
-        android:hint="Enter text"
+        android:layout_marginHorizontal="30dp"
+        android:hint="Enter text..."
+        android:textColorHint="@color/colorHintText"
+        android:textColor="@color/colorNormalText"
         android:maxLength="512"
-        android:background="@android:color/transparent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="@font/tommy_regular"
+        android:layout_marginTop="80dp"
         />
+
+
+    <ImageView
+        android:id="@+id/image"
+        android:layout_below="@+id/text_post"
+        android:layout_above="@+id/upload"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"/>
 
     <Button
         android:id="@+id/upload"
-        android:layout_margin="20dp"
-        android:layout_below="@+id/text_post"
+        android:layout_marginStart="40dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="50dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Upload Image"
         android:textAllCaps="false"
         android:fontFamily="@font/tommy_regular"
-        android:textColor="@color/colorNormalText"
+        android:backgroundTint="#fff"
         android:textSize="20sp"
         />
-
-    <ImageView
-        android:id="@+id/image"
-        android:layout_below="@+id/upload"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:adjustViewBounds="true"
-        android:scaleType="fitCenter"/>
 
     <Button
         android:id="@+id/create_post_btn"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginBottom="50dp"
         android:text="post"
         android:enabled="true"
-        android:textColor="@color/colorNormalText"
+        android:backgroundTint="#fff"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/button_default"/>
