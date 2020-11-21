@@ -52,8 +52,6 @@ class PasswordFragment : Fragment() {
                 }
                 if (!equals(editText1!!.text.toString(), editText2!!.text.toString())) {
                     editTextLayout2!!.setError("Enter the same password")
-                } else {
-                    editTextLayout1!!.setError("Enter a password")
                 }
             }
         }

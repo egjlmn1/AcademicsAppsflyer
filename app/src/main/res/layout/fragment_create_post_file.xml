@@ -95,7 +95,7 @@
         android:drawableTint="#f00"
         android:drawablePadding="10dp"
         android:textSize="20sp"
-        android:backgroundTint="@color/colorPost"
+        android:backgroundTint="#fff"
         android:layout_marginTop="30dp"
         android:layout_marginStart="30dp"
         />
@@ -118,7 +118,6 @@
         android:layout_marginBottom="20dp"
         android:text="post"
         android:enabled="true"
-        android:textColor="@color/colorNormalText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/button_default"/>

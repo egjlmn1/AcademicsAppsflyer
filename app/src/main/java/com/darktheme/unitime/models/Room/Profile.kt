@@ -36,13 +36,6 @@ class ProfileDB{
     }
 
     @Ignore
-    constructor(email : String, password : String, name : String) {
-        this.email = email
-        this.password = password
-        this.name = name
-    }
-
-    @Ignore
     override fun toString() : String {
         return email
     }

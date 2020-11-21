@@ -2,14 +2,11 @@ package com.darktheme.unitime.viewModels
 
 import android.app.Activity
 import android.content.Context
-import android.preference.PreferenceManager
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.databinding.BaseObservable
-import androidx.drawerlayout.widget.DrawerLayout
 import com.darktheme.unitime.R
 import com.darktheme.unitime.models.Room.AppDataBase
 import com.darktheme.unitime.views.Activities.MainPageActivity
@@ -35,7 +32,7 @@ class FavoritesViewModel(val activity: Activity) : BaseObservable(),  MaterialSe
     fun loadFolders(view: View, activity: MainPageActivity) {
         CoroutineScope(IO).launch {
             if (activity.email == null) {
-                Toast.makeText(activity,"Try again later", Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity,"Try again later", Toast.LENGTH_SHORT).show()
                 return@launch
             }
             val db = AppDataBase.getInstance(activity)
@@ -47,7 +44,7 @@ class FavoritesViewModel(val activity: Activity) : BaseObservable(),  MaterialSe
                         val inflater = view.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
 
-                        val addedFolder = inflater.inflate(R.layout.layout_single_folder, container, false);
+                        val addedFolder = inflater.inflate(R.layout.layout_single_folder, container, false)
                         folders.add(FolderView(addedFolder, folderPath, activity))
                         addedFolder.setOnClickListener {
                             activity.currentPath = folderPath
@@ -78,7 +75,7 @@ class FavoritesViewModel(val activity: Activity) : BaseObservable(),  MaterialSe
     override fun onSearchConfirmed(text: CharSequence?) {
         println("search confirmed: " + text)
         for (folder in folders) {
-            if (folder.path.toLowerCase(Locale.ROOT).startsWith(searchBar!!.text.toLowerCase(Locale.ROOT))) {
+            if (folder.name.toLowerCase(Locale.ROOT).startsWith(searchBar!!.text.toLowerCase(Locale.ROOT))) {
                 folder.show()
             } else {
                 folder.hide()

@@ -1,10 +1,7 @@
 package com.darktheme.unitime.views.CustomViews
 
-import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
-import android.opengl.Visibility
-import android.preference.PreferenceManager
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -22,10 +19,11 @@ import kotlinx.coroutines.withContext
 class FolderView(val view: View, val path: String, val activity: MainPageActivity) {
     var favorite = false
     val star = view.findViewById<ImageView>(R.id.colored_star)
+    var name: String
 
     init {
         val p = path.split('/')
-        val name = p[p.size-1]
+        name = p[p.size-1]
         view.findViewById<TextView>(R.id.directory_name).text = name
         isFavorite(path)
         setOnFavoriteClick()
@@ -34,7 +32,7 @@ class FolderView(val view: View, val path: String, val activity: MainPageActivit
     fun setOnFavoriteClick() {
         star.setOnClickListener {
             if (activity.email == null) {
-                Toast.makeText(activity,"Try again later", Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity,"Try again later", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
             favorite = !favorite

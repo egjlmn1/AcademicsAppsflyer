@@ -5,7 +5,8 @@ import android.view.Gravity
 import androidx.databinding.BaseObservable
 import androidx.drawerlayout.widget.DrawerLayout
 import com.darktheme.unitime.R
-import com.darktheme.unitime.models.Retrofit.JsonObjects.*
+import com.darktheme.unitime.models.Retrofit.JsonObjects.FlairObj
+import com.darktheme.unitime.models.Retrofit.JsonObjects.PostObj
 import com.darktheme.unitime.models.Retrofit.PostLoader
 import com.darktheme.unitime.views.Activities.MainPageActivity
 import com.mancj.materialsearchbar.MaterialSearchBar
@@ -27,7 +28,6 @@ class PostsViewModel(val activity: MainPageActivity, posts: MutableList<PostObj>
         )
 
     companion object {
-        val TextType = "text"
         val ImageType = "image"
         val FileType = "file"
     }
@@ -85,26 +85,30 @@ class PostsViewModel(val activity: MainPageActivity, posts: MutableList<PostObj>
             PreferenceManager.getDefaultSharedPreferences(activity).getBoolean("meme", true)
         )
         activity.searchFlair = flair
+        println("MEME: " + activity.searchFlair.meme)
     }
 
     fun loadPosts(bestFit: Boolean, path: String, onResult: () -> Unit) {
-
-        if (bestFit) {
-            CoroutineScope(IO).launch {
-                if (activity.searchFlair == null) {
-                    loadFlair()
-                }
-                withContext(Main) {
-                    postLoader.bestfitIdList("email", activity.searchFlair!!, onResult)
-                }
+        CoroutineScope(IO).launch {
+            loadFlair()
+            if (bestFit) {
+                    withContext(Main) {
+                        postLoader.bestfitIdList("email", activity.searchFlair, onResult)
+                    }
+            } else {
+                postLoader.foldersIdList(path, activity.searchFlair, onResult)
             }
-        } else {
-            postLoader.foldersIdList(path, onResult)
         }
     }
 
     fun loadFolder(path: String) {
-        postLoader.foldersIdList(path){}
+        CoroutineScope(IO).launch {
+            loadFlair()
+            withContext(Main) {
+                postLoader.foldersIdList(path, activity.searchFlair){}
+            }
+        }
+
     }
 
     fun searchPosts(search: String, flair: FlairObj, onResult: () -> Unit) {

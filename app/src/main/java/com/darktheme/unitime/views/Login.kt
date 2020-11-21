@@ -2,7 +2,6 @@ package com.darktheme.unitime.views
 
 import android.content.Context
 import android.preference.PreferenceManager
-import androidx.appcompat.app.AppCompatActivity
 import com.darktheme.unitime.R
 import com.darktheme.unitime.models.Room.AppDataBase
 import com.darktheme.unitime.models.Room.ProfileDB
@@ -21,7 +20,7 @@ class Login {
         addProfile(context, profile)
     }
 
-    suspend fun addProfile(context: Context, profile: ProfileDB) {
+    fun addProfile(context: Context, profile: ProfileDB) {
         val db = AppDataBase.getInstance(context)
         val p = db.profileDao().getProfile(profile.email)
         if (p == null) {

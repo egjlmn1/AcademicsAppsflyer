@@ -4,7 +4,6 @@ import android.content.Context
 import android.preference.PreferenceManager
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.databinding.BaseObservable
-import com.darktheme.unitime.R
 
 class MainPageViewModel(val context: Context) : BaseObservable()  {
 

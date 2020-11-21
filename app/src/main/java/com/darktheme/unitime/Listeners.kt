@@ -6,15 +6,8 @@ import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import com.darktheme.unitime.models.Retrofit.DownloadTask
 import com.darktheme.unitime.models.Retrofit.JsonObjects.PostObj
-import com.darktheme.unitime.models.Retrofit.RetrofitClient
 import com.darktheme.unitime.views.Activities.MainPageActivity
 import com.google.gson.Gson
-import okhttp3.ResponseBody
-import retrofit2.Call
-import retrofit2.Response
-import java.io.File
-import java.io.FileOutputStream
-import java.lang.Exception
 
 interface OnItemClickListener {
     fun onItemClicked(data: String)
@@ -42,7 +35,7 @@ class OnFileClickListener(val contex: Context) : OnItemClickListener {
         try{
             DownloadTask(contex as MainPageActivity, StringBuilder(AppInfo.serverUrl).append("/post/content?id=").append(id).toString(), filename)
         } catch (e: Exception) {
-            Toast.makeText(contex,"Failed to download",Toast.LENGTH_SHORT).show();
+            Toast.makeText(contex,"Failed to download",Toast.LENGTH_SHORT).show()
             println(e.message)
         }
     }

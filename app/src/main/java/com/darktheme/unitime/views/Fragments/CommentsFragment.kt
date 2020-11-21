@@ -8,14 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
-import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.core.os.bundleOf
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.darktheme.unitime.OnCommentClickListener
 import com.darktheme.unitime.OnFileClickListener
 import com.darktheme.unitime.R
 import com.darktheme.unitime.models.Retrofit.JsonObjects.*
@@ -49,6 +46,8 @@ class CommentsFragment : Fragment() {
         val id = (requireActivity() as MainPageActivity).user_id
         if (comment.isNotEmpty() && id != null) {
             requireView().findViewById<Button>(R.id.send_btn).isEnabled = false
+            println("COMMENT: " + comment)
+
             CommentRequest(RetrofitClient.getInstance()!!).post(arguments?.getString("id")!!, PostCommentObj(id.toString(), comment), onSendResponse, onSendFailure)
         }
     }
@@ -62,7 +61,7 @@ class CommentsFragment : Fragment() {
     }
 
     fun getPostResponse(): (Call<PostObj>?, Response<PostObj>?) -> Unit {
-        return { call: Call<PostObj>?, response: Response<PostObj>? ->
+        return { _: Call<PostObj>?, response: Response<PostObj>? ->
             val p : PostObj = response!!.body()!!
             val postView = PostView(requireActivity() as MainPageActivity, requireView())
             postView.postInfo!!.setOnClickListener{
@@ -80,7 +79,7 @@ class CommentsFragment : Fragment() {
         }
     }
 
-    val postFailure : (call: Call<PostObj>?, t: Throwable?) -> Unit = { call: Call<PostObj>?, t: Throwable? ->
+    val postFailure : (call: Call<PostObj>?, t: Throwable?) -> Unit = { _: Call<PostObj>?, t: Throwable? ->
         println("ON POST FAILURE!!!")
         println("Response: " + t!!.message)
     }
@@ -88,16 +87,16 @@ class CommentsFragment : Fragment() {
     private fun initRecyclerView() {
         recyclerView = requireView().findViewById(R.id.comments_recycler_view)
         //recyclerView!!.addOnScrollListener(ScrollListener())
-        recyclerView!!.adapter = CommentsAdapter(requireActivity(), commentsList, OnCommentClickListener((requireActivity() as MainPageActivity).navController!!))
+        recyclerView!!.adapter = CommentsAdapter(requireActivity(), commentsList)
         recyclerView!!.layoutManager = LinearLayoutManager(requireActivity())
     }
 
-    val onFailure = {call: Call<List<GetCommentObj>>?, t: Throwable? ->
+    val onFailure = { _: Call<List<GetCommentObj>>?, t: Throwable? ->
         println("error loading comments")
         println(t!!.message)
     }
 
-    val onResponse = { call: Call<List<GetCommentObj>>?, response: Response<List<GetCommentObj>>? ->
+    val onResponse = { _: Call<List<GetCommentObj>>?, response: Response<List<GetCommentObj>>? ->
         if (response!!.code() != 200) {
             println("Error loading comments")
         } else {
@@ -106,19 +105,22 @@ class CommentsFragment : Fragment() {
             commentsList.clear()
             recyclerView!!.adapter!!.notifyItemRangeRemoved(0, size)
             val lst = response.body()
+            for (c in lst!!) {
+                println(c.content)
+            }
             commentsList.addAll(lst!!)
             recyclerView!!.adapter!!.notifyItemRangeInserted(0, commentsList.size)
         }
     }
 
-    val onSendFailure = {call: Call<ResponseBody>?, t: Throwable? ->
+    val onSendFailure = { _: Call<ResponseBody>?, t: Throwable? ->
         println("failed to send comment")
         println(t!!.message)
-        Toast.makeText(requireContext(),"Failed to post comment", Toast.LENGTH_SHORT).show();
+        Toast.makeText(requireContext(),"Failed to post comment", Toast.LENGTH_SHORT).show()
         requireView().findViewById<Button>(R.id.send_btn).isEnabled = true
     }
 
-    val onSendResponse = { call: Call<ResponseBody>?, response: Response<ResponseBody>? ->
+    val onSendResponse = { _: Call<ResponseBody>?, response: Response<ResponseBody>? ->
         requireView().findViewById<Button>(R.id.send_btn).isEnabled = true
         if (response!!.code() != 200) {
             println("Error loading comments")
@@ -132,6 +134,5 @@ class CommentsFragment : Fragment() {
     }
 
     companion object {
-        val TAG = "CommentsFragmentTAG"
     }
 }

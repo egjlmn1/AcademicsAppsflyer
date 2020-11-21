@@ -69,7 +69,7 @@ open class MainPostsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener 
     }
 
     open fun loadPosts() {
-        swipeContainer!!.setRefreshing(true);
+        swipeContainer!!.setRefreshing(true)
         viewModel!!.loadPosts(bestFit, (requireActivity() as MainPageActivity).currentPath){ swipeContainer!!.setRefreshing(false);}
     }
 
@@ -80,13 +80,11 @@ open class MainPostsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener 
         swipeContainer!!.setColorSchemeResources(R.color.colorPrimary,
             android.R.color.holo_green_dark,
             android.R.color.holo_orange_dark,
-            android.R.color.holo_blue_dark);
-        swipeContainer!!.post(Runnable {
+            android.R.color.holo_blue_dark)
+        swipeContainer!!.post {
             swipeContainer!!.setRefreshing(true)
-
-            // Fetching data from server
             loadPosts()
-        })
+        }
     }
 
     fun initSearchBar() {
@@ -109,6 +107,13 @@ open class MainPostsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener 
             layout.removeViewAt(1)
         }
         resetBackPress(requireActivity())
+        val path = (requireActivity() as MainPageActivity).currentPath
+        if (path.isNotEmpty()) {
+            val splited = path.split("/")
+            requireView().findViewById<TextView>(R.id.folder).text = splited[splited.lastIndex]
+        } else {
+            requireView().findViewById<TextView>(R.id.folder).text = ""
+        }
         if (bestFit) {
             requireView().findViewById<Button>(R.id.bestfit_hierarchy_btn).text = "Best Fit View"
             requireView().findViewById<TextView>(R.id.change_to).text = "change to folders view"
@@ -172,9 +177,4 @@ open class MainPostsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener 
     override fun onRefresh() {
         refreshAll()
     }
-
-//    override fun onDestroy() {
-//        super.onDestroy()
-//        viewModel!!.saveSuggestions(searchBar!!.getLastSuggestions() as List<String>);
-//    }
 }

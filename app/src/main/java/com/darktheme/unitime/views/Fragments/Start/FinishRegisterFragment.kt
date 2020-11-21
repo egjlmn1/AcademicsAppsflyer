@@ -39,7 +39,7 @@ class FinishRegisterFragment : Fragment() {
         return root
     }
 
-    val onRegisterResponse : (call: Call<ProfileRetrofit>?, response: Response<ProfileRetrofit>?) -> Unit = { call: Call<ProfileRetrofit>?, response: Response<ProfileRetrofit>? ->
+    val onRegisterResponse : (call: Call<ProfileRetrofit>?, response: Response<ProfileRetrofit>?) -> Unit = { _: Call<ProfileRetrofit>?, response: Response<ProfileRetrofit>? ->
         if (response!!.code() == 200) {
             holder!!.removeView(loadAnim)
             val finishAnim = LottieAnimationView(requireContext())
@@ -59,13 +59,13 @@ class FinishRegisterFragment : Fragment() {
                 showError("An account with that email already exists")
             } else {
                 println("Error code: " + response.code())
-                Toast.makeText(requireContext(),"Error occurred", Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(),"Error occurred", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
-    val onRegisterFailure : (call: Call<ProfileRetrofit>?, t: Throwable?) -> Unit = { call: Call<ProfileRetrofit>?, t: Throwable? ->
-        Toast.makeText(requireContext(),"Error occurred", Toast.LENGTH_SHORT).show();
+    val onRegisterFailure : (call: Call<ProfileRetrofit>?, t: Throwable?) -> Unit = { _: Call<ProfileRetrofit>?, t: Throwable? ->
+        Toast.makeText(requireContext(),"Error occurred", Toast.LENGTH_SHORT).show()
         println("Error msg: " + t!!.message)
     }
 

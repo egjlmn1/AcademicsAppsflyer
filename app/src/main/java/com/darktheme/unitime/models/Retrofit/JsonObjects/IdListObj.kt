@@ -12,7 +12,13 @@ import retrofit2.http.Query
 class SearchResponseListObj(val posts_ids: List<SearchResponse>) {}
 class SearchResponse(val view_type: Int, val content: String) {}
 class SearchObj(val search: String, val flair: FlairObj) {}
-class FlairObj(val question: Boolean, val suggestion: Boolean, val test: Boolean, val summary: Boolean, val meme: Boolean)
+class FlairObj(
+    val question: Boolean,
+    val suggestion: Boolean,
+    val test: Boolean,
+    val summary: Boolean,
+    val meme: Boolean
+)
 
 interface IdListAPI {
 
@@ -44,7 +50,7 @@ class IdListRequest(val retrofit: Retrofit) {
         })
     }
 
-    fun folders(folder : String,
+    fun folders(folder : String, flair: FlairObj,
                myOnResponse : (call: Call<SearchResponseListObj>?, response: Response<SearchResponseListObj>?) -> Unit, myOnFaliure : (call: Call<SearchResponseListObj>?, t: Throwable?) -> Unit) {
         val api : IdListAPI = retrofit.create(IdListAPI::class.java)
         val call : Call<SearchResponseListObj> = api.foldersIdListJson(folder)

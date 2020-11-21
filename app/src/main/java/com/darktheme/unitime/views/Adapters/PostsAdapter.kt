@@ -1,13 +1,11 @@
-import android.content.Context
+
 import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.*
+import android.widget.FrameLayout
 import androidx.core.os.bundleOf
-import androidx.core.view.children
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
@@ -23,7 +21,6 @@ import com.darktheme.unitime.views.Activities.MainPageActivity
 import com.google.gson.Gson
 import java.time.LocalDateTime
 import java.time.ZoneOffset
-import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 import java.util.*
 
@@ -57,16 +54,6 @@ class PostsAdapter(val activity: MainPageActivity, val posts: ArrayList<PostObj>
         return position.toLong()
     }
 
-    fun clear() {
-        posts.clear()
-        notifyDataSetChanged()
-    }
-
-    fun addAll(list: List<PostObj>) {
-        posts.addAll(list)
-        notifyDataSetChanged()
-    }
-
     inner class PostViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val postView = PostView(activity, itemView)
 
@@ -83,6 +70,7 @@ class PostsAdapter(val activity: MainPageActivity, val posts: ArrayList<PostObj>
 class PostView(val activity: MainPageActivity, itemView: View) {
     val contentParent : LinearLayout? = itemView.findViewById(R.id.post_content_layout)
     val publisher : TextView? = itemView.findViewById(R.id.post_publisher)
+    val flair : TextView? = itemView.findViewById(R.id.post_flair)
     val date : TextView? = itemView.findViewById(R.id.post_time)
     val parentLayout : RelativeLayout? = itemView.findViewById(R.id.post_parent_layout)
     var post: PostObj? = null
@@ -91,7 +79,7 @@ class PostView(val activity: MainPageActivity, itemView: View) {
 
     fun setUp(p : PostObj, fileListener: OnItemClickListener) {
         post = p
-        if ((contentParent == null) || (publisher == null) || (parentLayout == null) || (postInfo == null) || (date == null)) {
+        if ((contentParent == null) || (publisher == null) || (parentLayout == null) || (postInfo == null) || (date == null) || (flair == null)) {
             return
         }
         val profPic = parentLayout.findViewById<ImageView>(R.id.post_profile_pic)
@@ -101,6 +89,7 @@ class PostView(val activity: MainPageActivity, itemView: View) {
                 activity.navController!!.navigate(R.id.action_to_nav_my_profile, bundle)
             }
         }
+        flair.text = post!!.flair
         publisher.text = post!!.publisher
         publisher.let {
             publisher.setOnClickListener {
@@ -108,7 +97,7 @@ class PostView(val activity: MainPageActivity, itemView: View) {
                 activity.navController!!.navigate(R.id.action_to_nav_my_profile, bundle)
             }
         }
-        setDate(p.date)
+        setDate(p.date!!)
         if (!post!!.text_content.isNullOrEmpty()) {
             setTextContent(post!!.text_content!!)
         } else {
@@ -148,29 +137,25 @@ class PostView(val activity: MainPageActivity, itemView: View) {
     }
 
     fun setDate(dateString: String) {
-        val formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm:ss");
-        val dt = LocalDateTime.parse(dateString, formatter);
-        println("DATE TIME: " + dt.toString())
+        val dt = LocalDateTime.parse(dateString.subSequence(0, dateString.length-1))
         val now = LocalDateTime.now(ZoneOffset.UTC)
-        println("DATE TIME NOW: " + dt.toString())
-        val years = dt.until(now, ChronoUnit.YEARS).toInt();
+        val years = dt.until(now, ChronoUnit.YEARS).toInt()
         if (years > 0) {
             date!!.text = StringBuilder().append(years).append(" years ago").toString()
         } else {
-            val months = dt.until(now, ChronoUnit.MONTHS).toInt();
+            val months = dt.until(now, ChronoUnit.MONTHS).toInt()
             if (months > 0) {
                 date!!.text = StringBuilder().append(months).append(" months ago").toString()
             } else {
-                val days = dt.until(now, ChronoUnit.DAYS).toInt();
+                val days = dt.until(now, ChronoUnit.DAYS).toInt()
                 if (days > 0) {
                     date!!.text = StringBuilder().append(days).append(" days ago").toString()
                 } else {
-                    val hours = dt.until(now, ChronoUnit.HOURS).toInt();
+                    val hours = dt.until(now, ChronoUnit.HOURS).toInt()
                     if (hours > 0) {
-                        print("hours: " + hours)
                         date!!.text = StringBuilder().append(hours).append(" hours ago").toString()
                     } else {
-                        val minutes = dt.until(now, ChronoUnit.MINUTES).toInt();
+                        val minutes = dt.until(now, ChronoUnit.MINUTES).toInt()
                         if (minutes > 0) {
                             date!!.text = StringBuilder().append(minutes).append(" minutes ago").toString()
                         } else {
@@ -209,6 +194,11 @@ class PostView(val activity: MainPageActivity, itemView: View) {
             createProgressBar()
         }
         postImage = ImageView(activity)
+        val imageViewParams = FrameLayout.LayoutParams(
+            FrameLayout.LayoutParams.MATCH_PARENT,
+            FrameLayout.LayoutParams.WRAP_CONTENT
+        )
+        postImage!!.setLayoutParams(imageViewParams)
 
         Glide.with(activity)
             .load(StringBuilder(AppInfo.serverUrl).append("/post/content?id=").append(imageID).toString()).listener(object : RequestListener<Drawable> {
@@ -219,18 +209,15 @@ class PostView(val activity: MainPageActivity, itemView: View) {
                 }
                 override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
                     removeProgressBar()
+                    currentContent.addView(postImage)
                     return false
                 }
-            }).into(postImage!!)
-        currentContent.addView(postImage)
+            }).override(Target.SIZE_ORIGINAL).into(postImage!!)
     }
 
     fun removeProgressBar() {
-        println("child count: " + contentParent!!.childCount)
-        val parenet = contentParent.findViewById<LinearLayout>(R.id.content_container)
-        println("parent: " + parenet)
+        val parenet = contentParent!!.findViewById<LinearLayout>(R.id.content_container)
         val progressBar = parenet.findViewById<ProgressBar>(R.id.progressBar)
-        println("progress bar: " + progressBar)
         parenet.removeView(progressBar)
     }
 
@@ -245,6 +232,7 @@ class PostView(val activity: MainPageActivity, itemView: View) {
 
     fun createProgressBar() {
         val progressBar = ProgressBar(activity)
+        progressBar.id = R.id.progressBar
         contentParent!!.findViewById<LinearLayout>(R.id.content_container)?.let {
             contentParent.findViewById<LinearLayout>(R.id.content_container)?.addView(progressBar)
         }

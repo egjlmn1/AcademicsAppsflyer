@@ -8,7 +8,7 @@ import retrofit2.Retrofit
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-class ProfileRetrofit(var user_id : String, var email : String, var password : String, var name : String = "") {
+class ProfileRetrofit(var user_id : String, var email : String, var password : String, var name : String) {
     fun toDBProfile(): ProfileDB {
         return ProfileDB(user_id.toInt(), email, password, name)
     }

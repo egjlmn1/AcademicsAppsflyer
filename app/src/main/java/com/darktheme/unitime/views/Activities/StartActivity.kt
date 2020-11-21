@@ -1,9 +1,8 @@
 package com.darktheme.unitime.views.Activities
 
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.preference.PreferenceManager
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.darktheme.unitime.R
@@ -20,7 +19,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.Response
-import java.lang.Exception
 
 
 class StartActivity : AppCompatActivity() {

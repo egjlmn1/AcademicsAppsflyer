@@ -1,27 +1,21 @@
 package com.darktheme.unitime.viewModels
 
 import android.content.Context
-import android.content.Intent
-import android.graphics.Bitmap
-import android.net.Uri
-import android.os.ParcelFileDescriptor
-import android.util.Base64
-import android.view.LayoutInflater
-import android.widget.*
+import android.widget.ArrayAdapter
+import android.widget.CheckBox
+import android.widget.Spinner
+import android.widget.Toast
 import androidx.databinding.BaseObservable
 import androidx.databinding.ObservableBoolean
 import androidx.fragment.app.Fragment
 import com.darktheme.unitime.R
+import com.darktheme.unitime.models.Retrofit.JsonObjects.FlairObj
 import com.darktheme.unitime.models.Retrofit.JsonObjects.IdListRequest
 import com.darktheme.unitime.models.Retrofit.JsonObjects.SearchResponseListObj
 import com.darktheme.unitime.models.Retrofit.PostLoader
 import com.darktheme.unitime.models.Retrofit.RetrofitClient
-import com.shockwave.pdfium.PdfDocument
-import com.shockwave.pdfium.PdfiumCore
 import retrofit2.Call
 import retrofit2.Response
-import java.io.ByteArrayOutputStream
-import java.io.IOException
 
 
 class CreatePostFragmentViewModel(val context: Context, val fragment: Fragment) : BaseObservable() {
@@ -37,6 +31,8 @@ class CreatePostFragmentViewModel(val context: Context, val fragment: Fragment) 
     var course = ""
     var flair = "question"
 
+    val fullFalir = FlairObj(true,true,true,true,true)
+
     val facultyList = ArrayList<String>().toMutableList()
     var facultySpinner: Spinner? = null
     val departmentList = ArrayList<String>().toMutableList()
@@ -51,7 +47,7 @@ class CreatePostFragmentViewModel(val context: Context, val fragment: Fragment) 
         set(value) {
             field = value
             if (field != null) {
-                field!!.setOnCheckedChangeListener { compoundButton, b ->
+                field!!.setOnCheckedChangeListener { _, b ->
                     checkBoxListen(b, questionCheckbox, IMAGE)
                     if (b) {
                         flair = "question"
@@ -63,7 +59,7 @@ class CreatePostFragmentViewModel(val context: Context, val fragment: Fragment) 
         set(value) {
             field = value
             if (field != null) {
-                field!!.setOnCheckedChangeListener { compoundButton, b ->
+                field!!.setOnCheckedChangeListener { _, b ->
                     checkBoxListen(b, suggestionCheckbox, IMAGE)
                     if (b) {
                         flair = "suggestion"
@@ -75,7 +71,7 @@ class CreatePostFragmentViewModel(val context: Context, val fragment: Fragment) 
         set(value) {
             field = value
             if (field != null) {
-                field!!.setOnCheckedChangeListener { compoundButton, b ->
+                field!!.setOnCheckedChangeListener { _, b ->
                     if (courseSpinner!!.selectedItem.toString().equals("None")) {
                         testCheckbox!!.isChecked = false
                     } else {
@@ -91,7 +87,7 @@ class CreatePostFragmentViewModel(val context: Context, val fragment: Fragment) 
         set(value) {
             field = value
             if (field != null) {
-                field!!.setOnCheckedChangeListener { compoundButton, b ->
+                field!!.setOnCheckedChangeListener { _, b ->
                     if (courseSpinner!!.selectedItem.toString().equals("None")) {
                         summaryCheckbox!!.isChecked = false
                     } else {
@@ -107,7 +103,7 @@ class CreatePostFragmentViewModel(val context: Context, val fragment: Fragment) 
         set(value) {
             field = value
             if (field != null) {
-                field!!.setOnCheckedChangeListener { compoundButton, b ->
+                field!!.setOnCheckedChangeListener { _, b ->
                     checkBoxListen(b, memeCheckbox, IMAGE)
                     if (b) {
                         flair = "meme"
@@ -162,7 +158,7 @@ class CreatePostFragmentViewModel(val context: Context, val fragment: Fragment) 
         facultySpinner = spinner
         facultySpinner!!.adapter = ArrayAdapter(context, R.layout.text_item, facultyList)
         val response = setList(faculty, facultyList, facultySpinner!!)
-        IdListRequest(RetrofitClient.getInstance()!!).folders("", response, myOnFaliure)
+        IdListRequest(RetrofitClient.getInstance()!!).folders("", fullFalir, response, myOnFaliure)
     }
 
     fun setDepartment(dep: String, spinner: Spinner) {
@@ -181,7 +177,7 @@ class CreatePostFragmentViewModel(val context: Context, val fragment: Fragment) 
         }
         println("loading department: " + faculty + "/" + department)
         val response = setList(department, departmentList, departmentSpinner!!)
-        IdListRequest(RetrofitClient.getInstance()!!).folders(faculty, response, myOnFaliure)
+        IdListRequest(RetrofitClient.getInstance()!!).folders(faculty, fullFalir, response, myOnFaliure)
     }
 
     fun setCourse(cour: String, spinner: Spinner) {
@@ -200,11 +196,11 @@ class CreatePostFragmentViewModel(val context: Context, val fragment: Fragment) 
         }
 
         val response = setList(course, courseList, courseSpinner!!)
-        IdListRequest(RetrofitClient.getInstance()!!).folders(faculty+'/'+department, response, myOnFaliure)
+        IdListRequest(RetrofitClient.getInstance()!!).folders(faculty+'/'+department, fullFalir, response, myOnFaliure)
     }
 
     fun setList(value: String, lst: MutableList<String>, spinner: Spinner) : (Call<SearchResponseListObj>?, Response<SearchResponseListObj>?) -> Unit {
-        return { call: Call<SearchResponseListObj>?, response: Response<SearchResponseListObj>? ->
+        return { _: Call<SearchResponseListObj>?, response: Response<SearchResponseListObj>? ->
             val code = response!!.code()
             if (code == 200) {
                 for (result in response.body()!!.posts_ids) {
@@ -222,7 +218,7 @@ class CreatePostFragmentViewModel(val context: Context, val fragment: Fragment) 
         }
     }
 
-    val myOnFaliure = { call: Call<SearchResponseListObj>?, t: Throwable?->
+    val myOnFaliure = { _: Call<SearchResponseListObj>?, t: Throwable?->
         println(t!!.message)
         println("ERROR CreatPostFragmentViewModel")
     }

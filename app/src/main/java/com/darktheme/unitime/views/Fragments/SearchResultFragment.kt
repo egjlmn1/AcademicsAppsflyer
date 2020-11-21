@@ -1,28 +1,18 @@
 package com.darktheme.unitime.views.Fragments
 
-import PostsAdapter
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.TextureView
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.darktheme.unitime.OnPostClickListener
 import com.darktheme.unitime.R
 import com.darktheme.unitime.databinding.FragmentPostsBinding
-import com.darktheme.unitime.models.Retrofit.JsonObjects.PostObj
 import com.darktheme.unitime.viewModels.PostsViewModel
 import com.darktheme.unitime.views.Activities.MainPageActivity
 import com.darktheme.unitime.views.CustomViews.PostsLayout
-import com.darktheme.unitime.views.CustomViews.ProfileLayout
-import com.mancj.materialsearchbar.MaterialSearchBar
 
 
 class SearchResultFragment : MainPostsFragment() {
@@ -46,7 +36,7 @@ class SearchResultFragment : MainPostsFragment() {
     }
 
     override fun loadPosts() {
-        swipeContainer!!.setRefreshing(true);
+        swipeContainer!!.setRefreshing(true)
         viewModel!!.searchPosts(myActivity!!.searchText, myActivity!!.searchFlair){ swipeContainer!!.setRefreshing(false);}
     }
 

@@ -87,20 +87,24 @@ class CreatePostImageFragment : Fragment() {
     fun createPost() {
         if ((requireActivity() as MainPageActivity).user_id == null ||
             (requireActivity() as MainPageActivity).email == null) {
-            Toast.makeText(requireContext(),"Error occurred", Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(),"Error occurred", Toast.LENGTH_SHORT).show()
             return
         }
         if (imageBase64 != null) {
-            val createdPost = CreatePostObj(PostObj("", "image", flair!!, path!!, "", (requireActivity() as MainPageActivity).user_id.toString(), (requireActivity() as MainPageActivity).email.toString(), getText(), AttachmentObj("", "png")),
-            imageBase64!!)
+            val createdPost = CreatePostObj(
+                PostObj("", "image", flair!!, path!!, null, (requireActivity() as MainPageActivity).user_id!!.toString(), (requireActivity() as MainPageActivity).email!!, getText(), AttachmentObj("", "png")),
+                imageBase64
+            )
 
             println("Posting post image")
             CreatePostRequest(RetrofitClient.getInstance()!!).post(createdPost, onResponse, onFailure)
             requireView().findViewById<Button>(R.id.create_post_btn).isEnabled = false
             (requireActivity() as MainPageActivity).navController!!.navigate(R.id.action_to_home)
         } else if (getText().isNotEmpty()) {
-            val createdPost = CreatePostObj(PostObj("", "text", flair!!, path!!, "", (requireActivity() as MainPageActivity).user_id.toString(), (requireActivity() as MainPageActivity).email.toString(), getText(), null),
-            null)
+            val createdPost = CreatePostObj(
+                PostObj("", "text", flair!!, path!!, null, (requireActivity() as MainPageActivity).user_id!!.toString(), (requireActivity() as MainPageActivity).email!!, getText(), null),
+                null
+            )
             println("Posting post image")
             CreatePostRequest(RetrofitClient.getInstance()!!).post(createdPost, onResponse, onFailure)
             requireView().findViewById<Button>(R.id.create_post_btn).isEnabled = false
@@ -114,12 +118,12 @@ class CreatePostImageFragment : Fragment() {
         return requireView().findViewById<EditText>(R.id.text_post).text.toString().trim()
     }
 
-    val onFailure = {call: Call<ResponseBody>?, t: Throwable? ->
+    val onFailure = { _: Call<ResponseBody>?, t: Throwable? ->
         println(t!!.message)
         Toast.makeText(requireContext(), "Failed, try again later", Toast.LENGTH_SHORT).show()
     }
 
-    val onResponse =  { call: Call<ResponseBody>?, response: Response<ResponseBody>? ->
+    val onResponse =  { _: Call<ResponseBody>?, response: Response<ResponseBody>? ->
         if (response!!.code() != 200) {
             println(response.code())
             Toast.makeText(requireContext(), "Failed, try again later", Toast.LENGTH_SHORT).show()

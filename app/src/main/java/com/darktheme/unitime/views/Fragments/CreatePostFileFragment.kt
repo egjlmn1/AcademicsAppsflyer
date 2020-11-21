@@ -1,19 +1,14 @@
 package com.darktheme.unitime.views.Fragments
 
 import android.app.Activity
-import android.content.ContentResolver
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.net.Uri
-import android.opengl.Visibility
 import android.os.Bundle
 import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -27,9 +22,6 @@ import com.darktheme.unitime.views.Activities.MainPageActivity
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Response
-import java.io.ByteArrayOutputStream
-import java.io.File
-import java.lang.StringBuilder
 
 
 class CreatePostFileFragment : Fragment() {
@@ -59,20 +51,19 @@ class CreatePostFileFragment : Fragment() {
         val intent = Intent()
         intent.type = "application/pdf"
         intent.action = Intent.ACTION_GET_CONTENT
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
-        intent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE)
+        intent.setFlags(Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT)
         startActivityForResult(Intent.createChooser(intent, "Select Pdf"), LOAD_PDF)
     }
 
-    fun loadFile(data: Uri) {
-        val path = data.path!!
+    private fun loadFile(data: Uri) {
         val filename = data.lastPathSegment
         requireView().findViewById<TextView>(R.id.file_name).text =  filename
         requireView().findViewById<TextView>(R.id.file_name).visibility =  View.VISIBLE
         fileBase64 = convertFileToBase64(data)
     }
 
-    fun convertFileToBase64(fileUri: Uri): String? {
+    private fun convertFileToBase64(fileUri: Uri): String? {
 
         val file = requireActivity().contentResolver.openInputStream(fileUri)
         val bytes = file!!.readBytes()
@@ -93,7 +84,7 @@ class CreatePostFileFragment : Fragment() {
     fun createPost() {
         if ((requireActivity() as MainPageActivity).user_id == null ||
             (requireActivity() as MainPageActivity).email == null) {
-            Toast.makeText(requireContext(),"Error occurred", Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(),"Error occurred", Toast.LENGTH_SHORT).show()
             return
         }
         if ((fileBase64 != null) && (!requireView().findViewById<TextView>(R.id.file_name).text.isNullOrEmpty())
@@ -106,8 +97,9 @@ class CreatePostFileFragment : Fragment() {
                 name = StringBuilder(name).append(".pdf").toString()
             }
             val createdPost = CreatePostObj(
-                PostObj("", "file", flair!!, path!!, "", (requireActivity() as MainPageActivity).user_id.toString(), (requireActivity() as MainPageActivity).email!!, getText(), AttachmentObj(name, "pdf")),
-                fileBase64!!)
+                PostObj("", "file", flair!!, path!!, null, (requireActivity() as MainPageActivity).user_id!!.toString(), (requireActivity() as MainPageActivity).email!!, getText(), AttachmentObj(name, "pdf")),
+                fileBase64
+            )
 
             println("Posting post file")
             CreatePostRequest(RetrofitClient.getInstance()!!).post(createdPost, onResponse, onFailure)
@@ -133,11 +125,11 @@ class CreatePostFileFragment : Fragment() {
             .append(requireView().findViewById<TextView>(R.id.prof_edittext).text).append("\n Year: ").append(requireView().findViewById<TextView>(R.id.year_edittext).text).toString()
     }
 
-    val onFailure = { call: Call<ResponseBody>?, t: Throwable? ->
+    val onFailure = { _: Call<ResponseBody>?, _: Throwable? ->
         Toast.makeText(requireContext(), "Failed, try again later", Toast.LENGTH_SHORT).show()
     }
 
-    val onResponse =  { call: Call<ResponseBody>?, response: Response<ResponseBody>? ->
+    val onResponse =  { _: Call<ResponseBody>?, response: Response<ResponseBody>? ->
         if (response!!.code() != 200) {
             Toast.makeText(requireContext(), "Failed, try again later", Toast.LENGTH_SHORT).show()
         }

@@ -24,10 +24,10 @@ class PostLoader(val activity: Activity, val posts: MutableList<PostObj>, val re
         ).search(searchText, flair, getIdResponse(onResult), getIdFailure(onResult))
     }
 
-    fun foldersIdList(folder: String, onResult: () -> Unit) {
+    fun foldersIdList(folder: String, flair: FlairObj, onResult: () -> Unit) {
         IdListRequest(
             RetrofitClient.getInstance()!!
-        ).folders(folder, getIdResponse(onResult), getIdFailure(onResult))
+        ).folders(folder, flair, getIdResponse(onResult), getIdFailure(onResult))
     }
 
     fun bestfitIdList(email: String, flair: FlairObj, onResult: () -> Unit) {

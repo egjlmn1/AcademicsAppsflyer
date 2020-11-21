@@ -10,16 +10,16 @@ import java.util.*
 interface FavoritesDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract fun insertFavorite(vararg favoriteList : FavoriteList)
+    fun insertFavorite(vararg favoriteList : FavoriteList)
 
     @Delete
-    abstract fun deleteFavorite(vararg favoriteList: FavoriteList)
+    fun deleteFavorite(vararg favoriteList: FavoriteList)
 
     @Update
-    abstract fun updateFolders(vararg folders: FavoriteList)
+    fun updateFolders(vararg folders: FavoriteList)
 
     @Query("SELECT * FROM FavoriteTable WHERE email = :email LIMIT 1")
-    abstract fun getFoldersList(email: String) :FavoriteList?
+    fun getFoldersList(email: String) :FavoriteList?
 }
 
 @Entity(tableName = "FavoriteTable")

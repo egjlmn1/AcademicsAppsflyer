@@ -37,8 +37,6 @@ class LoginFragment : Fragment() {
         editTextLayout1 = root.findViewById(R.id.edittext1_layout)
         editTextLayout2 = root.findViewById(R.id.edittext2_layout)
 
-        val activity = requireActivity() as StartActivity
-
         editText1!!.addTextChangedListener(textWatcher)
         editText2!!.addTextChangedListener(textWatcher)
 
@@ -54,7 +52,7 @@ class LoginFragment : Fragment() {
                 valid = false
             }
             if (valid) {
-                Toast.makeText(requireContext(),"Logging in...", Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(),"Logging in...", Toast.LENGTH_SHORT).show()
                 continueButton!!.isEnabled = false
                 (requireActivity() as StartActivity).loginRequest(editText1!!.text.toString(), editText2!!.text.toString(), loginResponse, onLoginFailure)
             }
@@ -63,7 +61,7 @@ class LoginFragment : Fragment() {
         return root
     }
 
-    val loginResponse : (call: Call<ProfileRetrofit>?, response: Response<ProfileRetrofit>?) -> Unit = { call: Call<ProfileRetrofit>?, response: Response<ProfileRetrofit>? ->
+    val loginResponse = { _: Call<ProfileRetrofit>?, response: Response<ProfileRetrofit>? ->
         continueButton!!.isEnabled = true
         val code = response!!.code()
         println("login2: " + code)
@@ -71,13 +69,13 @@ class LoginFragment : Fragment() {
             (requireActivity() as StartActivity).loginProfile(response.body()!!, R.id.action_to_mainPageActivity)
             (requireActivity() as StartActivity).finish()
         } else {
-            Toast.makeText(requireContext(),"Incorrect email or password", Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(),"Incorrect email or password", Toast.LENGTH_SHORT).show()
         }
 
     }
 
-    val onLoginFailure : (call: Call<ProfileRetrofit>?, t: Throwable?) -> Unit = { call: Call<ProfileRetrofit>?, t: Throwable? ->
-        Toast.makeText(requireContext(),"An error occurred", Toast.LENGTH_SHORT).show();
+    val onLoginFailure = { _: Call<ProfileRetrofit>?, t: Throwable? ->
+        Toast.makeText(requireContext(),"An error occurred", Toast.LENGTH_SHORT).show()
         continueButton!!.isEnabled = true
         println(t!!.message)
     }

@@ -16,7 +16,6 @@ import com.darktheme.unitime.R
 import com.darktheme.unitime.models.Retrofit.JsonObjects.PostObj
 import com.darktheme.unitime.viewModels.PostsViewModel
 import com.darktheme.unitime.views.Activities.MainPageActivity
-import java.lang.StringBuilder
 
 open class PostsLayout(val view: View, val activity: MainPageActivity) {
     var recyclerView: RecyclerView? = null
@@ -33,12 +32,18 @@ open class PostsLayout(val view: View, val activity: MainPageActivity) {
         val container = view.findViewById<LinearLayout>(R.id.posts_container)
         val inflater = view.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
-        val addedFolder = inflater.inflate(R.layout.layout_single_folder, container, false);
+        val addedFolder = inflater.inflate(R.layout.layout_single_folder, container, false)
         FolderView(addedFolder, folderPath, activity)
         addedFolder.setOnClickListener {
             refreshRecyclerView()
             activity.currentPath = folderPath
             viewModel!!.loadFolder(activity.currentPath)
+            if (folderPath.isNotEmpty()) {
+                val splited = folderPath.split("/")
+                view.findViewById<TextView>(R.id.folder).text = splited[splited.lastIndex]
+            } else {
+                view.findViewById<TextView>(R.id.folder).text = ""
+            }
 
         }
         container.addView(addedFolder, container.childCount - 1) // -1 cuz before the recycler view
@@ -47,7 +52,7 @@ open class PostsLayout(val view: View, val activity: MainPageActivity) {
     val onError = {errorMsg: String ->
         val container = view.findViewById<LinearLayout>(R.id.posts_container)
         val inflater = view.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-        val errorLayout = inflater.inflate(R.layout.layout_error_loading, null, false);
+        val errorLayout = inflater.inflate(R.layout.layout_error_loading, null, false)
         errorLayout.findViewById<TextView>(R.id.error_text).text = errorMsg
         container.addView(errorLayout, container.childCount - 1) // -1 cuz before the recycler view
     }

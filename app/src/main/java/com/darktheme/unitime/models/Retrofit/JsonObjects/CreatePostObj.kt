@@ -6,11 +6,9 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.http.Body
-import retrofit2.http.GET
 import retrofit2.http.POST
-import retrofit2.http.Query
 
-class CreatePostObj(val metadata: PostObj, val attachment: String?) {}
+class CreatePostObj (val metadata: PostObj, val attachment: String?) {}
 interface CreatePostAPI {
 
     @POST("post")

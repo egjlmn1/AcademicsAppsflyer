@@ -7,16 +7,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import com.darktheme.unitime.R
-import com.darktheme.unitime.databinding.FragmentPostsBinding
 import com.darktheme.unitime.databinding.FragmentProfileBinding
 import com.darktheme.unitime.models.Room.AppDataBase
-import com.darktheme.unitime.viewModels.PostsViewModel
 import com.darktheme.unitime.viewModels.ProfileViewModel
 import com.darktheme.unitime.views.Activities.MainPageActivity
-import com.darktheme.unitime.views.CustomViews.PostsLayout
 import com.darktheme.unitime.views.CustomViews.ProfileLayout
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

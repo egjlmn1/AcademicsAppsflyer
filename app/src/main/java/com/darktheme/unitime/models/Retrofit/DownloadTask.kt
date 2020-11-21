@@ -1,20 +1,16 @@
 package com.darktheme.unitime.models.Retrofit
 
-import android.R
 import android.app.Activity
 import android.app.ProgressDialog
 import android.content.ActivityNotFoundException
-import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.os.AsyncTask
 import android.os.Environment
 import android.os.Handler
 import android.util.Log
-import android.view.ContextThemeWrapper
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
+import androidx.core.content.FileProvider
 import java.io.File
 import java.io.FileOutputStream
 import java.net.HttpURLConnection
@@ -28,7 +24,6 @@ class DownloadTask(private val activity: Activity, downloadUrl: String, filename
 
     private inner class DownloadingTask :
         AsyncTask<Void?, Void?, Void?>() {
-        var apkStorage: File? = null
         var outputFile: File? = null
         override fun onPreExecute() {
             super.onPreExecute()
@@ -43,39 +38,21 @@ class DownloadTask(private val activity: Activity, downloadUrl: String, filename
             try {
                 if (outputFile != null) {
                     progressDialog!!.dismiss()
-                    val ctw =
-                        ContextThemeWrapper(activity, R.style.TextAppearance_Theme)
-                    val alertDialogBuilder: AlertDialog.Builder = AlertDialog.Builder(ctw)
-                    alertDialogBuilder.setTitle("Document  ")
-                    alertDialogBuilder.setMessage("Document Downloaded Successfully ")
-                    alertDialogBuilder.setCancelable(false)
-                    alertDialogBuilder.setPositiveButton(
-                        "ok",
-                        DialogInterface.OnClickListener { dialog, id -> })
-                    alertDialogBuilder.setNegativeButton(
-                        "Open report",
-                        DialogInterface.OnClickListener { dialog, id ->
-                            val pdfFile = File(
-                                Environment.getExternalStorageDirectory()
-                                    .toString() + "/Academics/" + downloadFileName
-                            ) // -> filename = maven.pdf
-                            val path: Uri = Uri.fromFile(pdfFile)
-                            val pdfIntent = Intent(Intent.ACTION_VIEW)
-                            pdfIntent.setDataAndType(path, "application/pdf")
-                            pdfIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-                            try {
-                                activity.startActivity(pdfIntent)
-                            } catch (e: ActivityNotFoundException) {
-                                Toast.makeText(
-                                    activity,
-                                    "No Application available to view PDF",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                                println("cant open pdf")
-                            }
-                        })
-                    alertDialogBuilder.show()
-                    //                    Toast.makeText(context, "Document Downloaded Successfully", Toast.LENGTH_SHORT).show();
+                    val pdfFile = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), downloadFileName)
+                    val path: Uri = FileProvider.getUriForFile(activity, activity.getApplicationContext().getPackageName() + ".provider", pdfFile);
+                    val pdfIntent = Intent(Intent.ACTION_VIEW)
+                    pdfIntent.setDataAndType(path, "application/pdf")
+                    pdfIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    try {
+                        activity.startActivity(pdfIntent)
+                    } catch (e: ActivityNotFoundException) {
+//                            Toast.makeText(
+//                                activity,
+//                                "No Application available to view PDF",
+//                                Toast.LENGTH_SHORT
+//                            ).show()
+                        println("cant open pdf")
+                    }
                 } else {
                     Handler().postDelayed({ }, 3000)
                     Log.e(TAG, "Download Failed")
@@ -129,8 +106,8 @@ class DownloadTask(private val activity: Activity, downloadUrl: String, filename
                 //Close all connection after doing task
                 fos.close()
                 `is`.close()
-                activity.runOnUiThread(Runnable {
-                    Toast.makeText(activity,"Download completed", Toast.LENGTH_SHORT).show();
+                activity.runOnUiThread({
+                    Toast.makeText(activity,"Download completed", Toast.LENGTH_SHORT).show()
                 })
             } catch (e: Exception) {
                 //Read exception if something went wrong
@@ -140,8 +117,8 @@ class DownloadTask(private val activity: Activity, downloadUrl: String, filename
                     TAG,
                     "Download Error Exception " + e.message
                 )
-                activity.runOnUiThread(Runnable {
-                    Toast.makeText(activity,"Failed to download", Toast.LENGTH_SHORT).show();
+                activity.runOnUiThread({
+                    Toast.makeText(activity,"Failed to download", Toast.LENGTH_SHORT).show()
                 })
             }
             return null

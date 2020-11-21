@@ -2,9 +2,8 @@ package com.darktheme.unitime.viewModels
 
 import android.app.Activity
 import androidx.databinding.BaseObservable
-import com.darktheme.unitime.models.Retrofit.JsonObjects.*
+import com.darktheme.unitime.models.Retrofit.JsonObjects.PostObj
 import com.darktheme.unitime.models.Retrofit.PostLoader
-import com.darktheme.unitime.views.Activities.MainPageActivity
 
 
 class ProfileViewModel(val activity: Activity, posts: MutableList<PostObj>, refreshRV: (Int) -> Unit, addFolder: (String) -> Unit, onError: (String) -> Unit) : BaseObservable() {

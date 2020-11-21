@@ -5,12 +5,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.view.MenuItem
-import android.view.TextureView
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.bundleOf
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
@@ -43,7 +41,7 @@ class MainPageActivity : AppCompatActivity() {
     var user_id: Int? = null
     var email: String? = null
     var searchText: String = ""
-    var searchFlair: FlairObj = FlairObj(true, true, true, true, true)
+    var searchFlair: FlairObj = FlairObj(true,true,true,true,true)
     var currentPath: String = ""
 
     var viewModel: MainPageViewModel? = null
@@ -68,7 +66,7 @@ class MainPageActivity : AppCompatActivity() {
         email = PreferenceManager.getDefaultSharedPreferences(context).getString(context!!.getString(R.string.current_email), null)
         if (email == null || user_id == null) {
             println("An error occurred (No Email or Id In Prefs)")
-            Toast.makeText(this,"Error occurred", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,"Error occurred", Toast.LENGTH_SHORT).show()
         } else {
             println("EMAIL: " + email)
             println("USER ID: " + user_id)
@@ -137,7 +135,7 @@ class MainPageActivity : AppCompatActivity() {
             when (item.itemId) {
                 R.id.nav_profile -> {
                     if (email == null) {
-                        Toast.makeText(this,"Error occurred", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this,"Error occurred", Toast.LENGTH_SHORT).show()
                     } else {
                         val bundle = bundleOf("name" to "", "email" to email)
                         navController!!.navigate(R.id.action_to_nav_my_profile, bundle)
