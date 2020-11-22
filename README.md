@@ -82,6 +82,7 @@ For database - Room.
 For image loading - Glide.
 
 Photo View - 'com.github.chrisbanes:PhotoView:2.3.0'
+
 Material SearchBar - 'com.github.mancj:MaterialSearchBar:0.8.5'
 
  
