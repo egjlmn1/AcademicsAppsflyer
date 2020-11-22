@@ -25,7 +25,6 @@ Both the APK and the source code can be found in our repository. The APK file is
 
 
 - *Please see that your device language is English since we are still not supporting other languages and it may disturb the view*
-- *We had some trouble with external keyboards apps (i.e Microsoft Swiftkey), therefor please do not use external keyboard apps*
 
 
 Getting Started
@@ -66,13 +65,21 @@ Along with the posting system, we have a comment section where people can answer
  
 Other minor features are:
  - Saving a folder to your Favorite Folders list so you don't have to look for that folder later.
+  <img src="screenshots/login.png" width="10%">
  - Searching a folder in your Favorite Folders list
+  <img src="screenshots/login.png" width="10%">
  - Sharing clickable links in a post.
+  <img src="screenshots/login.png" width="10%">
  - Viewing all the posts you have posted by viewing your profile.
+  <img src="screenshots/login.png" width="10%">
  - Viewing all the posts another user has posted by clicking on his name on a post of his you have seen.
+  <img src="screenshots/login.png" width="10%">
  - Filtering posts by the five types. (Question, Suggestion, Test, Summary, Social)
+  <img src="screenshots/login.png" width="10%">
  - Searcing for keywords that will result in folders and post the server saw fit to show you.
+  <img src="screenshots/login.png" width="10%">
  - Displaying post the server thought you might like.
+ <img src="screenshots/login.png" width="10%">
  
  
 Libraries Used
@@ -92,6 +99,7 @@ Material SearchBar - 'com.github.mancj:MaterialSearchBar:0.8.5'
 Future Features
 --------------
 
+- Better searching algorithm
 - Support for multiple languages.
 - A web page for those who can't download the application.
 - Sharing posts via a link that will open the application or the web page.
