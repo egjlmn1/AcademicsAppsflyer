@@ -17,7 +17,7 @@ class FlairObj(
     val suggestion: Boolean,
     val test: Boolean,
     val summary: Boolean,
-    val meme: Boolean
+    val social: Boolean
 )
 
 interface IdListAPI {

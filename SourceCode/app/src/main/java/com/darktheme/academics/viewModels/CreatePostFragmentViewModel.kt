@@ -1,10 +1,8 @@
 package com.darktheme.academics.viewModels
 
 import android.content.Context
-import android.widget.ArrayAdapter
-import android.widget.CheckBox
-import android.widget.Spinner
-import android.widget.Toast
+import android.view.View
+import android.widget.*
 import androidx.databinding.BaseObservable
 import androidx.databinding.ObservableBoolean
 import androidx.fragment.app.Fragment
@@ -18,7 +16,7 @@ import retrofit2.Call
 import retrofit2.Response
 
 
-class CreatePostFragmentViewModel(val context: Context, val fragment: Fragment) : BaseObservable() {
+class CreatePostFragmentViewModel(val context: Context, val fragment: Fragment, val errorText: TextView) : BaseObservable() {
 
     companion object {
         val NOTHING = 0
@@ -26,9 +24,9 @@ class CreatePostFragmentViewModel(val context: Context, val fragment: Fragment) 
         val FILE = 3
     }
 
-    var faculty = ""
-    var department = ""
-    var course = ""
+//    var faculty = ""
+//    var department = ""
+//    var course = ""
     var flair = "question"
 
     val fullFalir = FlairObj(true,true,true,true,true)
@@ -74,6 +72,8 @@ class CreatePostFragmentViewModel(val context: Context, val fragment: Fragment) 
                 field!!.setOnCheckedChangeListener { _, b ->
                     if (courseSpinner!!.selectedItem.toString().equals("None")) {
                         testCheckbox!!.isChecked = false
+                        errorText.visibility = View.VISIBLE
+                        checkBoxListen(false, testCheckbox, FILE)
                     } else {
                         checkBoxListen(b, testCheckbox, FILE)
                         if (b) {
@@ -90,6 +90,8 @@ class CreatePostFragmentViewModel(val context: Context, val fragment: Fragment) 
                 field!!.setOnCheckedChangeListener { _, b ->
                     if (courseSpinner!!.selectedItem.toString().equals("None")) {
                         summaryCheckbox!!.isChecked = false
+                        errorText.visibility = View.VISIBLE
+                        checkBoxListen(false, summaryCheckbox, FILE)
                     } else {
                         checkBoxListen(b, summaryCheckbox, FILE)
                         if (b) {
@@ -99,14 +101,14 @@ class CreatePostFragmentViewModel(val context: Context, val fragment: Fragment) 
                 }
             }
         }
-    var memeCheckbox : CheckBox? = null  // Always enabled
+    var socialCheckbox : CheckBox? = null  // Always enabled
         set(value) {
             field = value
             if (field != null) {
                 field!!.setOnCheckedChangeListener { _, b ->
-                    checkBoxListen(b, memeCheckbox, IMAGE)
+                    checkBoxListen(b, socialCheckbox, IMAGE)
                     if (b) {
-                        flair = "meme"
+                        flair = "social"
                     }
                 }
             }
@@ -114,6 +116,7 @@ class CreatePostFragmentViewModel(val context: Context, val fragment: Fragment) 
 
     fun checkBoxListen(b: Boolean, checkBox: CheckBox?, t: Int) {
         if (b) {
+            errorText.visibility = View.GONE
             if (currentCheckbox != null) {
                 if (currentCheckbox != checkBox) {
                     currentCheckbox!!.isChecked = false
@@ -152,51 +155,82 @@ class CreatePostFragmentViewModel(val context: Context, val fragment: Fragment) 
             ).show()        }
     }
 
+    fun getFaculty(): String {
+        val c = facultySpinner!!.selectedItem.toString()
+        if (c.equals("None")) {
+            return ""
+        }
+        return c
+    }
+
+    fun getDepartment(): String {
+        val c = departmentSpinner!!.selectedItem.toString()
+        if (c.equals("None")) {
+            return ""
+        }
+        return c
+    }
+
+    fun getCourse(): String {
+        val c = courseSpinner!!.selectedItem.toString()
+        if (c.equals("None")) {
+            return ""
+        }
+        return c
+    }
+
     fun setFaculty(fac: String, spinner: Spinner) {
         facultyList.add("None")
-        faculty = fac
         facultySpinner = spinner
         facultySpinner!!.adapter = ArrayAdapter(context, R.layout.text_item, facultyList)
-        val response = setList(faculty, facultyList, facultySpinner!!)
+        val response = setList(fac, facultyList, facultySpinner!!)
         IdListRequest(RetrofitClient.getInstance()!!).folders("", fullFalir, response, myOnFaliure)
     }
 
-    fun setDepartment(dep: String, spinner: Spinner) {
-        department = dep
+    fun setDepartment(dep: String, path: String, spinner: Spinner) {
+        departmentList.add("None")
         departmentSpinner = spinner
         departmentSpinner!!.adapter = ArrayAdapter(context, R.layout.text_item, departmentList)
-        loadDepartments()
+        if (path.isNotEmpty()) {
+            val response = setList(dep, departmentList, departmentSpinner!!)
+            IdListRequest(RetrofitClient.getInstance()!!).folders(path, fullFalir, response, myOnFaliure)
+        }
     }
 
     fun loadDepartments() {
         departmentList.clear()
         departmentList.add("None")
         (departmentSpinner!!.adapter as ArrayAdapter<*>).notifyDataSetChanged()
-        if (faculty.isEmpty()) {
+        if (getFaculty().isEmpty()) {
             return
         }
-        println("loading department: " + faculty + "/" + department)
-        val response = setList(department, departmentList, departmentSpinner!!)
-        IdListRequest(RetrofitClient.getInstance()!!).folders(faculty, fullFalir, response, myOnFaliure)
+        println("loading department: " + getFaculty() + "/" + getDepartment())
+        val response = setList("", departmentList, departmentSpinner!!)
+        IdListRequest(RetrofitClient.getInstance()!!).folders(getFaculty(), fullFalir, response, myOnFaliure)
     }
 
-    fun setCourse(cour: String, spinner: Spinner) {
-        course = cour
+    fun setCourse(cour: String, path:String, spinner: Spinner) {
+        courseList.add("None")
         courseSpinner = spinner
         courseSpinner!!.adapter = ArrayAdapter(context, R.layout.text_item, courseList)
-        loadCourses()
+        if (path.isNotEmpty()) {
+            val response = setList(cour, courseList, courseSpinner!!)
+            IdListRequest(RetrofitClient.getInstance()!!).folders(path, fullFalir, response, myOnFaliure)
+        }
     }
 
     fun loadCourses() {
         courseList.clear()
         courseList.add("None")
+        println("loading "+ getFaculty()+'/'+getDepartment())
+
         (courseSpinner!!.adapter as ArrayAdapter<*>).notifyDataSetChanged()
-        if (department.isEmpty()) {
+        if (getDepartment().isEmpty()) {
             return
         }
 
-        val response = setList(course, courseList, courseSpinner!!)
-        IdListRequest(RetrofitClient.getInstance()!!).folders(faculty+'/'+department, fullFalir, response, myOnFaliure)
+        val response = setList("", courseList, courseSpinner!!)
+        IdListRequest(RetrofitClient.getInstance()!!).folders(getFaculty()+'/'+getDepartment(), fullFalir, response, myOnFaliure)
     }
 
     fun setList(value: String, lst: MutableList<String>, spinner: Spinner) : (Call<SearchResponseListObj>?, Response<SearchResponseListObj>?) -> Unit {
@@ -211,6 +245,7 @@ class CreatePostFragmentViewModel(val context: Context, val fragment: Fragment) 
                 }
                 (spinner.adapter as ArrayAdapter<*>).notifyDataSetChanged()
                 if (value.isNotEmpty() && lst.contains(value)) {
+                    println("VALUE IS: "+ value)
                     spinner.setTag("init")
                     spinner.setSelection(lst.indexOf(value))
                 }
@@ -224,67 +259,39 @@ class CreatePostFragmentViewModel(val context: Context, val fragment: Fragment) 
     }
 
     fun facultySelected(postition: Int) {
-        if (postition == 0) {
-            //none
-            faculty = ""
-            department = ""
-            course = ""
-            println("Reset faculty")
-        } else {
-            //name
-            faculty = facultyList[postition]
-        }
         loadDepartments()
     }
 
 
     fun departmentSelected(postition: Int) {
-        if (postition == 0) {
-            //none
-            department = ""
-            course = ""
-            println("Reset department")
-        } else {
-            //name
-            department = departmentList[postition]
-        }
         loadCourses()
     }
 
 
     fun courseSelected(postition: Int) {
         if (postition == 0) {
-            //none
-            course = ""
-            println("Reset course")
             if (testCheckbox!!.isChecked) {
                 testCheckbox!!.isChecked = false
             }
-        } else {
-            //name
-            course = courseList[postition]
+            if (summaryCheckbox!!.isChecked) {
+                summaryCheckbox!!.isChecked = false
+            }
         }
     }
 
     fun getPath(): String {
         var path = ""
-        faculty = facultySpinner!!.selectedItem.toString()
-        if (faculty.equals("None")) {faculty = ""}
-        department = departmentSpinner!!.selectedItem.toString()
-        if (department.equals("None")) {department = ""}
-        course = courseSpinner!!.selectedItem.toString()
-        if (course.equals("None")) {course = ""}
-        if (faculty.isEmpty()) {
+        if (getFaculty().isEmpty()) {
             path = ""
         } else {
-            if (department.isEmpty()) {
-                path = faculty
+            if (getDepartment().isEmpty()) {
+                path = getFaculty()
             } else {
-                if (course.isEmpty()) {
-                    val pathArr = listOf<String>(faculty, department)
+                if (getCourse().isEmpty()) {
+                    val pathArr = listOf<String>(getFaculty(), getDepartment())
                     path = pathArr.joinToString(separator = "/")
                 } else {
-                    val pathArr = listOf<String>(faculty, department, course)
+                    val pathArr = listOf<String>(getFaculty(), getDepartment(), getCourse())
                     path = pathArr.joinToString(separator = "/")
                 }
             }

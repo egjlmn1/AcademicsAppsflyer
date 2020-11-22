@@ -10,12 +10,15 @@ import android.widget.TextView
 import androidx.databinding.BaseObservable
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.Recycler
 import com.darktheme.academics.OnFileClickListener
 import com.darktheme.academics.OnPostClickListener
 import com.darktheme.academics.R
 import com.darktheme.academics.models.Retrofit.JsonObjects.PostObj
 import com.darktheme.academics.viewModels.PostsViewModel
 import com.darktheme.academics.views.Activities.MainPageActivity
+import java.net.InetAddress
+
 
 open class PostsLayout(val view: View, val activity: MainPageActivity) {
     var recyclerView: RecyclerView? = null
@@ -53,8 +56,22 @@ open class PostsLayout(val view: View, val activity: MainPageActivity) {
         val container = view.findViewById<LinearLayout>(R.id.posts_container)
         val inflater = view.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val errorLayout = inflater.inflate(R.layout.layout_error_loading, null, false)
-        errorLayout.findViewById<TextView>(R.id.error_text).text = errorMsg
+        var error = errorMsg
+        if (!isInternetAvailable()) {
+            error = "No Internet connection"
+        }
+        errorLayout.findViewById<TextView>(R.id.error_text).text = error
         container.addView(errorLayout, container.childCount - 1) // -1 cuz before the recycler view
+    }
+
+    open fun isInternetAvailable(): Boolean {
+        return try {
+            val ipAddr: InetAddress = InetAddress.getByName("google.com")
+            //You can replace it with your name
+            !ipAddr.equals("")
+        } catch (e: Exception) {
+            false
+        }
     }
 
     val refreshRV = {position : Int ->
@@ -68,7 +85,7 @@ open class PostsLayout(val view: View, val activity: MainPageActivity) {
         recyclerView = view.findViewById(R.id.posts_recycler_view)
         //recyclerView!!.addOnScrollListener(ScrollListener())
         recyclerView!!.adapter = PostsAdapter(activity as MainPageActivity, posts, OnPostClickListener((activity as MainPageActivity).navController!!), OnFileClickListener(view.context))
-        recyclerView!!.layoutManager = LinearLayoutManager(activity)
+        recyclerView!!.layoutManager = WrapContentLinearLayoutManager(activity)
     }
 
     fun refreshRecyclerView() {
@@ -79,6 +96,19 @@ open class PostsLayout(val view: View, val activity: MainPageActivity) {
         val container = view.findViewById<LinearLayout>(R.id.posts_container)
         if (container.childCount > 2) {
             container.removeViews(1, container.childCount-2)
+        }
+    }
+}
+
+class WrapContentLinearLayoutManager(context: Context) : LinearLayoutManager(context) {
+    override fun onLayoutChildren(
+        recycler: Recycler,
+        state: RecyclerView.State
+    ) {
+        try {
+            super.onLayoutChildren(recycler, state)
+        } catch (e: IndexOutOfBoundsException) {
+            println("Error IndexOutOfBoundsException in RecyclerView happens")
         }
     }
 }

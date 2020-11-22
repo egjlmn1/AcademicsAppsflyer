@@ -30,7 +30,7 @@
         <item>Suggestions</item>
         <item>Tests</item>
         <item>Summaries</item>
-        <item>Memes</item>
+        <item>Socials</item>
     </string-array>
 
     <string name="preference_file_key">com.darktheme.academics.PREFERENCE_FILE_KEY</string>

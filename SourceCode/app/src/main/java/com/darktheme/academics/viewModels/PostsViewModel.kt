@@ -60,7 +60,6 @@ class PostsViewModel(val activity: MainPageActivity, posts: MutableList<PostObj>
 //    }
 
     override fun onButtonClicked(buttonCode: Int) {
-        println("search button clicked")
     }
 
     override fun onSearchStateChanged(enabled: Boolean) {
@@ -82,10 +81,9 @@ class PostsViewModel(val activity: MainPageActivity, posts: MutableList<PostObj>
             PreferenceManager.getDefaultSharedPreferences(activity).getBoolean("suggestion", true),
             PreferenceManager.getDefaultSharedPreferences(activity).getBoolean("test", true),
             PreferenceManager.getDefaultSharedPreferences(activity).getBoolean("summary", true),
-            PreferenceManager.getDefaultSharedPreferences(activity).getBoolean("meme", true)
+            PreferenceManager.getDefaultSharedPreferences(activity).getBoolean("social", true)
         )
         activity.searchFlair = flair
-        println("MEME: " + activity.searchFlair.meme)
     }
 
     fun loadPosts(bestFit: Boolean, path: String, onResult: () -> Unit) {

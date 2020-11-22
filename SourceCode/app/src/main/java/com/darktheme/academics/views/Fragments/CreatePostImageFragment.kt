@@ -96,7 +96,7 @@ class CreatePostImageFragment : Fragment() {
                 imageBase64
             )
 
-            println("Posting post image")
+            println("Posting post image on path: " + path!!)
             CreatePostRequest(RetrofitClient.getInstance()!!).post(createdPost, onResponse, onFailure)
             requireView().findViewById<Button>(R.id.create_post_btn).isEnabled = false
             (requireActivity() as MainPageActivity).navController!!.navigate(R.id.action_to_home)
@@ -105,7 +105,7 @@ class CreatePostImageFragment : Fragment() {
                 PostObj("", "text", flair!!, path!!, null, (requireActivity() as MainPageActivity).user_id!!.toString(), (requireActivity() as MainPageActivity).email!!, getText(), null),
                 null
             )
-            println("Posting post image")
+            println("Posting post text")
             CreatePostRequest(RetrofitClient.getInstance()!!).post(createdPost, onResponse, onFailure)
             requireView().findViewById<Button>(R.id.create_post_btn).isEnabled = false
             (requireActivity() as MainPageActivity).navController!!.navigate(R.id.action_to_home)

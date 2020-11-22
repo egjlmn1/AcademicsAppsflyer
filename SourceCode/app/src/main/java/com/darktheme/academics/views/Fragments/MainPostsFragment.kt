@@ -60,12 +60,12 @@ open class MainPostsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener 
     }
 
     fun initAll() {
+        initSearchBar()
         initLayout()
         setLayout()
         initFlairs()
         posts!!.initRecyclerView(requireActivity())
         initRefresh()
-        initSearchBar()
     }
 
     open fun loadPosts() {
@@ -116,10 +116,10 @@ open class MainPostsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener 
         }
         if (bestFit) {
             requireView().findViewById<Button>(R.id.bestfit_hierarchy_btn).text = "Best Fit View"
-            requireView().findViewById<TextView>(R.id.change_to).text = "change to folders view"
+            requireView().findViewById<TextView>(R.id.change_to).text = "folders view"
         } else {
             requireView().findViewById<Button>(R.id.bestfit_hierarchy_btn).text = "Folders View"
-            requireView().findViewById<TextView>(R.id.change_to).text = "change to best fit view"
+            requireView().findViewById<TextView>(R.id.change_to).text = "best fit view"
         }
     }
 
@@ -131,7 +131,7 @@ open class MainPostsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener 
             lst.add(SpinnerCheckBox("Suggestions", PreferenceManager.getDefaultSharedPreferences(requireContext()).getBoolean("suggestion", true), "suggestion"))
             lst.add(SpinnerCheckBox("Tests", PreferenceManager.getDefaultSharedPreferences(requireContext()).getBoolean("test", true), "test"))
             lst.add(SpinnerCheckBox("Summaries", PreferenceManager.getDefaultSharedPreferences(requireContext()).getBoolean("summary", true), "summary"))
-            lst.add(SpinnerCheckBox("Memes", PreferenceManager.getDefaultSharedPreferences(requireContext()).getBoolean("meme", true), "meme"))
+            lst.add(SpinnerCheckBox("Socials", PreferenceManager.getDefaultSharedPreferences(requireContext()).getBoolean("social", true), "social"))
             val ada = MySpinnerAdapter(requireContext(), lst)
             val spinner = requireView().findViewById<Spinner>(R.id.flair_spinner)
             withContext(Main) {

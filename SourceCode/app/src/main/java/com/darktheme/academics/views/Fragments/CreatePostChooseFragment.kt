@@ -27,7 +27,7 @@ class CreatePostChooseFragment : Fragment() {
         )
         val view: View = binding.getRoot()
         val activity = requireActivity() as MainPageActivity
-        viewModel = CreatePostFragmentViewModel(activity, this)
+        viewModel = CreatePostFragmentViewModel(activity, this, view.findViewById(R.id.error_text))
         binding.viewModel = viewModel
         setCheckBoxes(view) // view model needed
         setButton(view)
@@ -53,7 +53,7 @@ class CreatePostChooseFragment : Fragment() {
         viewModel!!.suggestionCheckbox = view.findViewById<CheckBox>(R.id.suggestion_checkbox)
         viewModel!!.testCheckbox = view.findViewById<CheckBox>(R.id.test_checkbox)
         viewModel!!.summaryCheckbox = view.findViewById<CheckBox>(R.id.summary_checkbox)
-        viewModel!!.memeCheckbox = view.findViewById<CheckBox>(R.id.meme_checkbox)
+        viewModel!!.socialCheckbox = view.findViewById<CheckBox>(R.id.social_checkbox)
 
         view.findViewById<LinearLayout>(R.id.summary_post).setOnClickListener {
             viewModel!!.onSummaryClick()
@@ -79,6 +79,7 @@ class CreatePostChooseFragment : Fragment() {
         var fac = ""
         var dep = ""
         var cou = ""
+        var couPath = ""
         if (path.isNotEmpty()) {
             val splitedPath = path.split('/')
             if (splitedPath.size == 1) {
@@ -86,19 +87,21 @@ class CreatePostChooseFragment : Fragment() {
             } else if (splitedPath.size == 2) {
                 fac = splitedPath[0]
                 dep = splitedPath[1]
+                couPath = fac+'/'+dep
             } else if (splitedPath.size == 3) {
                 fac = splitedPath[0]
                 dep = splitedPath[1]
                 cou = splitedPath[2]
+                couPath = fac+'/'+dep
             }
         }
 
         println("fac: " + fac + " dep: " + dep + " cou: " + cou)
         viewModel!!.setFaculty(fac, facultySpinner!!)
         facultySpinner!!.setTag("after init")
-        viewModel!!.setDepartment(dep, departmentSpinner!!)
+        viewModel!!.setDepartment(dep, fac, departmentSpinner!!)
         departmentSpinner!!.setTag("after init")
-        viewModel!!.setCourse(cou, courseSpinner!!)
+        viewModel!!.setCourse(cou, couPath, courseSpinner!!)
         courseSpinner!!.setTag("after init")
         setSpinnerListeners()
 

@@ -43,9 +43,6 @@ class PostLoader(val activity: Activity, val posts: MutableList<PostObj>, val re
     }
 
     fun loadPosts(searchResult : List<SearchResponse>) {
-        if (posts.isNotEmpty()) {
-            println("POSTS NOT EMPTY")
-        }
         posts.clear()
         pos = posts.size
         posts.clear()
@@ -76,7 +73,6 @@ class PostLoader(val activity: Activity, val posts: MutableList<PostObj>, val re
 
     fun getIdResponse(onResult: () -> Unit): (Call<SearchResponseListObj>?, Response<SearchResponseListObj>?) -> Unit {
         return { call: Call<SearchResponseListObj>?, response: Response<SearchResponseListObj>? ->
-            println("SUCCESS")
             if (response!!.code() != 200) {
                 println(response.code())
                 onError("Academics is under maintenance, come back later")

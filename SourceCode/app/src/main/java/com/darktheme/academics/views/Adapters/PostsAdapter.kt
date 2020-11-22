@@ -70,6 +70,7 @@ class PostsAdapter(val activity: MainPageActivity, val posts: ArrayList<PostObj>
 class PostView(val activity: MainPageActivity, itemView: View) {
     val contentParent : LinearLayout? = itemView.findViewById(R.id.post_content_layout)
     val publisher : TextView? = itemView.findViewById(R.id.post_publisher)
+    val textContent : TextView? = itemView.findViewById(R.id.post_text)
     val flair : TextView? = itemView.findViewById(R.id.post_flair)
     val date : TextView? = itemView.findViewById(R.id.post_time)
     val parentLayout : RelativeLayout? = itemView.findViewById(R.id.post_parent_layout)
@@ -79,7 +80,7 @@ class PostView(val activity: MainPageActivity, itemView: View) {
 
     fun setUp(p : PostObj, fileListener: OnItemClickListener) {
         post = p
-        if ((contentParent == null) || (publisher == null) || (parentLayout == null) || (postInfo == null) || (date == null) || (flair == null)) {
+        if ((contentParent == null) || (publisher == null) || (parentLayout == null) || (postInfo == null) || (date == null) || (flair == null) || (textContent == null)) {
             return
         }
         val profPic = parentLayout.findViewById<ImageView>(R.id.post_profile_pic)
@@ -99,11 +100,11 @@ class PostView(val activity: MainPageActivity, itemView: View) {
         }
         setDate(p.date!!)
         if (!post!!.text_content.isNullOrEmpty()) {
-            setTextContent(post!!.text_content!!)
+            textContent.visibility = View.VISIBLE
+            textContent.text = post!!.text_content
         } else {
-            val postText = contentParent.findViewById<TextView>(R.id.post_text)
-            postText.text = ""
-            postText.visibility = View.GONE
+            textContent.text = ""
+            textContent.visibility = View.GONE
         }
         if(post!!.type.equals(PostsViewModel.ImageType)) {
             setImageContent(post!!.post_id)
@@ -128,12 +129,6 @@ class PostView(val activity: MainPageActivity, itemView: View) {
                 }
             }
         }
-    }
-
-    fun setTextContent(text : String) {
-        val postText = contentParent!!.findViewById<TextView>(R.id.post_text)
-        postText.visibility = View.VISIBLE
-        postText.text = text
     }
 
     fun setDate(dateString: String) {

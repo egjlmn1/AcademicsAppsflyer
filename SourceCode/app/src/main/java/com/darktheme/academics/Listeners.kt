@@ -16,7 +16,6 @@ interface OnItemClickListener {
 class OnPostClickListener(val navController: NavController) : OnItemClickListener {
     override fun onItemClicked(data: String) {
         val post = Gson().fromJson(data, PostObj::class.java)
-        println("ID = " + post.post_id)
         val bundle = bundleOf("id" to post.post_id)
         navController.navigate(R.id.action_to_nav_comments, bundle) // with parameters
     }

@@ -13,7 +13,7 @@
         android:id="@+id/directory_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="name of something"
+        android:text="null"
         android:drawableLeft="@drawable/ic_baseline_folder_24"
         android:drawableTint="@color/colorNormalText"
         android:drawablePadding="10dp"

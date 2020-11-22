@@ -67,20 +67,32 @@
                 android:layout_gravity="bottom"
                 android:orientation="horizontal"
                 android:layout_marginBottom="30dp"
+                android:onClick="@{()->viewModel.onDarkModeClick()}"
                 android:padding="16dp">
 
+                <TextView
+                    android:id="@+id/darktheme_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Switch Theme"
+                    android:textColor="@color/colorNormalText"
+                    android:textSize="20sp"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="10dp"
+                    android:fontFamily="@font/tommy_bold"
+                    android:layout_centerVertical="true"
+                    />
 
-                <Button
+
+                <ImageView
                     android:id="@+id/nav_darkmode"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:layout_alignParentRight="true"
                     android:layout_marginStart="20dp"
+                    android:layout_toEndOf="@+id/darktheme_text"
                     android:gravity="center"
                     android:background="@drawable/ic_baseline_brightness_3_24"
-                    style="?android:attr/borderlessButtonStyle"
                     android:backgroundTint="@color/colorNormalText"
-                    android:onClick="@{()->viewModel.onDarkModeClick()}"
                     />
             </RelativeLayout>
 

@@ -14,8 +14,6 @@ class StartFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val root = inflater.inflate(R.layout.fragment_start, container, false)
-        println("start fragment")
-
         val activity = requireActivity() as StartActivity
         activity.email = ""
         activity.password1 = ""

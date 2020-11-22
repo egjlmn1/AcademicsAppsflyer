@@ -50,7 +50,8 @@ class SearchResultFragment : MainPostsFragment() {
     override fun setLayout() {
         // do something
         //called every time
-        requireView().findViewById<TextView>(R.id.search_show).text = "Showing search result for: \"" + myActivity!!.searchText + "\""
+        //requireView().findViewById<TextView>(R.id.search_show).text = "Showing search result for: \"" + myActivity!!.searchText + "\""
+        searchBar!!.setPlaceHolder(myActivity!!.searchText)
         val layout =  requireView().findViewById<LinearLayout>(R.id.posts_container)
         if (layout.childCount > 2) {
             layout.removeViewAt(1)

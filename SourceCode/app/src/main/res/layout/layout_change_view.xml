@@ -6,27 +6,38 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     >
-    <Button
-        android:id="@+id/bestfit_hierarchy_btn"
+    <LinearLayout
+        android:id="@+id/change"
         android:layout_width="wrap_content"
+        android:layout_centerVertical="true"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/colorPost"
-        style="?android:attr/borderlessButtonStyle"
-        android:text=""
-        android:paddingHorizontal="20dp"
-        android:textColor="@color/colorNormalText"
-        />
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/change_to"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=""
-        android:layout_below="@id/bestfit_hierarchy_btn"
-        android:textSize="10sp"
-        android:paddingLeft="15dp"
-        android:textColor="@color/colorNormalText"
-        />
+        <Button
+            android:id="@+id/bestfit_hierarchy_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorPost"
+            style="?android:attr/borderlessButtonStyle"
+            android:text=""
+            android:paddingHorizontal="20dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/button_default"
+            android:textColor="@color/colorNormalText"
+            />
+
+        <TextView
+            android:id="@+id/change_to"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="12sp"
+            android:paddingStart="15dp"
+            android:layout_gravity="center"
+            android:textColor="@color/colorNormalText"
+            />
+    </LinearLayout>
+
 
     <TextView
         android:id="@+id/folder"
@@ -34,7 +45,7 @@
         android:layout_height="wrap_content"
         android:text="Folder"
         android:textSize="15sp"
-        android:layout_toEndOf="@id/bestfit_hierarchy_btn"
+        android:layout_toEndOf="@id/change"
         android:layout_alignParentEnd="true"
         android:textColor="@color/colorNormalText"
         android:layout_centerVertical="true"

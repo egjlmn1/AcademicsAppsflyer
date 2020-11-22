@@ -46,12 +46,9 @@ class DownloadTask(private val activity: Activity, downloadUrl: String, filename
                     try {
                         activity.startActivity(pdfIntent)
                     } catch (e: ActivityNotFoundException) {
-//                            Toast.makeText(
-//                                activity,
-//                                "No Application available to view PDF",
-//                                Toast.LENGTH_SHORT
-//                            ).show()
-                        println("cant open pdf")
+                        activity.runOnUiThread {
+                            Toast.makeText(activity,"No Application available to view PDF", Toast.LENGTH_SHORT).show()
+                        }
                     }
                 } else {
                     Handler().postDelayed({ }, 3000)
@@ -106,9 +103,9 @@ class DownloadTask(private val activity: Activity, downloadUrl: String, filename
                 //Close all connection after doing task
                 fos.close()
                 `is`.close()
-                activity.runOnUiThread({
+                activity.runOnUiThread {
                     Toast.makeText(activity,"Download completed", Toast.LENGTH_SHORT).show()
-                })
+                }
             } catch (e: Exception) {
                 //Read exception if something went wrong
                 e.printStackTrace()
@@ -117,9 +114,9 @@ class DownloadTask(private val activity: Activity, downloadUrl: String, filename
                     TAG,
                     "Download Error Exception " + e.message
                 )
-                activity.runOnUiThread({
+                activity.runOnUiThread {
                     Toast.makeText(activity,"Failed to download", Toast.LENGTH_SHORT).show()
-                })
+                }
             }
             return null
         }

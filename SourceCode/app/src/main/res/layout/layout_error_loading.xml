@@ -18,7 +18,7 @@
         android:id="@+id/error_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="error loading file"
+        android:text="File not found"
         android:textColor="@color/colorHintText"
         android:layout_below="@+id/error_image"
         android:fontFamily="@font/tommy_regular"

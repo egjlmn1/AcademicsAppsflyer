@@ -3,6 +3,7 @@ package com.darktheme.academics.views.Fragments
 import CommentsAdapter
 import PostView
 import android.os.Bundle
+import android.text.util.Linkify
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -69,6 +70,9 @@ class CommentsFragment : Fragment() {
                 (requireActivity() as MainPageActivity).navController!!.navigate(R.id.action_nav_comments_to_nav_image, bundle)
             }
             postView.setUp(p, OnFileClickListener(requireContext()))
+            postView.textContent!!.setTextIsSelectable(true)
+            Linkify.addLinks(postView.textContent, Linkify.WEB_URLS);
+            postView.textContent.linksClickable = true
             if (p.type == PostsViewModel.ImageType) {
                 postView.postImage!!.setOnClickListener{
                     val bundle = bundleOf("id" to p.post_id )

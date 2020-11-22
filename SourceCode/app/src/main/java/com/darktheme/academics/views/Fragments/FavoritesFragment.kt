@@ -20,6 +20,8 @@ class FavoritesFragment : Fragment() {
         val binding: FragmentFavoritesBinding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_favorites, container, false
         )
+        val activity = requireActivity() as MainPageActivity
+        activity.hideNavBar()
         val root: View = binding.getRoot()
         viewModel = FavoritesViewModel(requireActivity())
         binding.viewModel = viewModel

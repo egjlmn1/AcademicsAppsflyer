@@ -45,8 +45,9 @@
         android:layout_height="wrap_content"
         android:text="Upload Image"
         android:textAllCaps="false"
-        android:fontFamily="@font/tommy_regular"
-        android:backgroundTint="#fff"
+        android:textColor="#fff"
+        android:fontFamily="@font/tommy_bold"
+        android:backgroundTint="@color/colorPrimary"
         android:textSize="20sp"
         />
 
@@ -58,7 +59,9 @@
         android:layout_marginBottom="50dp"
         android:text="post"
         android:enabled="true"
-        android:backgroundTint="#fff"
+        android:textColor="#fff"
+        android:fontFamily="@font/tommy_bold"
+        android:backgroundTint="@color/colorPrimary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/button_default"/>

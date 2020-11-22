@@ -64,7 +64,6 @@ class LoginFragment : Fragment() {
     val loginResponse = { _: Call<ProfileRetrofit>?, response: Response<ProfileRetrofit>? ->
         continueButton!!.isEnabled = true
         val code = response!!.code()
-        println("login2: " + code)
         if (code == 200) {
             (requireActivity() as StartActivity).loginProfile(response.body()!!, R.id.action_to_mainPageActivity)
             (requireActivity() as StartActivity).finish()
