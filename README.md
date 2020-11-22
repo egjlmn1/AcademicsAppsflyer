@@ -47,16 +47,16 @@ The way we accomplished it is by making a hierarchy of folders containing facult
 To share your post you need to select a folder where the post will be.
 We have five types of posts:
 
--Question - this post can sit in any folder, it will contain text or maybe an image that helps you describes your question. Using our comment section, people can answer your question, ask a continuing question, or get more understanding of what you meant.
+- Question - this post can sit in any folder, it will contain text or maybe an image that helps you describes your question. Using our comment section, people can answer your question, ask a continuing question, or get more understanding of what you meant.
 
--Suggestion - this post can sit in any folder, it will contain something you think can be helpful to other users of the app. It can be a suggestion for a course, a studying method that you find helpful, or even a link to a video explaining a topic very well.
+- Suggestion - this post can sit in any folder, it will contain something you think can be helpful to other users of the app. It can be a suggestion for a course, a studying method that you find helpful, or even a link to a video explaining a topic very well.
 
--Test - This post can sit only in a course folder, this post is a pdf file of a test in the course where the post can be found. The test can be from previous years, from different institutions, or anything that may help other students who have a hard time studying for their exams.
+- Test - This post can sit only in a course folder, this post is a pdf file of a test in the course where the post can be found. The test can be from previous years, from different institutions, or anything that may help other students who have a hard time studying for their exams.
 
--Summary - This post can sit only in a course folder, this post is a pdf file of a summary for the course where the post can be found.
+- Summary - This post can sit only in a course folder, this post is a pdf file of a summary for the course where the post can be found.
 The summary can be any type of summary(a one a student wrote, one the professor wrote, or the one found in the syllabus) that may help other students who have a hard time understanding the material or for those who just want to know if they want to take the course.
 
--Social - a joke, a confession, or anything you can share that will help relieve the stress other students have during these hard times. This post can sit in any folder.
+- Social - a joke, a confession, or anything you can share that will help relieve the stress other students have during these hard times. This post can sit in any folder.
 
 Along with the posting system, we have a comment section where people can answer and respond to the post and other comments of the same post.
  
