@@ -64,14 +64,22 @@ The summary can be any type of summary(a one a student wrote, one the professor 
 Along with the posting system, we have a comment section where people can answer and respond to the post and other comments of the same post.
  
 Other minor features are:
- - Saving a folder to your Favorite Folders list so you don't have to look for that folder later. <img src="screenshots/login.png" width="10%">
- - Searching a folder in your Favorite Folders list <img src="screenshots/login.png" width="10%">
- - Sharing clickable links in a post. <img src="screenshots/login.png" width="10%">
- - Viewing all the posts you have posted by viewing your profile. <img src="screenshots/login.png" width="10%">
- - Viewing all the posts another user has posted by clicking on his name on a post of his you have seen. <img src="screenshots/login.png" width="10%">
- - Filtering posts by the five types. (Question, Suggestion, Test, Summary, Social) <img src="screenshots/login.png" width="10%">
- - Searcing for keywords that will result in folders and post the server saw fit to show you. <img src="screenshots/login.png" width="10%">
- - Displaying post the server thought you might like. <img src="screenshots/login.png" width="10%">
+ - Saving a folder to your Favorite Folders list so you don't have to look for that folder later.
+ <img src="screenshots/login.png" width="10%">
+ - Searching a folder in your Favorite Folders list.
+ <img src="screenshots/login.png" width="10%">
+ - Sharing clickable links in a post.
+ <img src="screenshots/login.png" width="10%">
+ - Viewing all the posts you have posted by viewing your profile.
+ <img src="screenshots/login.png" width="10%">
+ - Viewing all the posts another user has posted by clicking on his name on a post of his you have seen.
+ <img src="screenshots/login.png" width="10%">
+ - Filtering posts by the five types. (Question, Suggestion, Test, Summary, Social)
+ <img src="screenshots/login.png" width="10%">
+ - Searcing for keywords that will result in folders and post the server saw fit to show you.
+ <img src="screenshots/login.png" width="10%">
+ - Displaying post the server thought you might like.
+ <img src="screenshots/login.png" width="10%">
  
  
 Libraries Used
