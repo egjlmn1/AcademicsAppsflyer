@@ -25,6 +25,7 @@ Both the APK and the source code can be found in our repository. The APK file is
 
 
 - *Please see that your device language is English since we are still not supporting other languages and it may disturb the view*
+- *We had some trouble with external keyboards apps (i.e Microsoft Swiftkey), therefor please do not use external keyboard apps*
 
 
 Getting Started
