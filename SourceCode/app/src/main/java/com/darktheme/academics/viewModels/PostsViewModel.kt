@@ -2,6 +2,7 @@ package com.darktheme.academics.viewModels
 
 import android.preference.PreferenceManager
 import android.view.Gravity
+import androidx.core.view.GravityCompat
 import androidx.databinding.BaseObservable
 import androidx.drawerlayout.widget.DrawerLayout
 import com.darktheme.academics.R
@@ -34,30 +35,8 @@ class PostsViewModel(val activity: MainPageActivity, posts: MutableList<PostObj>
 
     fun onProfileClick() {
         val drawer = activity.findViewById<DrawerLayout>(R.id.drawer_layout)
-        drawer!!.openDrawer(Gravity.LEFT)
+        drawer!!.openDrawer(GravityCompat.START)
     }
-
-//    fun loadSuggestions(searchBar: MaterialSearchBar) {
-//        CoroutineScope(IO).launch {
-//            val suggestions = AppDataBase.getInstance(activity).suggestionDao().getSuggestionList()
-//            println("suggestions: ")
-//            for (sug in suggestions) {
-//                println(sug.suggestion)
-//            }
-//            //searchBar.setLastSuggestions(suggestions)
-//        }
-//    }
-
-//    fun saveSuggestions(suggestions: List<String>) {
-//        CoroutineScope(IO).launch {
-//            val db = AppDataBase.getInstance(activity).suggestionDao()
-//            for (sug in suggestions) {
-//                db.insertSuggestions(Suggestion(sug))
-//                println("suggestions saving: " + sug)
-//            }
-//            println("suggestions saved")
-//        }
-//    }
 
     override fun onButtonClicked(buttonCode: Int) {
     }

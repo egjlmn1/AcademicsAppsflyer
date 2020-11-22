@@ -94,8 +94,11 @@ open class MainPostsFragment : Fragment(), SwipeRefreshLayout.OnRefreshListener 
     }
 
     open fun initLayout() {
-        val view = LayoutInflater.from(context).inflate(R.layout.layout_change_view, null, false)
-        requireView().findViewById<RelativeLayout>(R.id.extra_container).addView(view, 0)
+        val parent = requireView().findViewById<RelativeLayout>(R.id.extra_container)
+        parent?.let {
+            val view = LayoutInflater.from(context).inflate(R.layout.layout_change_view, parent, false)
+            parent.addView(view, 0)
+        }
     }
 
     open fun setLayout() {

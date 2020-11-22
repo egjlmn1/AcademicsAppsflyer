@@ -30,9 +30,8 @@
             android:id="@+id/change_to"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=""
+            android:text="best fit"
             android:textSize="12sp"
-            android:paddingStart="15dp"
             android:layout_gravity="center"
             android:textColor="@color/colorNormalText"
             />
@@ -47,8 +46,8 @@
         android:textSize="15sp"
         android:layout_toEndOf="@id/change"
         android:layout_alignParentEnd="true"
+        android:layout_below="@id/change"
         android:textColor="@color/colorNormalText"
-        android:layout_centerVertical="true"
         android:layout_marginHorizontal="30dp"
         />
 </RelativeLayout>

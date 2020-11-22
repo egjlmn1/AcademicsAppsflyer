@@ -83,7 +83,7 @@
                             <RelativeLayout
                                 android:id="@+id/extra_container"
                                 android:layout_alignParentStart="true"
-                                android:layout_toStartOf="@+id/flair_spinner"
+                                android:layout_centerVertical="true"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content">
 

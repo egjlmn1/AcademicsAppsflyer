@@ -41,13 +41,15 @@ open class PostsLayout(val view: View, val activity: MainPageActivity) {
             refreshRecyclerView()
             activity.currentPath = folderPath
             viewModel!!.loadFolder(activity.currentPath)
-            if (folderPath.isNotEmpty()) {
-                val splited = folderPath.split("/")
-                view.findViewById<TextView>(R.id.folder).text = splited[splited.lastIndex]
-            } else {
-                view.findViewById<TextView>(R.id.folder).text = ""
+            val folderName = view.findViewById<TextView>(R.id.folder)
+            if (folderName != null) {
+                if (folderPath.isNotEmpty()) {
+                    val splited = folderPath.split("/")
+                    folderName.text = splited[splited.lastIndex]
+                } else {
+                    folderName.text = ""
+                }
             }
-
         }
         container.addView(addedFolder, container.childCount - 1) // -1 cuz before the recycler view
     }
