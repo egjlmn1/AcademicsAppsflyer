@@ -24,6 +24,9 @@ We suggest you install the application using the first method since the second o
 Both the APK and the source code can be found in our repository. The APK file is named "Academics.apk" and the source code it the folder named "Source Code".
 
 
+- *Please see that your device language is English since we are still not supporting other languages and it may disturb the view*
+
+
 Getting Started
 ---------------
 To enter Academics you first need to sign up.
