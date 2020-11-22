@@ -72,22 +72,25 @@ Other minor features are:
  <img src="screenshots/favorite_search.png" width="15%">
  
  - Sharing clickable links in a post.
- <img src="screenshots/favorites.png" width="15%">
+ <img src="screenshots/link_post.png" width="15%">
  
  - Viewing all the posts you have posted by viewing your profile.
- <img src="screenshots/favorites.png" width="15%">
+ <img src="screenshots/profile1.png" width="15%">
  
  - Viewing all the posts another user has posted by clicking on his name on a post of his you have seen.
- <img src="screenshots/favorites.png" width="15%">
+ <img src="screenshots/profile2.png" width="15%">
  
  - Filtering posts by the five types. (Question, Suggestion, Test, Summary, Social)
- <img src="screenshots/favorites.png" width="15%">
+ <img src="screenshots/flair_filter.png" width="15%">
  
  - Searcing for keywords that will result in folders and post the server saw fit to show you.
  <img src="screenshots/search_example.png" width="15%">
  
  - Displaying post the server thought you might like.
- <img src="screenshots/favorites.png" width="15%">
+ <img src="screenshots/bestfit.png" width="15%">
+ 
+  - Switching between light theme and dark theme.
+ <img src="screenshots/light_theme.png" width="15%">
  
  
 Libraries Used
