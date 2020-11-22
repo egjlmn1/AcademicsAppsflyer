@@ -127,7 +127,7 @@ class CommentsFragment : Fragment() {
     val onSendResponse = { _: Call<ResponseBody>?, response: Response<ResponseBody>? ->
         requireView().findViewById<Button>(R.id.send_btn).isEnabled = true
         if (response!!.code() != 200) {
-            println("Error loading comments")
+            println("Error sending comment, code: " + response.code())
         } else {
             setUpComments()
         }

@@ -14,6 +14,7 @@ import com.darktheme.academics.models.Retrofit.PostLoader
 import com.darktheme.academics.models.Retrofit.RetrofitClient
 import retrofit2.Call
 import retrofit2.Response
+import java.lang.Exception
 
 
 class CreatePostFragmentViewModel(val context: Context, val fragment: Fragment, val errorText: TextView) : BaseObservable() {
@@ -156,27 +157,39 @@ class CreatePostFragmentViewModel(val context: Context, val fragment: Fragment, 
     }
 
     fun getFaculty(): String {
-        val c = facultySpinner!!.selectedItem.toString()
-        if (c.equals("None")) {
+        try {
+            val c = facultySpinner!!.selectedItem.toString()
+            if (c.equals("None")) {
+                return ""
+            }
+            return c
+        } catch (e: Exception) {
             return ""
         }
-        return c
     }
 
     fun getDepartment(): String {
-        val c = departmentSpinner!!.selectedItem.toString()
-        if (c.equals("None")) {
+        try {
+            val c = departmentSpinner!!.selectedItem.toString()
+            if (c.equals("None")) {
+                return ""
+            }
+            return c
+        } catch (e: Exception) {
             return ""
         }
-        return c
     }
 
     fun getCourse(): String {
-        val c = courseSpinner!!.selectedItem.toString()
-        if (c.equals("None")) {
+        try {
+                val c = courseSpinner!!.selectedItem.toString()
+            if (c.equals("None")) {
+                return ""
+            }
+            return c
+        } catch (e: Exception) {
             return ""
         }
-        return c
     }
 
     fun setFaculty(fac: String, spinner: Spinner) {
