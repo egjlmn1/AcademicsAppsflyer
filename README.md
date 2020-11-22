@@ -86,7 +86,7 @@ Other minor features are:
  - Searcing for keywords that will result in folders and post the server saw fit to show you.
  <img src="screenshots/search_example.png" width="15%">
  
- - Displaying post the server thought you might like.
+ - Displaying posts best fitted for you.
  <img src="screenshots/bestfit.png" width="15%">
  
   - Switching between light theme and dark theme.
